@@ -7,10 +7,12 @@
     "test": "test"
   },
   "dependencies": {
+    "@uirouter/angularjs": "^1.0.6",
     "angular": "^1.6.6",
-    "angular-router": "^0.0.2"
+    "angular-cookies": "^1.6.6"
   },
   "devDependencies": {
+    "angular-ui-router": "^1.0.3",
     "browser-sync": "^2.18.12",
     "gulp": "^3.9.1",
     "gulp-clean": "^0.3.2",

@@ -36,14 +36,8 @@ gulp.task('lib', function (cb) {
             sync.callback = cb;
         })
 })
-gulp.task('lib-js', function (cb) {
-    gulp.src([
-        './app/src/libs/angular/angular.js',
-        './app/src/libs/angular-cookies/angular-cookies.js',
-        './app/src/libs/angular-ui-router/release/angular-ui-router.js',
-        './app/src/libs/jquery/dist/jquery.js',
-        './app/src/libs/js-md5/js/md5.js',
-    ])
+gulp.task('static', function (cb) {
+    gulp.src(srcPath+'static')
         .pipe($.plumber())
         .pipe($.concat('lib.js'))
         .pipe(gulp.dest(opt + 'js/'))
@@ -221,4 +215,14 @@ gulp.task('buildDist', sync('tagDist','lib', 'lib-js', 'replaceDist', 'js', 'con
 gulp.task('buildTest', sync('tagTest','lib', 'lib-js', 'replaceTest', 'js', 'concatless', 'less', 'html', 'json', 'img', 'replaceSource'))
 
 
-gulp.task('default', sync('tagDev', 'lib', 'lib-js', 'replaceDev', 'js', 'concatless', 'less', 'html', 'json', 'img', 'server', 'watch'))
+gulp.task('default', sync('clean', 'lib', 'lib-js', 'replaceDev', 'js', 'concatless', 'less', 'html', 'json', 'img', 'server', 'watch'))
+
+/*
+
+开发：
+清空opt目录
+没有要求的JS文件压缩到lib.js中
+有要求的js文件夹整个目录复制到libs中
+
+
+*/
