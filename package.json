@@ -29,10 +29,9 @@
   },
   "scripts": {
     "ready": "npm install --registry https://registry.npm.taobao.org",
-    "clean": "gulp clean",
-    "start": "npm run clean && gulp default",
-    "buildTest": "npm run clean && gulp buildTest",
-    "buildDist": "npm run clean && gulp buildDist"
+    "start": "gulp dev",
+    "buildTest": "gulp test",
+    "buildDist": "gulp dist"
   },
   "keywords": [],
   "author": "",
