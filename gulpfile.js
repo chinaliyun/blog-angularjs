@@ -14,7 +14,7 @@ var jsPath = [
 var jsonPath = 'src/model/**/*.json';
 // gulp.plumber 编译出错时，不中断编译
 
-var httpDevUrl = 'http://192.168.32.202:8077';
+var httpDevUrl = 'http://blogapi.com';
 // var httpDevUrl = 'http://101.37.21.176:70';
 // var httpDevUrl = 'http://118.31.211.56:8080';
 // var httpTestUrl = 'http://101.37.21.176:70';
@@ -112,7 +112,8 @@ gulp.task('lib-js', function (cb) {
     gulp.src([
         'static/js/angular.js',
         'static/js/angular-ui-router.js',
-        'static/js/angular-ui-router.js',
+        'static/js/angular-cookies.js',
+        'static/js/markdown.js',
         'static/js/md5.js',
     ])
         .pipe($.plumber())
@@ -128,6 +129,7 @@ gulp.task('lib-js', function (cb) {
 
 gulp.task('concatless', function (cb) {
     gulp.src('src/components/**/*.less')
+        .pipe($.plumber())
         .pipe($.concat('bundle.less'))
         .pipe(gulp.dest('src/style/'))
         .on('end', function () {
@@ -137,6 +139,7 @@ gulp.task('concatless', function (cb) {
 gulp.task('less', function (cb) {
     gulp.src('src/style/index.less')
         // 这里一定要记得先替换再less否则会报错
+        .pipe($.plumber())
         .pipe($.replace(/{STATIC_PATH}/g, staticPath))
         .pipe($.less())
         .pipe(gulp.dest('dist/static/css/'))
@@ -176,6 +179,14 @@ gulp.task('server', function () {
         ui: false,
         files: [
             'dist/**/*.*'
+        ],
+        rewriteRules: [
+            {
+                match: /\/\#\!(.*)$/g,
+                fn: function (match) {
+                    return 'index.html/#!$1';
+                }
+            }
         ]
     })
 
@@ -201,7 +212,7 @@ gulp.task('watch', function () {
             .pipe($.replace(/{POST_PATH}/g, postPath))
             .pipe(gulp.dest('dist/'))
     })
-    gulp.watch('src/src/components/**/*.html', function (e) {
+    gulp.watch('src/components/**/*.html', function (e) {
         console.log(e.type, e.path)
         gulp.src(e.path)
             .pipe($.rename({

@@ -1,0 +1,143 @@
+@dbc: #ECECEC;
+@dfc: #666;
+@dhc: #333;
+@dfhc: #4FB660;
+@dlc: #CECECE;
+.dbs{
+    box-shadow: 0 2px 4px fadeout(black,96%);
+}
+.space{
+    .w(10);
+    flex-grow: 1;
+}
+*{
+    font-family: '微软雅黑';
+}
+html{
+    overflow-y: scroll;
+    height: 100%;
+}
+body{
+    min-height: 100%;
+    .fs(16);
+    color: @dfc;
+    background-color: @dbc;
+    display: flex;
+    flex-direction: column;
+    // justify-content: center;
+}
+.dpw{
+    >div{
+        width: 100%;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+}
+
+.btn_default{
+    background-color: @dfhc;
+    color: white;
+    border: none;
+    .db;
+    margin: 0 auto;
+    width: 100%;
+    .h(30);
+    .lh(30);
+    .br(30);
+    cursor: pointer;
+    &:hover{
+        background-color: darken(@dfhc, 10%);
+    }
+    &:active{
+        background-color: @dfhc;
+    }
+}
+input,button,textarea{
+    &:focus{
+        outline: none;
+    }
+}
+.article{
+    table{
+        
+    }
+}
+.form{
+    .form_group{
+        border: 1px solid @dlc;
+        display: flex;
+        .br(30);
+        overflow: hidden;
+        .mb(10);
+        .dbs;
+        .label{
+            background-color: @dfhc;
+            .h(30);
+            .lh(30);
+            .w(100);
+            .tac;
+            color: white;
+        }
+        input[type=text]{
+            .db;
+            .w(200);
+            .h(30);
+            .lh(30);
+            padding: 0 10px;
+            box-sizing: border-box;
+        }
+    }
+}
+.article_item{
+    background-color: white;
+    .dbs;
+    .br(0);
+    .mb(20);
+    padding: 10px;
+    .br(2);
+    &:hover{
+        box-shadow: 0 2px 4px fadeout(black,80%);
+    }
+    .title{
+        font-weight: bold;
+        color: @dhc;
+        cursor: pointer;
+        .h(30);
+        .lh(30);
+        .fs(16);
+    }
+    .label_wrapper{
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid @dlc;
+        .pb(10);
+        .fs(12);
+        .labels{
+            display: flex;
+            li{
+                border: 1px solid @dfhc;
+                margin: 4px 4px 4px 0;
+                padding: 4px 8px;
+                .br(20);
+                .fs(12);
+                color: @dfhc;
+            }
+        }
+        .author,.add_date,.read_count{
+            .mr(20);
+        }
+    }
+    .content{
+        max-height: 240px;
+        overflow: hidden;
+        p{
+            margin: 10px 0;
+        }
+    }
+    .detail{
+        .tac;
+        border-top: 1px solid @dlc;
+        color: @dfhc;
+        padding: 10px 0;
+    }
+}

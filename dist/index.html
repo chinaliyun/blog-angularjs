@@ -1,15 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="app">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>博客</title>
-	
+	<link rel="stylesheet" href="./static/css/index.css">
 </head>
+
 <body>
-	
-	<script src="static/js/lib.js"></script>
-	<script src="static/js/index.js"></script>
+	<div class="menu_wrapper">
+		<div class="control">
+			<div class="content">
+				<ul class="version">
+					<li class="active">angularJS</li>
+				</ul>
+				<div class="space"></div>
+				<span class="login" ui-sref="login">管理员登录</span>
+			</div>
+		</div>
+		<div class="content">
+			<div class="logo">CODEQUAN</div>
+			<ul class="menu">
+				<li ui-sref-active="active" ui-sref="home">首页</li>
+				<li ui-sref-active="active" ui-sref="article">文章</li>
+				<li ui-sref-active="active" ui-sref="member">我自己</li>
+			</ul>
+			<div class="space"></div>
+			<div class="search">
+				<input type="text">
+				<div class="icon">search</div>
+			</div>
+		</div>
+	</div>
+	<div class="container_wrapper" ui-view=""></div>
+	<script src="./static/js/lib.js"></script>
+	<script src="./static/js/index.js"></script>
 </body>
+
 </html>

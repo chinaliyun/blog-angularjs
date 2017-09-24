@@ -11,9 +11,6 @@
 		$rootScope.$on('$stateChangeSuccess', function(e){
 			// 重置页面滚动条高度为
 			// 取消弹出层
-			$rootScope.alertVisibility = false;
-			$rootScope.confirmVisibility = false;
-			$rootScope.loading = false;
 		})
 	}
 

@@ -1,0 +1,10 @@
+<div class="adminPage">
+    <div class="workplace">
+        <textarea ng-change="change()" ng-model="detail" class="editor">
+            
+        </textarea>
+        <!-- <div class="html" ng-bind="html | html"></div> -->
+        <div class="preview markdown-body" ng-bind-html="html | html"></div>
+    </div>
+    <button class="btn_default" ng-click="save()">提交</button>
+</div>

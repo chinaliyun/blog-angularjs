@@ -9,17 +9,27 @@
 	function configConfig($stateProvider, $urlRouterProvider) {
 		$stateProvider
 			// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>常规页面开始
-			.state('login',{							//>>>>>>>>>>>>>主页
-				url: '/login/',
-				templateUrl: 'view/login.html',
+			.state('home',{						
+				url: '/home',
+				templateUrl: './static/view/home.html',
+				controller: 'homeCtrl'
+			})
+			.state('article',{						
+				url: '/article/:id',
+				templateUrl: './static/view/article.html',
+				controller: 'articleCtrl'
+			})
+			.state('login',{				
+				url: '/login',
+				templateUrl: './static/view/login.html',
 				controller: 'loginCtrl'
 			})
-			.state('main',{						//>>>>>>>>>>>>>登录页
-				url: '/main/:router',
-				templateUrl: 'view/main.html',
-				controller: 'mainCtrl'
+			.state('admin',{						
+				url: '/admin/label',
+				templateUrl: './static/view/admin.html',
+				controller: 'adminCtrl'
 			})
-		$urlRouterProvider.otherwise('/main/')
+		$urlRouterProvider.otherwise('/home')
 	}
 
 }());
