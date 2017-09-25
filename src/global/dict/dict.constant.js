@@ -13,7 +13,6 @@
     ];
 
     function runRun(cache, $q, http, $state, $rootScope, dict) {
-        dict.serverUrl = 'http://101.37.21.176:70';
         dict.httpQueue = [];
         dict.cache = {}
         dict.pageSize = ["10", "20", "30"]

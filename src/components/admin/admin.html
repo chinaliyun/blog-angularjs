@@ -1,9 +1,19 @@
 <div class="adminPage">
+    <div class="title_group">
+        <span class="label">标题：</span>
+        <input type="text" name="titile" ng-model="title">
+    </div>
+    <div class="label_group" ng-click="showLabel($event)">
+        <span class="label">标签：</span>
+        <ul class="label_list">
+            <li ng-click="addLabel(item)" class="{{item.select ? 'active' : ''}}" ng-repeat="item in labels" ng-bind="item.name"></li>
+        </ul>
+    </div>
+
+
     <div class="workplace">
-        <textarea ng-change="change()" ng-model="detail" class="editor">
-            
+        <textarea ng-change="change()" ng-model="content" class="editor">
         </textarea>
-        <!-- <div class="html" ng-bind="html | html"></div> -->
         <div class="preview markdown-body" ng-bind-html="html | html"></div>
     </div>
     <button class="btn_default" ng-click="save()">提交</button>

@@ -1,16 +1,50 @@
 .adminPage{
+    padding: 0 10px;
+    .title_group,.label_group{
+        display: flex;
+        align-items: center;
+        border: 1px solid @dlc;
+        background-color: white;
+        // box-sizing: border-box;
+        min-height: 40px;
+        .mb(10);
+        .label{
+            flex-shrink: 0;
+            padding: 0 10px;
+        }
+        input{
+            flex-grow: 1;
+            .h(40);
+            .lh(40);
+            padding: 0 10px;
+        }
+        .active{
+            background-color: @dfhc;
+            color: white;
+        }
+    }
+    
     .workplace{
         display: flex;
+        border: 1px solid @dlc;
         textarea{
             resize: none;
             width: 100%;
             .h(400);
+            border: none;
+            border-right: 1px solid @dlc;
         }
-        .editor,.html,.preview{
+        .editor,.preview{
             .w(10);
+            // height: 100%;
+            align-self: stretch;
+            padding: 10px;
             background-color: white;
             flex-grow: 1;
-            .mr(10);
+        }
+        .preview{
+            background-color: lighten(@dbc, 2%);
+            // background-color: red;
         }
     }
     button{

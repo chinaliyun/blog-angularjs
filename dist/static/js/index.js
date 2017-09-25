@@ -51,33 +51,6 @@ window.onload = function () {
 }())
 ;(function(){
     angular.module('app')
-    .controller('adminCtrl', controller)
-    controller.$inject =[
-        '$scope',
-        'http'
-    ];
-
-    function controller($scope, http){
-        init() 
-        function init(){
-        }
-        $scope.change = function(){
-            $scope.html = markdown.toHTML($scope.detail, 'Gruber')
-        }
-        $scope.save = function(){
-            var postData = {
-                "title" : $scope.title,
-				"content" : $scope.detail,
-				// "labels" : 
-            };
-            http.post('保存文章内容','/blog/save', postData).then(function(res){
-
-            })
-        }
-    }
-}())
-;(function(){
-    angular.module('app')
     .controller('articleCtrl', controller)
     controller.$inject =['$scope'];
 
@@ -112,6 +85,64 @@ window.onload = function () {
         }
     }
 }())
+; (function () {
+    angular.module('app')
+        .controller('adminCtrl', controller)
+    controller.$inject = [
+        '$scope',
+        'http'
+    ];
+
+    function controller($scope, http) {
+        init()
+        function init() {
+            $scope.title = "";
+            $scope.content = "";
+            $scope.labelInput = [];
+            $scope.labels = [
+                {
+                    code: 1,
+                    name: 'javascript'
+                }, {
+                    code: 2,
+                    name: 'angular'
+                }, {
+                    code: 3,
+                    name: 'apache'
+                }, {
+                    code: 4,
+                    name: 'linux'
+                }
+            ]
+        }
+        $scope.change = function () {
+            // $scope.html = markdown.toHTML($scope.content, 'Gruber')
+            
+            converter = new showdown.Converter(),
+            html = converter.makeHtml($scope.content);
+            $scope.html = html;
+        }
+        $scope.save = function () {
+            var postData = {
+                "title": $scope.title,
+                "content": $scope.content,
+                "labels" : []
+            };
+            $scope.labels.map(function (item, index){
+                if(item.select){
+                    postData.labels.push(item.code)
+                }
+            })
+            http.post('保存文章内容', '/blog/save', postData).then(function (res) {
+
+            })
+        }
+        $scope.addLabel = function (item) {
+            item.select = !item.select;
+            console.log(item)
+        }
+    }
+}())
 ;
 (function() {
 
@@ -139,19 +170,6 @@ window.onload = function () {
     }
 }())
 
-;(function(){
-    angular.module('app')
-        .filter('html', filter);
-    
-        filter.$inject = [
-            '$sce'
-        ]
-        function filter($sce){
-            return function(data){
-                return $sce.trustAsHtml(data)
-            }
-        }
-}())
 ;
 (function () {
 
@@ -167,7 +185,6 @@ window.onload = function () {
     ];
 
     function runRun(cache, $q, http, $state, $rootScope, dict) {
-        dict.serverUrl = 'http://101.37.21.176:70';
         dict.httpQueue = [];
         dict.cache = {}
         dict.pageSize = ["10", "20", "30"]
@@ -251,6 +268,19 @@ window.onload = function () {
         }
     }
 })()
+;(function(){
+    angular.module('app')
+        .filter('html', filter);
+    
+        filter.$inject = [
+            '$sce'
+        ]
+        function filter($sce){
+            return function(data){
+                return $sce.trustAsHtml(data)
+            }
+        }
+}())
 ; (function () {
     'use strict';
 
@@ -309,7 +339,7 @@ window.onload = function () {
             }
             var def = $q.defer();
             $http({
-                url: "http://blogapi.com"+ url,
+                url: "http://127.0.0.1:8888"+ url,
                 // url: 'http://localhost:8888/index.php',
                 method: "POST",
                 headers: {
@@ -393,7 +423,7 @@ window.onload = function () {
                 console.log(str.slice(0, -1))
                 return str.slice(0, -1);
             }
-            var realUrl = "http://blogapi.com"+ url;
+            var realUrl = "http://127.0.0.1:8888"+ url;
             // var realData = data ? serilaze(Object.assign({}, baseData, data)) : serilaze(baseData);
             var realData = data ? Object.assign({}, baseData, data) : baseData;
             var realConfig = config ? Object.assign({}, baseConfig, config) : baseConfig;
