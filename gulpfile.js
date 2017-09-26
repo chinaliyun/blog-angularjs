@@ -14,8 +14,8 @@ var jsPath = [
 var jsonPath = 'src/model/**/*.json';
 // gulp.plumber 编译出错时，不中断编译
 
-// var httpDevUrl = 'http://blogapi.com';
-var httpDevUrl = 'http://127.0.0.1:8888';
+var httpDevUrl = 'http://blogapi.com';
+// var httpDevUrl = 'http://127.0.0.1:8888';
 // var httpDevUrl = 'http://118.31.211.56:8080';
 // var httpTestUrl = 'http://101.37.21.176:70';
 // var httpDistUrl = 'http://118.31.211.56:8080';

@@ -1,15 +1,45 @@
 .admin_list{
-    .history {
+    height: 100%;
+    display: flex;
+    background-color: white;
+    .label_menu{
+        flex-shrink: 0;
+        padding: 0 20px; 
+        width: 200px;
+        border-right: 1px solid @dlc;
+        .th;
+        ul{
+            li{
+                .h(40);
+                .lh(40);
+                cursor: pointer;
+                &:hover{
+                    color: @dfhc;
+                }
+            }
+        }
+    }
+    .article_list {
+        flex-grow: 1;
         li {
             cursor: pointer;
             .th;
             .h(40);
             .lh(40);
             padding: 0 10px;
-            border-top: 1px solid @dlc;
-            &:hover {
-                color: @dfhc;
+            border-bottom: 1px solid @dlc;
+            display: flex;
+            .title{
+                flex-grow: 1;
+                .th;
+                &:hover {
+                    color: @dfhc;
+                }
             }
+            .date{
+                flex-shrink: 0;
+            }
+            
         }
     }
 }

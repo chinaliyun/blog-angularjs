@@ -340,7 +340,9 @@ textarea:focus {
 .label_list li {
   border: 1px solid #4FB660;
   margin: 4px 4px 4px 0;
-  padding: 4px 8px;
+  padding: 0 10px;
+  height: 20px;
+  line-height: 20px;
   border-radius: 20px;
   font-size: 12px;
   color: #4FB660;
@@ -1158,7 +1160,32 @@ body {
 .admin_label .list li {
   display: flex;
 }
-.admin_list .history li {
+.admin_list {
+  height: 100%;
+  display: flex;
+  background-color: white;
+}
+.admin_list .label_menu {
+  flex-shrink: 0;
+  padding: 0 20px;
+  width: 200px;
+  border-right: 1px solid #CECECE;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.admin_list .label_menu ul li {
+  height: 40px;
+  line-height: 40px;
+  cursor: pointer;
+}
+.admin_list .label_menu ul li:hover {
+  color: #4FB660;
+}
+.admin_list .article_list {
+  flex-grow: 1;
+}
+.admin_list .article_list li {
   cursor: pointer;
   overflow: hidden;
   white-space: nowrap;
@@ -1166,10 +1193,24 @@ body {
   height: 40px;
   line-height: 40px;
   padding: 0 10px;
-  border-top: 1px solid #CECECE;
+  border-bottom: 1px solid #CECECE;
+  display: flex;
 }
-.admin_list .history li:hover {
+.admin_list .article_list li .title {
+  flex-grow: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.admin_list .article_list li .title:hover {
   color: #4FB660;
+}
+.admin_list .article_list li .date {
+  flex-shrink: 0;
+}
+.home_article {
+  max-width: 1200px;
+  margin: 0 auto;
 }
 .homePage {
   padding-top: 90px;
@@ -1303,10 +1344,6 @@ body {
 }
 .homePage .menu_wrapper > .content .write:hover {
   background-color: #3e944c;
-}
-.home_article {
-  max-width: 1200px;
-  margin: 0 auto;
 }
 .home_list {
   max-width: 1200px;

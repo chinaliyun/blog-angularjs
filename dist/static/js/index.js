@@ -68,6 +68,61 @@ window.onload = function () {
         
     }
 }())
+; (function () {
+    angular.module('app')
+        .controller('adminLabelCtrl', controller)
+    controller.$inject = [
+        '$scope',
+        'model',
+        'dict',
+    ];
+
+    function controller($scope, model, dict) {
+        init()
+        function init() {
+            $scope.name = "";
+            getLabelList()
+        }
+        function getLabelList() {
+            model.getLabelList().then(function (res) {
+                if (res.ok) {
+                    $scope.list = res.ok
+                } else {
+
+                }
+            })
+        }
+        $scope.addLabel = function () {
+            if ($scope.name.trim == '') {
+                console.log('标签名不能为空')
+                return false;
+            }
+            var postData = {
+                name: $scope.name.trim()
+            };
+            model.saveLabel(postData).then(function (res) {
+                if (res.ok) {
+                    $scope.list.push(res.ok[0]);
+                    $scope.name = "";
+                } else {
+
+                }
+            })
+        }
+        $scope.deleteLabel = function (item, index) {
+            var postData = {
+                id: item.id
+            };
+            model.deleteLabel(postData).then(function (res) {
+                if (res.ok) {
+                    $scope.list.splice(index, 1);
+                } else {
+
+                }
+            })
+        }
+    }
+}())
 ;(function(){
     angular.module('app')
 	.controller('adminArticleCtrl', controller)
@@ -126,63 +181,9 @@ window.onload = function () {
             })
             model.saveArticle(postData).then(function(res){
                 if(res.ok){
-
+                    $scope.id = res.ok.id;
                 }else{
 
-                }
-            })
-        }
-    }
-}())
-;(function(){
-    angular.module('app')
-    .controller('adminLabelCtrl', controller)
-    controller.$inject =[
-		'$scope',
-        'model',
-        'dict',
-	];
-
-    function controller($scope, model, dict){
-        init() 
-        function init(){
-            $scope.name = "";
-            getLabelList()
-        }
-        function getLabelList(){
-            model.getLabelList().then(function(res){
-                if(res.ok){
-                    $scope.list = res.ok
-                }else{
-
-                }
-            })
-        }
-        $scope.addLabel = function(){
-            if($scope.name.trim==''){
-                console.log('标签名不能为空')
-                return false;
-            }
-            var postData = {
-                name: $scope.name.trim()
-            };
-            model.saveLabel(postData).then(function(res){
-                if(res.ok){
-                    $scope.list.push(res.ok[0]);
-                }else{
-                    
-                }
-            })
-        }
-        $scope.deleteLabel = function(item, index){
-            var postData = {
-                id: item.id
-            };
-            model.deleteLabel(postData).then(function(res){
-                if(res.ok){
-                    $scope.list.splice(index, 1);
-                }else{
-                    
                 }
             })
         }
@@ -199,17 +200,32 @@ window.onload = function () {
     function controller($scope, model){
         init() 
         function init(){
+            $scope.list = [];
+            $scope.categoryList = [];
+            $scope.articleCount = 0;
 			getList();
 		}
 		
         function getList(){
-            model.getArticleList().then(function(res){
-                if(res.ok){
-                    $scope.list = res.ok.list
-                }else{
+            model.getArticleList($scope.search).then(function(res){
+				if(res.ok){
+					$scope.list = res.ok.list;
+					$scope.categoryList = res.ok.category;
+					var count = 0;
+					res.ok.category.map(function(item, index){
+						count+=parseInt(item.sum);
+					})
+                    $scope.labelCount = count;
+                    var count = 0;
+                    res.ok.category.map(function(item, index){
+                        count+=parseInt(item.sum)
+                        console.log(item)
+                    })
+                    $scope.articleCount = count;
+				}else{
 
-                }
-            })
+				}
+			})
         }
     }
 }())
@@ -223,39 +239,6 @@ window.onload = function () {
         init() 
         function init(){
             console.log(11)
-        }
-    }
-}())
-;(function(){
-    angular.module('app')
-    .controller('homeArticleCtrl', controller)
-    controller.$inject =[
-        '$scope',
-        '$state',
-        'model',
-        'dict'
-    ];
-
-    function controller($scope, $state, model, dict){
-        init() 
-        function init(){
-            if($state.params.id){
-                getDetail($state.params.id)
-            }else{
-                dict.go('home.list')
-            }
-        }
-        function getDetail(id){
-            var postData = {
-                id: id
-            };
-            model.getArticleDetail(postData).then(function(res){
-                if(res.ok){
-                    $scope.detail = res.ok.detail
-                }else{
-
-                }
-            })
         }
     }
 }())
@@ -292,6 +275,39 @@ window.onload = function () {
 				}
 			})
 		}
+    }
+}())
+;(function(){
+    angular.module('app')
+    .controller('homeArticleCtrl', controller)
+    controller.$inject =[
+        '$scope',
+        '$state',
+        'model',
+        'dict'
+    ];
+
+    function controller($scope, $state, model, dict){
+        init() 
+        function init(){
+            if($state.params.id){
+                getDetail($state.params.id)
+            }else{
+                dict.go('home.list')
+            }
+        }
+        function getDetail(id){
+            var postData = {
+                id: id
+            };
+            model.getArticleDetail(postData).then(function(res){
+                if(res.ok){
+                    $scope.detail = res.ok.detail
+                }else{
+
+                }
+            })
+        }
     }
 }())
 ;(function(){
@@ -504,7 +520,7 @@ window.onload = function () {
             }
             var def = $q.defer();
             $http({
-                url: "http://127.0.0.1:8888"+ url,
+                url: "http://blogapi.com"+ url,
                 // url: 'http://localhost:8888/index.php',
                 method: "POST",
                 headers: {
@@ -588,7 +604,7 @@ window.onload = function () {
                 console.log(str.slice(0, -1))
                 return str.slice(0, -1);
             }
-            var realUrl = "http://127.0.0.1:8888"+ url;
+            var realUrl = "http://blogapi.com"+ url;
             // var realData = data ? serilaze(Object.assign({}, baseData, data)) : serilaze(baseData);
             var realData = data ? Object.assign({}, baseData, data) : baseData;
             var realConfig = config ? Object.assign({}, baseConfig, config) : baseConfig;

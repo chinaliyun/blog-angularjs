@@ -56,7 +56,7 @@
             })
             model.saveArticle(postData).then(function(res){
                 if(res.ok){
-
+                    $scope.id = res.ok.id;
                 }else{
 
                 }
