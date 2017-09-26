@@ -49,18 +49,171 @@ window.onload = function () {
 		'ui.router'
 	])
 }())
+; (function () {
+    angular.module('app')
+        .controller('adminCtrl', controller)
+    controller.$inject = [
+        '$scope',
+        'model',
+        'model',
+        'dict',
+    ];
+
+    function controller($scope, model, model, dict) {
+        init()
+        function init() {
+           
+            // getList();
+        }
+        
+    }
+}())
 ;(function(){
     angular.module('app')
-    .controller('articleCtrl', controller)
-    controller.$inject =['$scope'];
+	.controller('adminArticleCtrl', controller)
+    controller.$inject =[
+		'$scope',
+		'model',
+	];
 
-    function controller($scope){
+    function controller($scope, model){
         init() 
         function init(){
-            // console.log(11)
+            $scope.id = "";
+			$scope.showPreview = true;
+            $scope.title = "未定义标题";
+            $scope.content = "";
+            $scope.labelInput = [];
+            $scope.labels = []
+            getAllLabel()
+		}
+		function getAllLabel(){
+            model.getLabelList().then(function(res){
+                if(res.ok){
+                    $scope.labels = res.ok
+                }else{
+
+                }
+            })
+        }
+        $scope.togglePreview = function(){
+            $scope.showPreview = !$scope.showPreview;
+        }
+        $scope.showDetail = function(item){
+            $scope.content = item.content
+            $scope.title = item.title
+		}
+		$scope.toggleLabel = function (item) {
+            item.select = !item.select;
+        }
+        $scope.change = function () {
+            // $scope.html = markdown.toHTML($scope.content, 'Gruber')
+            
+            // converter = new showdown.Converter(),
+            // html = converter.makeHtml($scope.content);
+            // $scope.html = html;
+        }
+        $scope.save = function () {
+            var postData = {
+                "title": $scope.title,
+                "content": $scope.content,
+                "labels" : []
+            };
+            $scope.labels.map(function (item, index){
+                if(item.select){
+                    postData.labels.push(item.code)
+                }
+            })
+            model.saveArticle(postData).then(function(res){
+                if(res.ok){
+
+                }else{
+
+                }
+            })
         }
     }
 }())
+;(function(){
+    angular.module('app')
+    .controller('adminLabelCtrl', controller)
+    controller.$inject =[
+		'$scope',
+        'model',
+        'dict',
+	];
+
+    function controller($scope, model, dict){
+        init() 
+        function init(){
+            $scope.name = "";
+            getLabelList()
+        }
+        function getLabelList(){
+            model.getLabelList().then(function(res){
+                if(res.ok){
+                    $scope.list = res.ok
+                }else{
+
+                }
+            })
+        }
+        $scope.addLabel = function(){
+            if($scope.name.trim==''){
+                console.log('标签名不能为空')
+                return false;
+            }
+            var postData = {
+                name: $scope.name.trim()
+            };
+            model.saveLabel(postData).then(function(res){
+                if(res.ok){
+                    $scope.list.push(res.ok[0]);
+                }else{
+                    
+                }
+            })
+        }
+        $scope.deleteLabel = function(item, index){
+            var postData = {
+                id: item.id
+            };
+            model.deleteLabel(postData).then(function(res){
+                if(res.ok){
+                    $scope.list.splice(index, 1);
+                }else{
+                    
+                }
+            })
+        }
+    }
+}())
+;(function(){
+    angular.module('app')
+    .controller('adminListCtrl', controller)
+    controller.$inject =[
+		'$scope',
+		'model',
+	];
+
+    function controller($scope, model){
+        init() 
+        function init(){
+			getList();
+		}
+		
+        function getList(){
+            model.getArticleList().then(function(res){
+                if(res.ok){
+                    $scope.list = res.ok.list
+                }else{
+
+                }
+            })
+        }
+    }
+}())
+
 ;(function(){
     angular.module('app')
     .controller('homeCtrl', controller)
@@ -75,6 +228,74 @@ window.onload = function () {
 }())
 ;(function(){
     angular.module('app')
+    .controller('homeArticleCtrl', controller)
+    controller.$inject =[
+        '$scope',
+        '$state',
+        'model',
+        'dict'
+    ];
+
+    function controller($scope, $state, model, dict){
+        init() 
+        function init(){
+            if($state.params.id){
+                getDetail($state.params.id)
+            }else{
+                dict.go('home.list')
+            }
+        }
+        function getDetail(id){
+            var postData = {
+                id: id
+            };
+            model.getArticleDetail(postData).then(function(res){
+                if(res.ok){
+                    $scope.detail = res.ok.detail
+                }else{
+
+                }
+            })
+        }
+    }
+}())
+;(function(){
+    angular.module('app')
+    .controller('homeListCtrl', controller)
+    controller.$inject =[
+		'$scope',
+		'model',
+	];
+
+    function controller($scope, model){
+        init() 
+        function init(){
+			$scope.search = {
+				pageNo: 0,
+				type : '',
+			}
+			$scope.labelCount = 0;
+            getList();
+		}
+		function getList(){
+			model.getArticleList($scope.search).then(function(res){
+				if(res.ok){
+					$scope.list = res.ok.list;
+					$scope.categoryList = res.ok.category;
+					var count = 0;
+					res.ok.category.map(function(item, index){
+						count+=parseInt(item.sum);
+					})
+					$scope.labelCount = count;
+				}else{
+
+				}
+			})
+		}
+    }
+}())
+;(function(){
+    angular.module('app')
     .controller('loginCtrl', controller)
     controller.$inject =['$scope'];
 
@@ -85,91 +306,6 @@ window.onload = function () {
         }
     }
 }())
-; (function () {
-    angular.module('app')
-        .controller('adminCtrl', controller)
-    controller.$inject = [
-        '$scope',
-        'http'
-    ];
-
-    function controller($scope, http) {
-        init()
-        function init() {
-            $scope.title = "";
-            $scope.content = "";
-            $scope.labelInput = [];
-            $scope.labels = [
-                {
-                    code: 1,
-                    name: 'javascript'
-                }, {
-                    code: 2,
-                    name: 'angular'
-                }, {
-                    code: 3,
-                    name: 'apache'
-                }, {
-                    code: 4,
-                    name: 'linux'
-                }
-            ]
-        }
-        $scope.change = function () {
-            // $scope.html = markdown.toHTML($scope.content, 'Gruber')
-            
-            converter = new showdown.Converter(),
-            html = converter.makeHtml($scope.content);
-            $scope.html = html;
-        }
-        $scope.save = function () {
-            var postData = {
-                "title": $scope.title,
-                "content": $scope.content,
-                "labels" : []
-            };
-            $scope.labels.map(function (item, index){
-                if(item.select){
-                    postData.labels.push(item.code)
-                }
-            })
-            http.post('保存文章内容', '/blog/save', postData).then(function (res) {
-
-            })
-        }
-        $scope.addLabel = function (item) {
-            item.select = !item.select;
-            console.log(item)
-        }
-    }
-}())
-;
-(function() {
-
-    angular.module('app')
-        .factory('cache', factory);
-
-    factory.$inject = ['$cookies'];
-
-    function factory($cookies) {
-        return {
-        	get: get,
-            put: put,
-            remove: remove,
-        }
-        function get(key){
-            return $cookies.get(md5(key));
-        }
-        function put(key,value){
-            $cookies.put(md5(key),value);
-        }
-        function remove(key){
-            $cookies.remove(md5(key));
-        }
-
-    }
-}())
-
 ;
 (function () {
 
@@ -268,6 +404,33 @@ window.onload = function () {
         }
     }
 })()
+;
+(function() {
+
+    angular.module('app')
+        .factory('cache', factory);
+
+    factory.$inject = ['$cookies'];
+
+    function factory($cookies) {
+        return {
+        	get: get,
+            put: put,
+            remove: remove,
+        }
+        function get(key){
+            return $cookies.get(md5(key));
+        }
+        function put(key,value){
+            $cookies.put(md5(key),value);
+        }
+        function remove(key){
+            $cookies.remove(md5(key));
+        }
+
+    }
+}())
+
 ;(function(){
     angular.module('app')
         .filter('html', filter);
@@ -277,7 +440,9 @@ window.onload = function () {
         ]
         function filter($sce){
             return function(data){
-                return $sce.trustAsHtml(data)
+                converter = new showdown.Converter(),
+                html = converter.makeHtml(data);
+                return $sce.trustAsHtml(html)
             }
         }
 }())
@@ -439,13 +604,14 @@ window.onload = function () {
                     //     def.resolve({ err: { code: res.data.code, msg: res.data.msg } })
                     //     return false;
                     // }
-                    // if (res.data.code != 0 || !res.data.data) {
-                    //     def.resolve({ err: { code: res.data.code, msg: res.data.msg } })
-                    //     return false;
-                    // }
+                    if (res.data.code != 0 || res.data.data===undefined) {
+                        def.resolve({ err: { code: res.data.code, msg: res.data.msg } })
+                       console.log({ err: { code: res.data.code, msg: res.data.msg } })
+                        return false;
+                    }
                     console.log(desc + ' Res: ', res.data)
-                    console.log(desc + ' Data: ', res.data.data)
-                    def.resolve({ ok: res.data.data });
+                    console.log({ ok: res.data.data!='' ? res.data.data : true })
+                    def.resolve({ ok: res.data.data!='' ? res.data.data : true });
 
                 }, function (err) {
                     if (loading) {
@@ -470,28 +636,46 @@ window.onload = function () {
 
 	function configConfig($stateProvider, $urlRouterProvider) {
 		$stateProvider
-			// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>常规页面开始
-			.state('home',{						
+			.state('home',{	
 				url: '/home',
 				templateUrl: './static/view/home.html',
-				controller: 'homeCtrl'
+				controller: 'homeCtrl',
 			})
-			.state('article',{						
+			.state('home.list',{
+				url: '/list',
+				templateUrl: './static/view/home_list.html',
+				controller: 'homeListCtrl'
+			})
+			.state('home.article',{
 				url: '/article/:id',
-				templateUrl: './static/view/article.html',
-				controller: 'articleCtrl'
+				templateUrl: './static/view/home_article.html',
+				controller: 'homeArticleCtrl'
 			})
 			.state('login',{				
 				url: '/login',
 				templateUrl: './static/view/login.html',
 				controller: 'loginCtrl'
 			})
-			.state('admin',{						
-				url: '/admin/label',
+			.state('admin',{	
+				url: '/admin',
 				templateUrl: './static/view/admin.html',
-				controller: 'adminCtrl'
 			})
-		$urlRouterProvider.otherwise('/home')
+			.state('admin.article',{	
+				url: '/article/:id',
+				templateUrl: './static/view/admin_article.html',
+				controller: 'adminArticleCtrl'
+			})
+			.state('admin.list',{	
+				url: '/list',
+				templateUrl: './static/view/admin_list.html',
+				controller: 'adminListCtrl'
+			})
+			.state('admin.label',{	
+				url: '/label',
+				templateUrl: './static/view/admin_label.html',
+				controller: 'adminLabelCtrl'
+			})
+		$urlRouterProvider.otherwise('/home/list')
 	}
 
 }());
@@ -514,3 +698,28 @@ window.onload = function () {
 	}
 
 }());
+;(function(){
+	angular.module('app')
+		.service('model', service)
+	service.$inject = ['http'];
+	function service(http){
+		this.getArticleList = function(data){
+			return http.post('获取文章列表', '/blog/article_list', data)
+		}
+		this.saveArticle = function(data){
+			return http.post('保存文章', '/blog/save', data)
+		}
+		this.getArticleDetail = function(data){
+			return http.post('获取文章详情', '/blog/get_detail', data)
+		}
+		this.getLabelList = function(data){
+			return http.post('获取标签列表', '/constant/all_label', data)
+		}
+		this.saveLabel = function(data){
+			return http.post('保存标签', '/constant/add_label', data)
+		}
+		this.deleteLabel = function(data){
+			return http.post('删除标签', '/constant/delete_label', data)
+		}
+	}
+}())

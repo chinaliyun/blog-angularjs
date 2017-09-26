@@ -1,0 +1,32 @@
+<div class="home_list">
+	<div class="label_menu">
+		<ul>
+			<li>
+				<span class="name">全部</span>
+				<span class="count" ng-bind="labelCount">(24)</span>
+			</li>
+			<li ng-repeat="item in categoryList">
+				<span class="name" ng-bind="item.name">javascript</span>
+				<span class="count" ng-bind="item.sum">(12)</span>
+			</li>
+		</ul>
+	</div>
+	<div class="article_wrapper">
+		<div class="article_item" ng-repeat="item in list">
+			<h3 class="title" ui-sref="home.article({id: item.id})" ng-bind="item.title"></h3>
+			<div class="label_wrapper">
+				<ul class="label_list">
+					<li>javascrpt</li>
+					<li>angularjs</li>
+				</ul>
+				<div class="space"></div>
+				<div class="add_date">发布时间: <span ng-bind="item.add_date"></span></div>
+				<div class="read_count">阅读: <span ng-bind="item.read">1468</span></div>
+			</div>
+			<div class="article_content">
+				<div class="markdown-body" ng-bind-html="item.content | html"></div>
+			</div>
+			<!-- <div class="detail">查看更多</div> -->
+		</div>
+	</div>
+</div>

@@ -8,28 +8,46 @@
 
 	function configConfig($stateProvider, $urlRouterProvider) {
 		$stateProvider
-			// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>常规页面开始
-			.state('home',{						
+			.state('home',{	
 				url: '/home',
 				templateUrl: './static/view/home.html',
-				controller: 'homeCtrl'
+				controller: 'homeCtrl',
 			})
-			.state('article',{						
+			.state('home.list',{
+				url: '/list',
+				templateUrl: './static/view/home_list.html',
+				controller: 'homeListCtrl'
+			})
+			.state('home.article',{
 				url: '/article/:id',
-				templateUrl: './static/view/article.html',
-				controller: 'articleCtrl'
+				templateUrl: './static/view/home_article.html',
+				controller: 'homeArticleCtrl'
 			})
 			.state('login',{				
 				url: '/login',
 				templateUrl: './static/view/login.html',
 				controller: 'loginCtrl'
 			})
-			.state('admin',{						
-				url: '/admin/label',
+			.state('admin',{	
+				url: '/admin',
 				templateUrl: './static/view/admin.html',
-				controller: 'adminCtrl'
 			})
-		$urlRouterProvider.otherwise('/home')
+			.state('admin.article',{	
+				url: '/article/:id',
+				templateUrl: './static/view/admin_article.html',
+				controller: 'adminArticleCtrl'
+			})
+			.state('admin.list',{	
+				url: '/list',
+				templateUrl: './static/view/admin_list.html',
+				controller: 'adminListCtrl'
+			})
+			.state('admin.label',{	
+				url: '/label',
+				templateUrl: './static/view/admin_label.html',
+				controller: 'adminLabelCtrl'
+			})
+		$urlRouterProvider.otherwise('/home/list')
 	}
 
 }());

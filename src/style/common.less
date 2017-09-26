@@ -3,6 +3,10 @@
 @dhc: #333;
 @dfhc: #4FB660;
 @dlc: #CECECE;
+button{
+    margin: 0;
+    padding: 0;
+}
 .dbs {
     box-shadow: 0 2px 4px fadeout(black, 96%);
 }
@@ -16,18 +20,16 @@
     font-family: '微软雅黑';
 }
 
-html {
-    overflow-y: scroll;
+.pic{
+    background-color: gray;
+    width: 100%;
     height: 100%;
-}
-
-body {
-    min-height: 100%;
-    .fs(16);
-    color: @dfc;
-    background-color: @dbc;
-    display: flex;
-    flex-direction: column; // justify-content: center;
+    .br(1000);
+    span{
+        .db;
+        width: 100%;
+        height: 100%;
+    }
 }
 
 .dpw {
@@ -37,10 +39,16 @@ body {
         margin: 0 auto;
     }
 }
-
+.link{
+    color: @dfhc;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
 
 
 .btn_default {
+    .db;
     background-color: @dfhc;
     color: white;
     border: none;
@@ -50,6 +58,7 @@ body {
     .h(30);
     .lh(30);
     .br(30);
+    .tac;
     cursor: pointer;
     &:hover {
         background-color: darken(@dfhc, 10%);
@@ -62,11 +71,73 @@ body {
 input,
 button,
 textarea {
+    background-color: transparent;
     &:focus {
         outline: none;
     }
 }
-
+.table{
+    border: 1px solid @dlc;
+    .space{
+        .h(20);
+        border-top: 1px solid @dlc;
+        border-bottom: 1px solid @dlc;
+    }
+    .null{
+        width: 100%;
+        margin: 0;
+        .tac;
+        .fs(30);
+        border-top: 1px solid @dlc;
+        .pt(20);
+        .pb(20);
+    }
+    .space+.null{
+        border-top: none;
+    }
+    .thead,.tbody{
+        display: flex;
+        li{
+            width: 4%;
+            flex-grow: 1;
+            flex: 2;
+        }
+        .grow0{
+            flex-grow: 0;
+        }
+        .shrink0{
+            flex-shrink: 0;
+        }
+        li+li{
+            border-left: 1px solid @dlc;
+        }
+    }
+    ul+ul{
+        border-top: 1px solid @dlc;
+    }
+    .thead{
+        li{
+            .tac;
+            .pt(16);
+            .pb(16);
+            font-weight: bold;
+            color: #666;
+        }
+    }
+    .tbody{
+        li{
+            .pt(6);
+            .pb(6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            span{
+                .ml(6);
+                .mr(6);
+            }
+        }
+    }
+}
 .article {
     table {}
 }
@@ -145,9 +216,9 @@ textarea {
             .mr(20);
         }
     }
-    .content {
-        max-height: 240px;
-        overflow: hidden;
+    .article_content {
+        padding: 20px 0;
+        box-sizing: border-box;
         p {
             margin: 10px 0;
         }

@@ -156,13 +156,14 @@
                     //     def.resolve({ err: { code: res.data.code, msg: res.data.msg } })
                     //     return false;
                     // }
-                    // if (res.data.code != 0 || !res.data.data) {
-                    //     def.resolve({ err: { code: res.data.code, msg: res.data.msg } })
-                    //     return false;
-                    // }
+                    if (res.data.code != 0 || res.data.data===undefined) {
+                        def.resolve({ err: { code: res.data.code, msg: res.data.msg } })
+                       console.log({ err: { code: res.data.code, msg: res.data.msg } })
+                        return false;
+                    }
                     console.log(desc + ' Res: ', res.data)
-                    console.log(desc + ' Data: ', res.data.data)
-                    def.resolve({ ok: res.data.data });
+                    console.log({ ok: res.data.data!='' ? res.data.data : true })
+                    def.resolve({ ok: res.data.data!='' ? res.data.data : true });
 
                 }, function (err) {
                     if (loading) {

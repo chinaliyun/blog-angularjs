@@ -3,120 +3,21 @@
 @import 'common.less';
 @import 'markdown.less';
 
-.menu_wrapper{
-    background-color: white;
-    .ptf;
-    .t(0);
-    .l(0);
-    .r(0);
-    // .dpw;
-    align-items: center;
-    .dbs;
-    .control{
-        padding: 0 10px;
-        max-width: 2000px;
-        .fs(12);
-        .lh(20);
-        background-color: @dbc;
-        .content{
-            .h(24);
-            display: flex;
-            align-items: center;
-            .version{
-                display: flex;
-                li{
-                    padding: 0 10px;
-                    &.active{
-                        color: @dfhc;
-                    }
-                }
-            }
-            .login{
-                box-sizing: border-box;
-                cursor: pointer;
-                &:hover{
-                    border-bottom: 1px solid @dfhc;
-                    color: @dfhc;
-                }
-            }
-        }
-        
-    }
-    >.content{
-        margin: 0 auto;
-        padding: 0 10px;
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-        .logo{
-            flex-shrink: 0;
-            font-weight: 700;
-            flex-shrink: 0;
-            font-size: 30px;
-            color: black;
-            letter-spacing: -2px;
-            .mr(20);
-        }
-        .menu{
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            text-align: right;
-            li{
-                .h(60);
-                padding: 0 20px;
-                .lh(60);
-                cursor: pointer;
-                &:hover{
-                    color: @dfhc;
-                }
-                &.active{
-                    font-weight: bold;
-                    color: @dfhc;
-                }
-            }
-        }
-        .search{
-            flex-shrink: 0;
-            .ptr;
-            overflow: hidden;
-            .tar;
-            box-sizing: border-box;
-            input{
-                .w(140);
-                .h(30);
-                .br(30);
-                border: 1px solid @dlc;
-                .lh(30);
-                padding: 0 16px;
-                transition: all 0.1s linear;
-                &:focus{
-                    .w(300);
-                }
-            }
-            .icon{
-                .pta;
-                .t(0);
-                .r(0);
-                background-color: @dfhc;
-                .h(30);
-                .lh(30);
-                border-top-right-radius: 30px;
-                border-bottom-right-radius: 30px;
-                border: 1px solid @dfhc;
-                color: white;
-                padding: 0 10px;
-                cursor: pointer;
-            }
-        }
-    }
+
+    
+html {
+    overflow-y: auto;
+    height: 100%;
+}
+body {
+	height: 100%;
+    .fs(16);
+    color: @dfc;
+    background-color: @dbc;
 }
 .container_wrapper{
-    flex-grow: 1;
+    min-height: 100%;
     width: 100%;
-    // .dpw;
-    // max-width: 1000px;
-    margin: 0 auto;
-    .pt(90);
+    height: 100%;
 }
 @import 'bundle.less';

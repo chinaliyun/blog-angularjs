@@ -1,0 +1,25 @@
+<div class="admin_list">
+		<div class="label_menu">
+				<ul>
+					<li>
+						<span class="name">全部</span>
+						<span class="count">(24)</span>
+					</li>
+					<li>
+						<span class="name">javascript</span>
+						<span class="count">(12)</span>
+					</li>
+					<li>
+						<span class="name">angularJs</span>
+						<span class="count">(12)</span>
+					</li>
+				</ul>
+			</div>
+	<ul class="history">
+		<li ng-repeat="item in list" ng-bind="item.title" ng-click="showDetail(item)">
+			<span  ng-bind="item.title"></span>
+			<span class="space"></span>
+			<span  ng-bind="item.add_date"></span>
+		</li>
+	</ul>
+</div>

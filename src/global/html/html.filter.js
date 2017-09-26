@@ -7,7 +7,9 @@
         ]
         function filter($sce){
             return function(data){
-                return $sce.trustAsHtml(data)
+                converter = new showdown.Converter(),
+                html = converter.makeHtml(data);
+                return $sce.trustAsHtml(html)
             }
         }
 }())
