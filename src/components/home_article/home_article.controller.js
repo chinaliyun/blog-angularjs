@@ -12,18 +12,18 @@
         init() 
         function init(){
             if($state.params.id){
-                getDetail($state.params.id)
+                getArticleDetail()
             }else{
                 dict.go('home.list')
             }
         }
-        function getDetail(id){
+        function getArticleDetail(){
             var postData = {
-                id: id
+                id: $state.params.id
             };
             model.getArticleDetail(postData).then(function(res){
                 if(res.ok){
-                    $scope.detail = res.ok.detail
+                    $scope.detail = res.ok
                 }else{
 
                 }

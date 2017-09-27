@@ -68,6 +68,101 @@ window.onload = function () {
         
     }
 }())
+;(function(){
+    angular.module('app')
+	.controller('adminArticleCtrl', controller)
+    controller.$inject =[
+        '$scope',
+        '$state',
+        'model',
+        'dict'
+	];
+
+    function controller($scope, $state, model, dict){
+        init() 
+        function init(){
+            $scope.id = "";
+			$scope.showPreview = true;
+            $scope.title = "";
+            $scope.content = "";
+            $scope.labels = []
+            if($state.params.id){
+                getArticleDetail();
+            }else{
+                getAllLabel()
+            }
+        }
+        function getArticleDetail(){
+            var postData = {
+                id: $state.params.id
+            };
+            model.getArticleDetail(postData).then(function(res){
+                if(res.ok){
+                    $scope.id = res.ok.id;
+                    $scope.title = res.ok.title;
+                    $scope.content = res.ok.content;
+                    $scope.labels = res.ok.labels;
+                }else{
+
+                }
+            })
+        }
+		function getAllLabel(){
+            model.getLabelList().then(function(res){
+                if(res.ok){
+                    $scope.labels = res.ok
+                }else{
+
+                }
+            })
+        }
+        $scope.togglePreview = function(){
+            $scope.showPreview = !$scope.showPreview;
+        }
+        $scope.showDetail = function(item){
+            $scope.content = item.content
+            $scope.title = item.title
+		}
+		$scope.toggleLabel = function (item) {
+            item.select = !item.select;
+        }
+        $scope.change = function () {
+            // $scope.html = markdown.toHTML($scope.content, 'Gruber')
+            
+            // converter = new showdown.Converter(),
+            // html = converter.makeHtml($scope.content);
+            // $scope.html = html;
+        }
+        $scope.save = function () {
+            var postData = {
+                "id": $scope.id,
+                "title": $scope.title,
+                "content": $scope.content,
+                "labels" : []
+            };
+            $scope.labels.map(function (item, index){
+                if(item.select){
+                    postData.labels.push({
+                        id: item.id,
+                        name: item.name
+                    })
+                }
+            })
+            model.saveArticle(postData).then(function(res){
+                if(res.ok){
+                    if(!$scope.id){
+                        // $scope.id = res.ok.id;
+                        dict.go('admin.article', {
+                            id: res.ok.id
+                        })
+                    }
+                }else{
+                    alert(res.err.msg)
+                }
+            })
+        }
+    }
+}())
 ; (function () {
     angular.module('app')
         .controller('adminLabelCtrl', controller)
@@ -104,6 +199,7 @@ window.onload = function () {
                 if (res.ok) {
                     $scope.list.push(res.ok[0]);
                     $scope.name = "";
+                    document.querySelector('.addLabel').focus();
                 } else {
 
                 }
@@ -117,72 +213,6 @@ window.onload = function () {
                 if (res.ok) {
                     $scope.list.splice(index, 1);
                 } else {
-
-                }
-            })
-        }
-    }
-}())
-;(function(){
-    angular.module('app')
-	.controller('adminArticleCtrl', controller)
-    controller.$inject =[
-		'$scope',
-		'model',
-	];
-
-    function controller($scope, model){
-        init() 
-        function init(){
-            $scope.id = "";
-			$scope.showPreview = true;
-            $scope.title = "未定义标题";
-            $scope.content = "";
-            $scope.labelInput = [];
-            $scope.labels = []
-            getAllLabel()
-		}
-		function getAllLabel(){
-            model.getLabelList().then(function(res){
-                if(res.ok){
-                    $scope.labels = res.ok
-                }else{
-
-                }
-            })
-        }
-        $scope.togglePreview = function(){
-            $scope.showPreview = !$scope.showPreview;
-        }
-        $scope.showDetail = function(item){
-            $scope.content = item.content
-            $scope.title = item.title
-		}
-		$scope.toggleLabel = function (item) {
-            item.select = !item.select;
-        }
-        $scope.change = function () {
-            // $scope.html = markdown.toHTML($scope.content, 'Gruber')
-            
-            // converter = new showdown.Converter(),
-            // html = converter.makeHtml($scope.content);
-            // $scope.html = html;
-        }
-        $scope.save = function () {
-            var postData = {
-                "title": $scope.title,
-                "content": $scope.content,
-                "labels" : []
-            };
-            $scope.labels.map(function (item, index){
-                if(item.select){
-                    postData.labels.push(item.code)
-                }
-            })
-            model.saveArticle(postData).then(function(res){
-                if(res.ok){
-                    $scope.id = res.ok.id;
-                }else{
 
                 }
             })
@@ -233,12 +263,49 @@ window.onload = function () {
 ;(function(){
     angular.module('app')
     .controller('homeCtrl', controller)
-    controller.$inject =['$scope'];
+    controller.$inject =[
+        '$scope',
+        'dict',
+    ];
 
-    function controller($scope){
+    function controller($scope, dict){
         init() 
         function init(){
-            console.log(11)
+            
+        }
+        
+    }
+}())
+;(function(){
+    angular.module('app')
+    .controller('homeArticleCtrl', controller)
+    controller.$inject =[
+        '$scope',
+        '$state',
+        'model',
+        'dict'
+    ];
+
+    function controller($scope, $state, model, dict){
+        init() 
+        function init(){
+            if($state.params.id){
+                getArticleDetail()
+            }else{
+                dict.go('home.list')
+            }
+        }
+        function getArticleDetail(){
+            var postData = {
+                id: $state.params.id
+            };
+            model.getArticleDetail(postData).then(function(res){
+                if(res.ok){
+                    $scope.detail = res.ok
+                }else{
+
+                }
+            })
         }
     }
 }())
@@ -279,39 +346,6 @@ window.onload = function () {
 }())
 ;(function(){
     angular.module('app')
-    .controller('homeArticleCtrl', controller)
-    controller.$inject =[
-        '$scope',
-        '$state',
-        'model',
-        'dict'
-    ];
-
-    function controller($scope, $state, model, dict){
-        init() 
-        function init(){
-            if($state.params.id){
-                getDetail($state.params.id)
-            }else{
-                dict.go('home.list')
-            }
-        }
-        function getDetail(id){
-            var postData = {
-                id: id
-            };
-            model.getArticleDetail(postData).then(function(res){
-                if(res.ok){
-                    $scope.detail = res.ok.detail
-                }else{
-
-                }
-            })
-        }
-    }
-}())
-;(function(){
-    angular.module('app')
     .controller('loginCtrl', controller)
     controller.$inject =['$scope'];
 
@@ -322,6 +356,33 @@ window.onload = function () {
         }
     }
 }())
+;
+(function() {
+
+    angular.module('app')
+        .factory('cache', factory);
+
+    factory.$inject = ['$cookies'];
+
+    function factory($cookies) {
+        return {
+        	get: get,
+            put: put,
+            remove: remove,
+        }
+        function get(key){
+            return $cookies.get(md5(key));
+        }
+        function put(key,value){
+            $cookies.put(md5(key),value);
+        }
+        function remove(key){
+            $cookies.remove(md5(key));
+        }
+
+    }
+}())
+
 ;
 (function () {
 
@@ -420,33 +481,6 @@ window.onload = function () {
         }
     }
 })()
-;
-(function() {
-
-    angular.module('app')
-        .factory('cache', factory);
-
-    factory.$inject = ['$cookies'];
-
-    function factory($cookies) {
-        return {
-        	get: get,
-            put: put,
-            remove: remove,
-        }
-        function get(key){
-            return $cookies.get(md5(key));
-        }
-        function put(key,value){
-            $cookies.put(md5(key),value);
-        }
-        function remove(key){
-            $cookies.remove(md5(key));
-        }
-
-    }
-}())
-
 ;(function(){
     angular.module('app')
         .filter('html', filter);
@@ -520,7 +554,7 @@ window.onload = function () {
             }
             var def = $q.defer();
             $http({
-                url: "http://blogapi.com"+ url,
+                url: "http://127.0.0.1:8888"+ url,
                 // url: 'http://localhost:8888/index.php',
                 method: "POST",
                 headers: {
@@ -604,7 +638,7 @@ window.onload = function () {
                 console.log(str.slice(0, -1))
                 return str.slice(0, -1);
             }
-            var realUrl = "http://blogapi.com"+ url;
+            var realUrl = "http://127.0.0.1:8888"+ url;
             // var realData = data ? serilaze(Object.assign({}, baseData, data)) : serilaze(baseData);
             var realData = data ? Object.assign({}, baseData, data) : baseData;
             var realConfig = config ? Object.assign({}, baseConfig, config) : baseConfig;
@@ -676,6 +710,11 @@ window.onload = function () {
 				url: '/admin',
 				templateUrl: './static/view/admin.html',
 			})
+			.state('admin.new',{	
+				url: '/new',
+				templateUrl: './static/view/admin_article.html',
+				controller: 'adminArticleCtrl'
+			})
 			.state('admin.article',{	
 				url: '/article/:id',
 				templateUrl: './static/view/admin_article.html',
@@ -720,13 +759,13 @@ window.onload = function () {
 	service.$inject = ['http'];
 	function service(http){
 		this.getArticleList = function(data){
-			return http.post('获取文章列表', '/blog/article_list', data)
+			return http.post('获取文章列表', '/article/article_list', data)
 		}
 		this.saveArticle = function(data){
-			return http.post('保存文章', '/blog/save', data)
+			return http.post('保存文章', '/article/save', data)
 		}
 		this.getArticleDetail = function(data){
-			return http.post('获取文章详情', '/blog/get_detail', data)
+			return http.post('获取文章详情', '/article/get_detail', data)
 		}
 		this.getLabelList = function(data){
 			return http.post('获取标签列表', '/constant/all_label', data)

@@ -2,21 +2,41 @@
     angular.module('app')
 	.controller('adminArticleCtrl', controller)
     controller.$inject =[
-		'$scope',
-		'model',
+        '$scope',
+        '$state',
+        'model',
+        'dict'
 	];
 
-    function controller($scope, model){
+    function controller($scope, $state, model, dict){
         init() 
         function init(){
             $scope.id = "";
 			$scope.showPreview = true;
-            $scope.title = "未定义标题";
+            $scope.title = "";
             $scope.content = "";
-            $scope.labelInput = [];
             $scope.labels = []
-            getAllLabel()
-		}
+            if($state.params.id){
+                getArticleDetail();
+            }else{
+                getAllLabel()
+            }
+        }
+        function getArticleDetail(){
+            var postData = {
+                id: $state.params.id
+            };
+            model.getArticleDetail(postData).then(function(res){
+                if(res.ok){
+                    $scope.id = res.ok.id;
+                    $scope.title = res.ok.title;
+                    $scope.content = res.ok.content;
+                    $scope.labels = res.ok.labels;
+                }else{
+
+                }
+            })
+        }
 		function getAllLabel(){
             model.getLabelList().then(function(res){
                 if(res.ok){
@@ -45,20 +65,29 @@
         }
         $scope.save = function () {
             var postData = {
+                "id": $scope.id,
                 "title": $scope.title,
                 "content": $scope.content,
                 "labels" : []
             };
             $scope.labels.map(function (item, index){
                 if(item.select){
-                    postData.labels.push(item.code)
+                    postData.labels.push({
+                        id: item.id,
+                        name: item.name
+                    })
                 }
             })
             model.saveArticle(postData).then(function(res){
                 if(res.ok){
-                    $scope.id = res.ok.id;
+                    if(!$scope.id){
+                        // $scope.id = res.ok.id;
+                        dict.go('admin.article', {
+                            id: res.ok.id
+                        })
+                    }
                 }else{
-
+                    alert(res.err.msg)
                 }
             })
         }

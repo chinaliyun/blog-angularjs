@@ -4,13 +4,13 @@
 	service.$inject = ['http'];
 	function service(http){
 		this.getArticleList = function(data){
-			return http.post('获取文章列表', '/blog/article_list', data)
+			return http.post('获取文章列表', '/article/article_list', data)
 		}
 		this.saveArticle = function(data){
-			return http.post('保存文章', '/blog/save', data)
+			return http.post('保存文章', '/article/save', data)
 		}
 		this.getArticleDetail = function(data){
-			return http.post('获取文章详情', '/blog/get_detail', data)
+			return http.post('获取文章详情', '/article/get_detail', data)
 		}
 		this.getLabelList = function(data){
 			return http.post('获取标签列表', '/constant/all_label', data)

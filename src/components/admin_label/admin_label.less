@@ -1,11 +1,12 @@
 .admin_label{
-    height: 100%;
     background-color: white;
-    padding: 10px;
+    height: 100%;
+    overflow-y: auto;
     .add{
         display: flex;
         align-items: center;
-        .mb(20);
+        padding: 20px 20px 20px 20px;
+        // .mb(20);
         input{
             border: 1px solid @dlc;
             .h(30);
@@ -17,9 +18,7 @@
             .w(100);
         }
     }
-	.list{
-        li{
-            display: flex;
-        }
+	.table{
+        .mb(20);
     }
 }

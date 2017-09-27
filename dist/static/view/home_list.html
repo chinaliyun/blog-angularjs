@@ -5,7 +5,7 @@
 				<span class="name">全部</span>
 				<span class="count" ng-bind="labelCount">(24)</span>
 			</li>
-			<li ng-repeat="item in categoryList">
+			<li ng-repeat="item in categoryList" ng-show="item.sum!=0">
 				<span class="name" ng-bind="item.name">javascript</span>
 				<span class="count" ng-bind="item.sum">(12)</span>
 			</li>
@@ -16,8 +16,7 @@
 			<h3 class="title" ui-sref="home.article({id: item.id})" ng-bind="item.title"></h3>
 			<div class="label_wrapper">
 				<ul class="label_list">
-					<li>javascrpt</li>
-					<li>angularjs</li>
+					<li ng-repeat="label in item.labels" ng-bind="label.name"></li>
 				</ul>
 				<div class="space"></div>
 				<div class="add_date">发布时间: <span ng-bind="item.add_date"></span></div>

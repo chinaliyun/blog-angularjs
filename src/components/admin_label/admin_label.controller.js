@@ -34,6 +34,7 @@
                 if (res.ok) {
                     $scope.list.push(res.ok[0]);
                     $scope.name = "";
+                    document.querySelector('.addLabel').focus();
                 } else {
 
                 }

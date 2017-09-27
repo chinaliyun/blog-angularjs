@@ -32,6 +32,11 @@
 				url: '/admin',
 				templateUrl: './static/view/admin.html',
 			})
+			.state('admin.new',{	
+				url: '/new',
+				templateUrl: './static/view/admin_article.html',
+				controller: 'adminArticleCtrl'
+			})
 			.state('admin.article',{	
 				url: '/article/:id',
 				templateUrl: './static/view/admin_article.html',

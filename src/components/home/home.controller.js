@@ -1,12 +1,16 @@
 ;(function(){
     angular.module('app')
     .controller('homeCtrl', controller)
-    controller.$inject =['$scope'];
+    controller.$inject =[
+        '$scope',
+        'dict',
+    ];
 
-    function controller($scope){
+    function controller($scope, dict){
         init() 
         function init(){
-            console.log(11)
+            
         }
+        
     }
 }())

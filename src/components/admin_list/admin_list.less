@@ -7,12 +7,21 @@
         padding: 0 20px; 
         width: 200px;
         border-right: 1px solid @dlc;
-        .th;
+        overflow-y: scroll;
         ul{
             li{
                 .h(40);
                 .lh(40);
                 cursor: pointer;
+                display: flex;
+                .name{
+                    .th;
+                    flex-grow: 1;
+                }
+                .count{
+                    flex-shrink: 0;
+                    color: @dfhc;
+                }
                 &:hover{
                     color: @dfhc;
                 }
@@ -31,12 +40,14 @@
             display: flex;
             .title{
                 flex-grow: 1;
+                font-weight: lighter;
                 .th;
                 &:hover {
                     color: @dfhc;
                 }
             }
             .date{
+                font-weight: lighter;
                 flex-shrink: 0;
             }
             
