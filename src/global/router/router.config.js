@@ -13,6 +13,16 @@
 				templateUrl: './static/view/home.html',
 				controller: 'homeCtrl',
 			})
+			.state('home.login',{
+				url: '/login',
+				templateUrl: './static/view/home_login.html',
+				controller: 'homeLoginCtrl'
+			})
+			.state('home.register',{
+				url: '/register',
+				templateUrl: './static/view/home_register.html',
+				controller: 'homeRegisterCtrl'
+			})
 			.state('home.list',{
 				url: '/list',
 				templateUrl: './static/view/home_list.html',

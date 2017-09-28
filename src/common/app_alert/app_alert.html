@@ -1,0 +1,9 @@
+<div class="app_alert">
+	<div class="content">
+		<p class="context"><span ng-bind="alertContext"></span></p>
+		<div class="btnGroup" ng-if="alertShowBtn">
+			<button ng-bind="alertOkText" ng-click="alertOk()">确定</button>
+			<button ng-show="alertCancelText" ng-bind="alertCancelText" ng-click="alertCancel()">取消</button>
+		</div>
+	</div>
+</div>

@@ -51,58 +51,21 @@ window.onload = function () {
 }())
 ; (function () {
     angular.module('app')
-        .controller('adminLabelCtrl', controller)
+        .controller('adminCtrl', controller)
     controller.$inject = [
         '$scope',
+        'model',
         'model',
         'dict',
     ];
 
-    function controller($scope, model, dict) {
+    function controller($scope, model, model, dict) {
         init()
         function init() {
-            $scope.name = "";
-            getLabelList()
+           
+            // getList();
         }
-        function getLabelList() {
-            model.getLabelList().then(function (res) {
-                if (res.ok) {
-                    $scope.list = res.ok
-                } else {
-
-                }
-            })
-        }
-        $scope.addLabel = function () {
-            if ($scope.name.trim == '') {
-                console.log('标签名不能为空')
-                return false;
-            }
-            var postData = {
-                name: $scope.name.trim()
-            };
-            model.saveLabel(postData).then(function (res) {
-                if (res.ok) {
-                    $scope.list.push(res.ok[0]);
-                    $scope.name = "";
-                    document.querySelector('.addLabel').focus();
-                } else {
-
-                }
-            })
-        }
-        $scope.deleteLabel = function (item, index) {
-            var postData = {
-                id: item.id
-            };
-            model.deleteLabel(postData).then(function (res) {
-                if (res.ok) {
-                    $scope.list.splice(index, 1);
-                } else {
-
-                }
-            })
-        }
+        
     }
 }())
 ;(function(){
@@ -200,6 +163,62 @@ window.onload = function () {
         }
     }
 }())
+; (function () {
+    angular.module('app')
+        .controller('adminLabelCtrl', controller)
+    controller.$inject = [
+        '$scope',
+        'model',
+        'dict',
+    ];
+
+    function controller($scope, model, dict) {
+        init()
+        function init() {
+            $scope.name = "";
+            getLabelList()
+        }
+        function getLabelList() {
+            model.getLabelList().then(function (res) {
+                if (res.ok) {
+                    $scope.list = res.ok
+                } else {
+
+                }
+            })
+        }
+        $scope.addLabel = function () {
+            if ($scope.name.trim == '') {
+                console.log('标签名不能为空')
+                return false;
+            }
+            var postData = {
+                name: $scope.name.trim()
+            };
+            model.saveLabel(postData).then(function (res) {
+                if (res.ok) {
+                    $scope.list.push(res.ok[0]);
+                    $scope.name = "";
+                    document.querySelector('.addLabel').focus();
+                } else {
+
+                }
+            })
+        }
+        $scope.deleteLabel = function (item, index) {
+            var postData = {
+                id: item.id
+            };
+            model.deleteLabel(postData).then(function (res) {
+                if (res.ok) {
+                    $scope.list.splice(index, 1);
+                } else {
+
+                }
+            })
+        }
+    }
+}())
 ;(function(){
     angular.module('app')
     .controller('adminListCtrl', controller)
@@ -240,26 +259,6 @@ window.onload = function () {
         }
     }
 }())
-; (function () {
-    angular.module('app')
-        .controller('adminCtrl', controller)
-    controller.$inject = [
-        '$scope',
-        'model',
-        'model',
-        'dict',
-    ];
-
-    function controller($scope, model, model, dict) {
-        init()
-        function init() {
-           
-            // getList();
-        }
-        
-    }
-}())
-
 ;(function(){
     angular.module('app')
     .controller('homeCtrl', controller)
@@ -274,6 +273,49 @@ window.onload = function () {
             
         }
         
+    }
+}())
+
+;(function(){
+    angular.module('app')
+    .controller('homeLoginCtrl', controller)
+    controller.$inject =[
+		'$scope',
+		'model',
+		'cache',
+		'dict'
+	];
+
+    function controller($scope, model, cache, dict){
+        init() 
+        function init(){
+            $scope.phone = "";
+            $scope.passwd = "";
+        }
+        $scope.login = function(){
+            if($scope.phone.trim().length==0){
+                dict.alert($scope,'手机号码不能为空')
+                return false;
+            }
+            if($scope.passwd.trim().length==0){
+                dict.alert($scope,'密码不能为空')
+                return false;
+            }
+            var postData = {
+                phone : $scope.phone,
+                passwd : md5($scope.passwd)
+            };
+            model.login(postData).then(function(res){
+                if(res.ok){
+                    cache.put('phone', res.ok.phone)
+					cache.put('usid', res.ok.usid)
+					cache.put('token', res.ok.token)
+					dict.go('home.list');
+                }else{
+                    dict.alert($scope, res.err.msg);
+                }
+            })
+        }
     }
 }())
 ;(function(){
@@ -306,18 +348,6 @@ window.onload = function () {
 
                 }
             })
-        }
-    }
-}())
-;(function(){
-    angular.module('app')
-    .controller('loginCtrl', controller)
-    controller.$inject =['$scope'];
-
-    function controller($scope){
-        init() 
-        function init(){
-            console.log(11)
         }
     }
 }())
@@ -356,6 +386,203 @@ window.onload = function () {
 		}
     }
 }())
+;(function(){
+    angular.module('app')
+    .controller('homeRegisterCtrl', controller)
+    controller.$inject =[
+		'$scope',
+        'model',
+        'dict'
+	];
+
+    function controller($scope, model, dict){
+        init() 
+        function init(){
+            $scope.phone = "";
+            $scope.passwd = "";
+        }
+        $scope.register = function(){
+            if($scope.phone.trim().length==0){
+                dict.alert($scope,'手机号码不能为空')
+                return false;
+            }
+            if($scope.passwd.trim().length==0){
+                dict.alert($scope,'密码不能为空')
+                return false;
+            }
+			if($scope.passwd.length < 6){
+                dict.alert($scope,'密码长度不能少于6位')
+                return false;
+			}
+			if(/^\d{6,11}$/.test($scope.passwd) || !/[A-Z]/.test($scope.passwd)){
+                dict.alert($scope,'密码过于简单')
+                return false;
+			}
+            var postData = {
+                phone : $scope.phone,
+                passwd : md5($scope.passwd)
+            };
+            model.register(postData).then(function(res){
+                if(res.ok){
+                    dict.go('home.login')
+                }else{
+                    dict.alert($scope, res.err.msg);
+                }
+            })
+        }
+    }
+}())
+;(function(){
+	angular.module('app')
+		.directive('appAlert', directive)
+	directive.$inject = [
+		'$timeout'
+	];
+	function directive($timeout){
+		var directive = {
+            link: link,
+            restrict: 'EA',
+            templateUrl: './static/view/app_alert.html',
+        };
+        return directive;
+
+        function link($scope, element, attrs) {
+            
+        }
+	}
+}())
+;
+(function() {
+
+    angular.module('app')
+        .factory('cache', factory);
+
+    factory.$inject = ['$cookies'];
+
+    function factory($cookies) {
+        return {
+        	get: get,
+            put: put,
+            remove: remove,
+        }
+        function get(key){
+            return $cookies.get(key);
+            // return $cookies.get(md5(key));
+        }
+        function put(key,value){
+            $cookies.put(key,value);
+            // $cookies.put(md5(key),value);
+        }
+        function remove(key){
+            $cookies.remove(key);
+            // $cookies.remove(md5(key));
+        }
+
+    }
+}())
+
+;(function(){
+
+	angular
+		.module('app')
+		.config(configConfig)
+
+	configConfig.$inject = ['$stateProvider', '$urlRouterProvider'];
+
+	function configConfig($stateProvider, $urlRouterProvider) {
+		$stateProvider
+			.state('home',{	
+				url: '/home',
+				templateUrl: './static/view/home.html',
+				controller: 'homeCtrl',
+			})
+			.state('home.login',{
+				url: '/login',
+				templateUrl: './static/view/home_login.html',
+				controller: 'homeLoginCtrl'
+			})
+			.state('home.register',{
+				url: '/register',
+				templateUrl: './static/view/home_register.html',
+				controller: 'homeRegisterCtrl'
+			})
+			.state('home.list',{
+				url: '/list',
+				templateUrl: './static/view/home_list.html',
+				controller: 'homeListCtrl'
+			})
+			.state('home.article',{
+				url: '/article/:id',
+				templateUrl: './static/view/home_article.html',
+				controller: 'homeArticleCtrl'
+			})
+			.state('login',{				
+				url: '/login',
+				templateUrl: './static/view/login.html',
+				controller: 'loginCtrl'
+			})
+			.state('admin',{	
+				url: '/admin',
+				templateUrl: './static/view/admin.html',
+			})
+			.state('admin.new',{	
+				url: '/new',
+				templateUrl: './static/view/admin_article.html',
+				controller: 'adminArticleCtrl'
+			})
+			.state('admin.article',{	
+				url: '/article/:id',
+				templateUrl: './static/view/admin_article.html',
+				controller: 'adminArticleCtrl'
+			})
+			.state('admin.list',{	
+				url: '/list',
+				templateUrl: './static/view/admin_list.html',
+				controller: 'adminListCtrl'
+			})
+			.state('admin.label',{	
+				url: '/label',
+				templateUrl: './static/view/admin_label.html',
+				controller: 'adminLabelCtrl'
+			})
+		$urlRouterProvider.otherwise('/home/list')
+	}
+
+}());
+
+
+;(function () {
+
+    angular
+        .module('app')
+        .run(runRun)
+
+	runRun.$inject = ['dict','$rootScope', '$state'];
+
+	function runRun(dict, $rootScope, $state){
+		// 检测路由更新成功事件
+		$rootScope.$on('$stateChangeSuccess', function(e){
+			// 重置页面滚动条高度为
+			// 取消弹出层
+		})
+	}
+
+}());
+;(function(){
+    angular.module('app')
+        .filter('html', filter);
+    
+        filter.$inject = [
+            '$sce'
+        ]
+        function filter($sce){
+            return function(data){
+                converter = new showdown.Converter(),
+                html = converter.makeHtml(data);
+                return $sce.trustAsHtml(html)
+            }
+        }
+}())
 ;
 (function () {
 
@@ -366,11 +593,11 @@ window.onload = function () {
         '$q',
         'http',
         '$state',
-        '$rootScope',
+        '$timeout',
         'dict'
     ];
 
-    function runRun(cache, $q, http, $state, $rootScope, dict) {
+    function runRun(cache, $q, http, $state, $timeout, dict) {
         dict.httpQueue = [];
         dict.cache = {}
         dict.pageSize = ["10", "20", "30"]
@@ -392,40 +619,29 @@ window.onload = function () {
                 $state.go(route)
             }
         }
-        dict.alert = function (text, showBtn, okText, cancelText) {
+        dict.alert = function(scope, text, showBtn, okText, cancelText){
+            scope.alertVisiable = true;
             var def = $q.defer();
-            $rootScope.alertVisibility = true;
-            $rootScope.alertShowBtn = showBtn || false;
-            $rootScope.alertOkText = okText || '确定';
-            $rootScope.alertCancelText = cancelText || '';
-            $rootScope.alertContext = text || '没有可以显示的内容';
-            $rootScope.alertOk = function () {
-                $rootScope.alertVisibility = false;
-                $rootScope.alertShowBtn =  false;
+            scope.alertVisiable = true;
+            scope.alertShowBtn = showBtn || false;
+            scope.alertOkText = okText || '确定';
+            scope.alertCancelText = cancelText || '';
+            scope.alertContext = text || '没有可以显示的内容';
+            scope.alertOk = function () {
+                scope.alertVisiable = false;
+                scope.alertShowBtn =  false;
                 def.resolve()
             };
-            $rootScope.alertCancel = function () {
-                $rootScope.alertVisibility = false;
-                $rootScope.alertShowBtn =  false;
+            scope.alertCancel = function () {
+                scope.alertVisiable = false;
+                scope.alertShowBtn =  false;
                 def.reject();
             };
-
-            return def.promise;
-        }
-        dict.confirm = function (text, showBtn, okText, cancelText) {
-            var def = $q.defer();
-            $rootScope.confirmVisibility = true;
-            $rootScope.confirmContext = text || '没有内容';
-            $rootScope.confirmOkText = okText || '确定';
-            $rootScope.confirmCancelText = cancelText || '取消';
-            $rootScope.confirmOk = function (data) {
-                $rootScope.confirmVisibility = false;
-                def.resolve(data)
-            };
-            $rootScope.confirmCancel = function () {
-                $rootScope.confirmVisibility = false;
-                def.reject();
-            };
+            if(!scope.alertShowBtn){
+                $timeout(function(){
+                    scope.alertOk();
+                }, 1000)
+            }
             return def.promise;
         }
         dict.loading = function (context) {
@@ -454,48 +670,6 @@ window.onload = function () {
         }
     }
 })()
-;
-(function() {
-
-    angular.module('app')
-        .factory('cache', factory);
-
-    factory.$inject = ['$cookies'];
-
-    function factory($cookies) {
-        return {
-        	get: get,
-            put: put,
-            remove: remove,
-        }
-        function get(key){
-            return $cookies.get(md5(key));
-        }
-        function put(key,value){
-            $cookies.put(md5(key),value);
-        }
-        function remove(key){
-            $cookies.remove(md5(key));
-        }
-
-    }
-}())
-
-;(function(){
-    angular.module('app')
-        .filter('html', filter);
-    
-        filter.$inject = [
-            '$sce'
-        ]
-        function filter($sce){
-            return function(data){
-                converter = new showdown.Converter(),
-                html = converter.makeHtml(data);
-                return $sce.trustAsHtml(html)
-            }
-        }
-}())
 ; (function () {
     'use strict';
 
@@ -554,7 +728,7 @@ window.onload = function () {
             }
             var def = $q.defer();
             $http({
-                url: "http://api.codequan.com"+ url,
+                url: "http://127.0.0.1:8888"+ url,
                 // url: 'http://localhost:8888/index.php',
                 method: "POST",
                 headers: {
@@ -638,7 +812,7 @@ window.onload = function () {
                 console.log(str.slice(0, -1))
                 return str.slice(0, -1);
             }
-            var realUrl = "http://api.codequan.com"+ url;
+            var realUrl = "http://127.0.0.1:8888"+ url;
             // var realData = data ? serilaze(Object.assign({}, baseData, data)) : serilaze(baseData);
             var realData = data ? Object.assign({}, baseData, data) : baseData;
             var realConfig = config ? Object.assign({}, baseConfig, config) : baseConfig;
@@ -677,83 +851,6 @@ window.onload = function () {
 }())
 
 ;(function(){
-
-	angular
-		.module('app')
-		.config(configConfig)
-
-	configConfig.$inject = ['$stateProvider', '$urlRouterProvider'];
-
-	function configConfig($stateProvider, $urlRouterProvider) {
-		$stateProvider
-			.state('home',{	
-				url: '/home',
-				templateUrl: './static/view/home.html',
-				controller: 'homeCtrl',
-			})
-			.state('home.list',{
-				url: '/list',
-				templateUrl: './static/view/home_list.html',
-				controller: 'homeListCtrl'
-			})
-			.state('home.article',{
-				url: '/article/:id',
-				templateUrl: './static/view/home_article.html',
-				controller: 'homeArticleCtrl'
-			})
-			.state('login',{				
-				url: '/login',
-				templateUrl: './static/view/login.html',
-				controller: 'loginCtrl'
-			})
-			.state('admin',{	
-				url: '/admin',
-				templateUrl: './static/view/admin.html',
-			})
-			.state('admin.new',{	
-				url: '/new',
-				templateUrl: './static/view/admin_article.html',
-				controller: 'adminArticleCtrl'
-			})
-			.state('admin.article',{	
-				url: '/article/:id',
-				templateUrl: './static/view/admin_article.html',
-				controller: 'adminArticleCtrl'
-			})
-			.state('admin.list',{	
-				url: '/list',
-				templateUrl: './static/view/admin_list.html',
-				controller: 'adminListCtrl'
-			})
-			.state('admin.label',{	
-				url: '/label',
-				templateUrl: './static/view/admin_label.html',
-				controller: 'adminLabelCtrl'
-			})
-		$urlRouterProvider.otherwise('/home/list')
-	}
-
-}());
-
-
-;(function () {
-
-    angular
-        .module('app')
-        .run(runRun)
-
-	runRun.$inject = ['dict','$rootScope', '$state'];
-
-	function runRun(dict, $rootScope, $state){
-		// 检测路由更新成功事件
-		$rootScope.$on('$stateChangeSuccess', function(e){
-			// 重置页面滚动条高度为
-			// 取消弹出层
-		})
-	}
-
-}());
-;(function(){
 	angular.module('app')
 		.service('model', service)
 	service.$inject = ['http'];
@@ -775,6 +872,12 @@ window.onload = function () {
 		}
 		this.deleteLabel = function(data){
 			return http.post('删除标签', '/constant/delete_label', data)
+		}
+		this.register = function(data){
+			return http.post('注册账号', '/user/register', data)
+		}
+		this.login = function(data){
+			return http.post('用户登录', '/user/login', data)
 		}
 	}
 }())

@@ -1,0 +1,59 @@
+.app_alert {
+    .ptf;
+    .t(0);
+    .r(0);
+    .b(0);
+    .l(0);
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    >.content {
+        width: 80%;
+        max-width: 400px;
+        background: white;
+		border-radius: 5px;
+		overflow: hidden;
+        transform: translate(0, -30%);
+        .context {
+            .tac;
+            .fs(16);
+            padding: 30px 0;
+            .pl(10);
+            .pr(10);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            span {
+                .tac;
+            }
+        }
+        .btnGroup {
+            border-top: 1px solid @dlc;
+			display: flex;
+			overflow: hidden;
+            button {
+                padding: 10px 0;
+                .br(0);
+            }
+        }
+        button {
+            flex-grow: 1;
+            background: @dfhc;
+            border: none;
+            .lh(30);
+            .fs(16);
+            color: @dlc;
+            box-sizing: border-box;
+            cursor: pointer;
+            color: white;
+            &:hover {
+                background-color: darken(@dfhc, 10%);
+            }
+        }
+        button:nth-child(2) {
+            border-left: 1px solid @dlc;
+        }
+    }
+}

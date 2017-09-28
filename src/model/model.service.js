@@ -21,5 +21,11 @@
 		this.deleteLabel = function(data){
 			return http.post('删除标签', '/constant/delete_label', data)
 		}
+		this.register = function(data){
+			return http.post('注册账号', '/user/register', data)
+		}
+		this.login = function(data){
+			return http.post('用户登录', '/user/login', data)
+		}
 	}
 }())

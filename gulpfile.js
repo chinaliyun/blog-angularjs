@@ -11,12 +11,21 @@ var jsPath = [
     'src/global/**/*.js',
     'src/model/**/*.js'
 ];
+var lessPath = [
+    'src/components/**/*.less',
+    'src/common/**/*.less',
+];
+var htmlPath = [
+    'src/components/**/*.html',
+    'src/common/**/*.html',
+];
+
 var jsonPath = 'src/model/**/*.json';
 // gulp.plumber 编译出错时，不中断编译
 
 // var httpDevUrl = 'http://blogapi.com';
 var httpDevUrl = 'http://127.0.0.1:8888';
-// var httpDevUrl = 'http://118.31.211.56:8080';
+// var httpDevUrl = 'http://api.codequan.com';
 var httpTestUrl = 'http://101.37.21.176:70';
 var httpDistUrl = 'http://api.codequan.com';
 
@@ -68,7 +77,7 @@ gulp.task('index', function (cb) {
 })
 
 gulp.task('html', function (cb) {
-    gulp.src('src/components/**/*.html')
+    gulp.src(htmlPath)
         .pipe($.rename({
             dirname: ''
         }))
@@ -128,7 +137,7 @@ gulp.task('lib-js', function (cb) {
 })
 
 gulp.task('concatless', function (cb) {
-    gulp.src('src/components/**/*.less')
+    gulp.src(lessPath)
         .pipe($.plumber())
         .pipe($.concat('bundle.less'))
         .pipe(gulp.dest('src/style/'))
@@ -212,7 +221,7 @@ gulp.task('watch', function () {
             .pipe($.replace(/{POST_PATH}/g, postPath))
             .pipe(gulp.dest('dist/'))
     })
-    gulp.watch('src/components/**/*.html', function (e) {
+    gulp.watch(htmlPath, function (e) {
         console.log(e.type, e.path)
         gulp.src(e.path)
             .pipe($.rename({
@@ -222,7 +231,7 @@ gulp.task('watch', function () {
             .pipe($.replace(/{POST_PATH}/g, postPath))
             .pipe(gulp.dest('dist/static/view'))
     })
-    gulp.watch('src/components/**/*.less', ['concatless'])
+    gulp.watch(lessPath, ['concatless'])
     gulp.watch('src/style/*.less', ['less'])
     gulp.watch(jsPath, ['js'])
     gulp.watch(jsonPath, function (e) {

@@ -8,11 +8,11 @@
         '$q',
         'http',
         '$state',
-        '$rootScope',
+        '$timeout',
         'dict'
     ];
 
-    function runRun(cache, $q, http, $state, $rootScope, dict) {
+    function runRun(cache, $q, http, $state, $timeout, dict) {
         dict.httpQueue = [];
         dict.cache = {}
         dict.pageSize = ["10", "20", "30"]
@@ -34,40 +34,29 @@
                 $state.go(route)
             }
         }
-        dict.alert = function (text, showBtn, okText, cancelText) {
+        dict.alert = function(scope, text, showBtn, okText, cancelText){
+            scope.alertVisiable = true;
             var def = $q.defer();
-            $rootScope.alertVisibility = true;
-            $rootScope.alertShowBtn = showBtn || false;
-            $rootScope.alertOkText = okText || '确定';
-            $rootScope.alertCancelText = cancelText || '';
-            $rootScope.alertContext = text || '没有可以显示的内容';
-            $rootScope.alertOk = function () {
-                $rootScope.alertVisibility = false;
-                $rootScope.alertShowBtn =  false;
+            scope.alertVisiable = true;
+            scope.alertShowBtn = showBtn || false;
+            scope.alertOkText = okText || '确定';
+            scope.alertCancelText = cancelText || '';
+            scope.alertContext = text || '没有可以显示的内容';
+            scope.alertOk = function () {
+                scope.alertVisiable = false;
+                scope.alertShowBtn =  false;
                 def.resolve()
             };
-            $rootScope.alertCancel = function () {
-                $rootScope.alertVisibility = false;
-                $rootScope.alertShowBtn =  false;
+            scope.alertCancel = function () {
+                scope.alertVisiable = false;
+                scope.alertShowBtn =  false;
                 def.reject();
             };
-
-            return def.promise;
-        }
-        dict.confirm = function (text, showBtn, okText, cancelText) {
-            var def = $q.defer();
-            $rootScope.confirmVisibility = true;
-            $rootScope.confirmContext = text || '没有内容';
-            $rootScope.confirmOkText = okText || '确定';
-            $rootScope.confirmCancelText = cancelText || '取消';
-            $rootScope.confirmOk = function (data) {
-                $rootScope.confirmVisibility = false;
-                def.resolve(data)
-            };
-            $rootScope.confirmCancel = function () {
-                $rootScope.confirmVisibility = false;
-                def.reject();
-            };
+            if(!scope.alertShowBtn){
+                $timeout(function(){
+                    scope.alertOk();
+                }, 1000)
+            }
             return def.promise;
         }
         dict.loading = function (context) {
