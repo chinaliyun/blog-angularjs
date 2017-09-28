@@ -51,21 +51,58 @@ window.onload = function () {
 }())
 ; (function () {
     angular.module('app')
-        .controller('adminCtrl', controller)
+        .controller('adminLabelCtrl', controller)
     controller.$inject = [
         '$scope',
-        'model',
         'model',
         'dict',
     ];
 
-    function controller($scope, model, model, dict) {
+    function controller($scope, model, dict) {
         init()
         function init() {
-           
-            // getList();
+            $scope.name = "";
+            getLabelList()
         }
-        
+        function getLabelList() {
+            model.getLabelList().then(function (res) {
+                if (res.ok) {
+                    $scope.list = res.ok
+                } else {
+
+                }
+            })
+        }
+        $scope.addLabel = function () {
+            if ($scope.name.trim == '') {
+                console.log('标签名不能为空')
+                return false;
+            }
+            var postData = {
+                name: $scope.name.trim()
+            };
+            model.saveLabel(postData).then(function (res) {
+                if (res.ok) {
+                    $scope.list.push(res.ok[0]);
+                    $scope.name = "";
+                    document.querySelector('.addLabel').focus();
+                } else {
+
+                }
+            })
+        }
+        $scope.deleteLabel = function (item, index) {
+            var postData = {
+                id: item.id
+            };
+            model.deleteLabel(postData).then(function (res) {
+                if (res.ok) {
+                    $scope.list.splice(index, 1);
+                } else {
+
+                }
+            })
+        }
     }
 }())
 ;(function(){
@@ -163,62 +200,6 @@ window.onload = function () {
         }
     }
 }())
-; (function () {
-    angular.module('app')
-        .controller('adminLabelCtrl', controller)
-    controller.$inject = [
-        '$scope',
-        'model',
-        'dict',
-    ];
-
-    function controller($scope, model, dict) {
-        init()
-        function init() {
-            $scope.name = "";
-            getLabelList()
-        }
-        function getLabelList() {
-            model.getLabelList().then(function (res) {
-                if (res.ok) {
-                    $scope.list = res.ok
-                } else {
-
-                }
-            })
-        }
-        $scope.addLabel = function () {
-            if ($scope.name.trim == '') {
-                console.log('标签名不能为空')
-                return false;
-            }
-            var postData = {
-                name: $scope.name.trim()
-            };
-            model.saveLabel(postData).then(function (res) {
-                if (res.ok) {
-                    $scope.list.push(res.ok[0]);
-                    $scope.name = "";
-                    document.querySelector('.addLabel').focus();
-                } else {
-
-                }
-            })
-        }
-        $scope.deleteLabel = function (item, index) {
-            var postData = {
-                id: item.id
-            };
-            model.deleteLabel(postData).then(function (res) {
-                if (res.ok) {
-                    $scope.list.splice(index, 1);
-                } else {
-
-                }
-            })
-        }
-    }
-}())
 ;(function(){
     angular.module('app')
     .controller('adminListCtrl', controller)
@@ -257,6 +238,25 @@ window.onload = function () {
 				}
 			})
         }
+    }
+}())
+; (function () {
+    angular.module('app')
+        .controller('adminCtrl', controller)
+    controller.$inject = [
+        '$scope',
+        'model',
+        'model',
+        'dict',
+    ];
+
+    function controller($scope, model, model, dict) {
+        init()
+        function init() {
+           
+            // getList();
+        }
+        
     }
 }())
 
@@ -311,6 +311,18 @@ window.onload = function () {
 }())
 ;(function(){
     angular.module('app')
+    .controller('loginCtrl', controller)
+    controller.$inject =['$scope'];
+
+    function controller($scope){
+        init() 
+        function init(){
+            console.log(11)
+        }
+    }
+}())
+;(function(){
+    angular.module('app')
     .controller('homeListCtrl', controller)
     controller.$inject =[
 		'$scope',
@@ -344,45 +356,6 @@ window.onload = function () {
 		}
     }
 }())
-;(function(){
-    angular.module('app')
-    .controller('loginCtrl', controller)
-    controller.$inject =['$scope'];
-
-    function controller($scope){
-        init() 
-        function init(){
-            console.log(11)
-        }
-    }
-}())
-;
-(function() {
-
-    angular.module('app')
-        .factory('cache', factory);
-
-    factory.$inject = ['$cookies'];
-
-    function factory($cookies) {
-        return {
-        	get: get,
-            put: put,
-            remove: remove,
-        }
-        function get(key){
-            return $cookies.get(md5(key));
-        }
-        function put(key,value){
-            $cookies.put(md5(key),value);
-        }
-        function remove(key){
-            $cookies.remove(md5(key));
-        }
-
-    }
-}())
-
 ;
 (function () {
 
@@ -481,6 +454,33 @@ window.onload = function () {
         }
     }
 })()
+;
+(function() {
+
+    angular.module('app')
+        .factory('cache', factory);
+
+    factory.$inject = ['$cookies'];
+
+    function factory($cookies) {
+        return {
+        	get: get,
+            put: put,
+            remove: remove,
+        }
+        function get(key){
+            return $cookies.get(md5(key));
+        }
+        function put(key,value){
+            $cookies.put(md5(key),value);
+        }
+        function remove(key){
+            $cookies.remove(md5(key));
+        }
+
+    }
+}())
+
 ;(function(){
     angular.module('app')
         .filter('html', filter);
@@ -554,7 +554,7 @@ window.onload = function () {
             }
             var def = $q.defer();
             $http({
-                url: "http://127.0.0.1:8888"+ url,
+                url: "http://api.codequan.com"+ url,
                 // url: 'http://localhost:8888/index.php',
                 method: "POST",
                 headers: {
@@ -638,7 +638,7 @@ window.onload = function () {
                 console.log(str.slice(0, -1))
                 return str.slice(0, -1);
             }
-            var realUrl = "http://127.0.0.1:8888"+ url;
+            var realUrl = "http://api.codequan.com"+ url;
             // var realData = data ? serilaze(Object.assign({}, baseData, data)) : serilaze(baseData);
             var realData = data ? Object.assign({}, baseData, data) : baseData;
             var realConfig = config ? Object.assign({}, baseConfig, config) : baseConfig;

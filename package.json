@@ -34,7 +34,7 @@
     "ready": "npm install --registry https://registry.npm.taobao.org",
     "start": "gulp dev",
     "buildTest": "gulp test",
-    "buildDist": "gulp dist"
+    "build": "gulp dist"
   },
   "keywords": [],
   "author": "",

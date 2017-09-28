@@ -1011,52 +1011,6 @@ body {
   width: 100%;
   height: 100%;
 }
-.adminPage {
-  height: 100%;
-  display: flex;
-}
-.adminPage .admin_left {
-  flex-shrink: 0;
-  width: 200px;
-  color: white;
-  background-color: #6d6d6d;
-  padding-top: 20px;
-}
-.adminPage .admin_left .back {
-  display: block;
-  border: 1px solid #4FB660;
-  width: 180px;
-  height: 50px;
-  line-height: 50px;
-  text-align: center;
-  border-radius: 100px;
-  cursor: pointer;
-  background-color: transparent;
-  color: white;
-  font-size: 20px;
-  transition: all 0.2s linear;
-  padding: 0;
-  margin: 0 auto;
-  margin-bottom: 20px;
-}
-.adminPage .admin_left .back:hover {
-  background-color: #4FB660;
-}
-.adminPage .admin_left .menu span {
-  font-size: 20px;
-}
-.adminPage .admin_left .menu li {
-  cursor: pointer;
-  height: 40px;
-  line-height: 40px;
-  padding: 0 10px;
-}
-.adminPage .admin_left .menu li:hover {
-  color: #4FB660;
-}
-.adminPage .admin_right {
-  flex-grow: 1;
-}
 .admin_article {
   height: 100%;
   flex-grow: 1;
@@ -1141,6 +1095,52 @@ body {
   flex-grow: 0;
   width: 0px;
   padding: 0;
+}
+.adminPage {
+  height: 100%;
+  display: flex;
+}
+.adminPage .admin_left {
+  flex-shrink: 0;
+  width: 200px;
+  color: white;
+  background-color: #6d6d6d;
+  padding-top: 20px;
+}
+.adminPage .admin_left .back {
+  display: block;
+  border: 1px solid #4FB660;
+  width: 180px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  border-radius: 100px;
+  cursor: pointer;
+  background-color: transparent;
+  color: white;
+  font-size: 20px;
+  transition: all 0.2s linear;
+  padding: 0;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+.adminPage .admin_left .back:hover {
+  background-color: #4FB660;
+}
+.adminPage .admin_left .menu span {
+  font-size: 20px;
+}
+.adminPage .admin_left .menu li {
+  cursor: pointer;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 10px;
+}
+.adminPage .admin_left .menu li:hover {
+  color: #4FB660;
+}
+.adminPage .admin_right {
+  flex-grow: 1;
 }
 .admin_label {
   background-color: white;
