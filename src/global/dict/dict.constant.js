@@ -9,12 +9,21 @@
         'http',
         '$state',
         '$timeout',
+        'cache',
         'dict'
     ];
 
-    function runRun(cache, $q, http, $state, $timeout, dict) {
+    function runRun(cache, $q, http, $state, $timeout, cache, dict) {
         dict.httpQueue = [];
+        dict.url = [];
         dict.cache = {}
+        dict.clearToken = function(){
+            cache.remove('phone')
+            cache.remove('usid')
+            cache.remove('token')
+            cache.remove('u_name')
+            cache.remove('group')
+        }
         dict.pageSize = ["10", "20", "30"]
         dict.checkToken = function () {
             var def = $q.defer();
@@ -28,11 +37,15 @@
             return def.promise;
         }
         dict.go = function (route, params) {
+            console.log(params);
             if (params) {
                 $state.go(route, params)
             } else {
                 $state.go(route)
             }
+        }
+        dict.reload = function(){
+            $state.reload();
         }
         dict.alert = function(scope, text, showBtn, okText, cancelText){
             scope.alertVisiable = true;
@@ -45,18 +58,37 @@
             scope.alertOk = function () {
                 scope.alertVisiable = false;
                 scope.alertShowBtn =  false;
-                def.resolve()
+                def.resolve({ok: true})
             };
             scope.alertCancel = function () {
                 scope.alertVisiable = false;
                 scope.alertShowBtn =  false;
-                def.reject();
+                def.resolve({cancel: true});
             };
             if(!scope.alertShowBtn){
                 $timeout(function(){
                     scope.alertOk();
                 }, 1000)
             }
+            return def.promise;
+        }
+
+        dict.confirm = function(scope, header, placeholder, okText, cancelText){
+            scope.confirmVisiable = true;
+            var def = $q.defer();
+            scope.confirmVisiable = true;
+            scope.confirmHeader= header || '请输入： ';
+            scope.confirmPlaceholder = placeholder || '';
+            scope.confirmOkText = okText || '确定';
+            scope.confirmCancelText = cancelText || '取消';
+            scope.confirmOk = function () {
+                scope.confirmVisiable = false;
+                def.resolve({ok: scope.confirmInput})
+            };
+            scope.confirmCancel = function () {
+                scope.confirmVisiable = false;
+                def.resolve({cancel: true});
+            };
             return def.promise;
         }
         dict.loading = function (context) {

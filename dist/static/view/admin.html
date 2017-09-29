@@ -3,7 +3,7 @@
         <button class="back" ui-sref="home.list">回首页</button>
         <ul class="menu">
             <li ui-sref=".new"><span>+</span> 新建文章</li>
-            <li ui-sref=".label"><span>+</span> 标签管理</li>
+            <li ui-sref=".label" ng-show="labelControl"><span>+</span> 标签管理</li>
             <li ui-sref=".list"><span>+</span> 所有文章</li>
         </ul>
     </div>

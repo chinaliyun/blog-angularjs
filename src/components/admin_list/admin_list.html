@@ -1,11 +1,11 @@
 <div class="admin_list">
 	<div class="label_menu">
 		<ul>
-			<li>
+			<li class="{{!search.type? 'active': ''}}" ng-click="selectType()">
 				<span class="name">全部</span>
 				<span class="count" ng-bind="articleCount">(24)</span>
 			</li>
-			<li ng-repeat="item in categoryList">
+			<li ng-repeat="item in categoryList"  class="{{search.type==item.id? 'active': ''}}" ng-click="selectType(item.id)">
 				<span class="name" ng-bind="item.name">javascript</span>
 				<span class="count" ng-bind="item.sum">(12)</span>
 			</li>

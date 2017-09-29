@@ -16,17 +16,20 @@
                 <!-- <li ui-sref-active="active" ui-sref=".article">文章</li> -->
             </ul>
             <div class="search">
-                <input type="text">
-                <!-- <div class="icon">search</div> -->
+                <input type="text" ng-model="searchInput" ng-keyup="search($event)">
+                <div class="icon" ng-show="searchInput" ng-click="clearSearch()">clear</div>
             </div>
             <div class="space"></div>
-            <div class="user">
+            <!-- <div class="user">
                 <div class="pic">
                     <span></span>
                 </div>
+            </div> -->
+            <div class="userInfo" ng-show="dict.cache.user_phone">
+                <span ng-bind="dict.cache.user_phone"></span>
+                <span ng-click="logout()" class="logout_btn">退出</span>
             </div>
-            <div class="user_name">李运</div>
-            <div class="write" ui-sref="admin.article">写文章</div>
+            <div class="write" ui-sref="admin.new">写文章</div>
         </div>
     </div>
     <div class="home_container" ui-view="">

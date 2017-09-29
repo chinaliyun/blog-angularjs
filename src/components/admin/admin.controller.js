@@ -4,16 +4,23 @@
     controller.$inject = [
         '$scope',
         'model',
-        'model',
+        'cache',
         'dict',
     ];
 
-    function controller($scope, model, model, dict) {
+    function controller($scope, model, cache, dict) {
         init()
         function init() {
-           
-            // getList();
+            $scope.dict = dict;
+            if (!cache.get('phone')) {
+                dict.go('home.login', {
+                    id: 'admin.new'
+                })
+            }
+            if(cache.get('group')==0){
+                $scope.labelControl = true;
+            }
         }
-        
+
     }
 }())

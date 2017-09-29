@@ -4,13 +4,13 @@
     background-color: white;
     .label_menu{
         flex-shrink: 0;
-        padding: 0 20px; 
         width: 200px;
         border-right: 1px solid @dlc;
-        overflow-y: scroll;
+        overflow-y: auto;
         ul{
             li{
                 .h(40);
+                padding: 0 20px; 
                 .lh(40);
                 cursor: pointer;
                 display: flex;
@@ -25,11 +25,16 @@
                 &:hover{
                     color: @dfhc;
                 }
+                &.active{
+                    color: @dfhc;
+                    background-color: fadeout(gray, 80%);
+                }
             }
         }
     }
     .article_list {
         flex-grow: 1;
+        overflow-y: auto;
         li {
             cursor: pointer;
             .th;
@@ -40,7 +45,6 @@
             display: flex;
             .title{
                 flex-grow: 1;
-                font-weight: lighter;
                 .th;
                 &:hover {
                     color: @dfhc;
@@ -49,6 +53,7 @@
             .date{
                 font-weight: lighter;
                 flex-shrink: 0;
+                .fs(14);
             }
             
         }

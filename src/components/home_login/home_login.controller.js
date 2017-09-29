@@ -2,13 +2,14 @@
     angular.module('app')
     .controller('homeLoginCtrl', controller)
     controller.$inject =[
-		'$scope',
+        '$scope',
+        '$state',
 		'model',
 		'cache',
 		'dict'
 	];
 
-    function controller($scope, model, cache, dict){
+    function controller($scope, $state, model, cache, dict){
         init() 
         function init(){
             $scope.phone = "";
@@ -32,7 +33,16 @@
                     cache.put('phone', res.ok.phone)
 					cache.put('usid', res.ok.usid)
 					cache.put('token', res.ok.token)
-					dict.go('home.list');
+					cache.put('u_name', res.ok.u_name)
+					cache.put('group', res.ok.group)
+                    if($state.params.id){
+                        dict.alert($scope, '欢迎回来').then(function(){
+                            dict.go($state.params.id)
+                        })
+                        
+                    }else{
+                        dict.go('home.list');
+                    }
                 }else{
                     dict.alert($scope, res.err.msg);
                 }

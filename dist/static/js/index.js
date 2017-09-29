@@ -55,109 +55,162 @@ window.onload = function () {
     controller.$inject = [
         '$scope',
         'model',
-        'model',
+        'cache',
         'dict',
     ];
 
-    function controller($scope, model, model, dict) {
+    function controller($scope, model, cache, dict) {
         init()
         function init() {
-           
-            // getList();
+            $scope.dict = dict;
+            if (!cache.get('phone')) {
+                dict.go('home.login', {
+                    id: 'admin.new'
+                })
+            }
+            if(cache.get('group')==0){
+                $scope.labelControl = true;
+            }
         }
-        
+
     }
 }())
-;(function(){
+; (function () {
     angular.module('app')
-	.controller('adminArticleCtrl', controller)
-    controller.$inject =[
+        .controller('adminArticleCtrl', controller)
+    controller.$inject = [
         '$scope',
         '$state',
         'model',
         'dict'
-	];
+    ];
 
-    function controller($scope, $state, model, dict){
-        init() 
-        function init(){
+    function controller($scope, $state, model, dict) {
+        init()
+        function init() {
             $scope.id = "";
-			$scope.showPreview = true;
+            $scope.showPreview = true;
             $scope.title = "";
             $scope.content = "";
             $scope.labels = []
-            if($state.params.id){
+            if ($state.params.id) {
                 getArticleDetail();
-            }else{
+            } else {
                 getAllLabel()
             }
         }
-        function getArticleDetail(){
+        function getArticleDetail() {
             var postData = {
                 id: $state.params.id
             };
-            model.getArticleDetail(postData).then(function(res){
-                if(res.ok){
+            model.getArticleDetail(postData).then(function (res) {
+                if (res.ok) {
                     $scope.id = res.ok.id;
                     $scope.title = res.ok.title;
                     $scope.content = res.ok.content;
                     $scope.labels = res.ok.labels;
-                }else{
+                } else {
 
                 }
             })
         }
-		function getAllLabel(){
-            model.getLabelList().then(function(res){
-                if(res.ok){
+        function getAllLabel() {
+            model.getLabelList().then(function (res) {
+                if (res.ok) {
                     $scope.labels = res.ok
-                }else{
+                } else {
 
                 }
             })
         }
-        $scope.togglePreview = function(){
+        $scope.togglePreview = function () {
             $scope.showPreview = !$scope.showPreview;
         }
-        $scope.showDetail = function(item){
+        $scope.showDetail = function (item) {
             $scope.content = item.content
             $scope.title = item.title
-		}
-		$scope.toggleLabel = function (item) {
+        }
+        $scope.toggleLabel = function (item) {
             item.select = !item.select;
         }
-        $scope.change = function () {
-            // $scope.html = markdown.toHTML($scope.content, 'Gruber')
-            
-            // converter = new showdown.Converter(),
-            // html = converter.makeHtml($scope.content);
-            // $scope.html = html;
+        $scope.addLabel = function () {
+            addLabel();
+        }
+        $scope.fileChange = function(ele){
+            if(ele.value){
+                var postData = {
+                    action : 'article',
+                    file: ele.files[0]
+                };
+                model.uploadImg(postData).then(function(res){
+
+                })
+            }
+        }
+        function addLabel(){
+            dict.confirm($scope, '请输入标签名').then(function(res){
+                // 点了确定，但是内容为空 
+                // 点了取消
+                // 点了确定内容不为空
+                console.log(res)
+                if(res.cancel){
+                    return false;
+                }
+                if(res.ok==''){
+                    dict.alert($scope, '请输入标签名').then(function(){
+                        if(res.ok){
+                            addLabel();
+                        }
+                    })
+                }else{
+                    var postData = {
+                        name: res.ok.trim()
+                    };
+                    model.saveLabel(postData).then(function (res) {
+                        if (res.ok) {
+                            $scope.list.push(res.ok[0]);
+                        } else {
+                            dict.alert($scope, res.err.msg)
+                        }
+                    })
+                }
+            })
         }
         $scope.save = function () {
             var postData = {
                 "id": $scope.id,
                 "title": $scope.title,
                 "content": $scope.content,
-                "labels" : []
+                "labels": [],
+                "action": 'admin'
             };
-            $scope.labels.map(function (item, index){
-                if(item.select){
+            $scope.labels.map(function (item, index) {
+                if (item.select) {
                     postData.labels.push({
                         id: item.id,
                         name: item.name
                     })
                 }
             })
-            model.saveArticle(postData).then(function(res){
-                if(res.ok){
-                    if(!$scope.id){
+            model.saveArticle(postData).then(function (res) {
+                if (res.ok) {
+                    if (!$scope.id) {
                         // $scope.id = res.ok.id;
-                        dict.go('admin.article', {
-                            id: res.ok.id
+                        dict.alert($scope, '发布新文章成功').then(function(){
+                            dict.go('admin.article', {
+                                id: res.ok.id
+                            })
                         })
+                    }else{
+                        dict.alert($scope, '保存成功')
                     }
-                }else{
-                    alert(res.err.msg)
+                } else {
+                    dict.alert($scope, res.err.msg).then(function () {
+                        if (res.err.code == 1) {
+
+                        }
+                    })
+
                 }
             })
         }
@@ -233,10 +286,27 @@ window.onload = function () {
             $scope.list = [];
             $scope.categoryList = [];
             $scope.articleCount = 0;
-			getList();
+            $scope.search = {
+                pageNo: 0,
+                type: '',
+            }
+            getList();
 		}
-		
+        $scope.selectType = function(id){
+            if(id){
+                $scope.search.type=id
+            }else{
+                $scope.search.type=""
+            }
+            getList();
+            
+        }
         function getList(){
+            var postData = {
+                action: 'admin',
+                pageNo: $scope.search.pageNo,
+                type: $scope.search.type
+            };
             model.getArticleList($scope.search).then(function(res){
 				if(res.ok){
 					$scope.list = res.ok.list;
@@ -249,7 +319,6 @@ window.onload = function () {
                     var count = 0;
                     res.ok.category.map(function(item, index){
                         count+=parseInt(item.sum)
-                        console.log(item)
                     })
                     $scope.articleCount = count;
 				}else{
@@ -259,63 +328,38 @@ window.onload = function () {
         }
     }
 }())
+
 ;(function(){
     angular.module('app')
     .controller('homeCtrl', controller)
     controller.$inject =[
         '$scope',
+        '$state',
         'dict',
+        'model'
     ];
 
-    function controller($scope, dict){
+    function controller($scope, $state, dict, model){
         init() 
         function init(){
-            
+            $scope.dict = dict;
+            $scope.searchInput = "";
+        }
+        $scope.logout = function(){
+            dict.clearToken();
+            dict.cache.user_phone = '';
+        }
+        $scope.search = function(event){
+            if(event.keyCode==13 && $scope.searchInput.trim()!=''){
+                $scope.$broadcast('searchInputChange')
+                event.target.blur();
+            }
+        }
+        $scope.clearSearch= function(){
+            $scope.searchInput = "";
+            $scope.$broadcast('searchInputChange')
         }
         
-    }
-}())
-
-;(function(){
-    angular.module('app')
-    .controller('homeLoginCtrl', controller)
-    controller.$inject =[
-		'$scope',
-		'model',
-		'cache',
-		'dict'
-	];
-
-    function controller($scope, model, cache, dict){
-        init() 
-        function init(){
-            $scope.phone = "";
-            $scope.passwd = "";
-        }
-        $scope.login = function(){
-            if($scope.phone.trim().length==0){
-                dict.alert($scope,'手机号码不能为空')
-                return false;
-            }
-            if($scope.passwd.trim().length==0){
-                dict.alert($scope,'密码不能为空')
-                return false;
-            }
-            var postData = {
-                phone : $scope.phone,
-                passwd : md5($scope.passwd)
-            };
-            model.login(postData).then(function(res){
-                if(res.ok){
-                    cache.put('phone', res.ok.phone)
-					cache.put('usid', res.ok.usid)
-					cache.put('token', res.ok.token)
-					dict.go('home.list');
-                }else{
-                    dict.alert($scope, res.err.msg);
-                }
-            })
-        }
     }
 }())
 ;(function(){
@@ -351,39 +395,115 @@ window.onload = function () {
         }
     }
 }())
-;(function(){
-    angular.module('app')
-    .controller('homeListCtrl', controller)
-    controller.$inject =[
+; (function () {
+	angular.module('app')
+		.controller('homeListCtrl', controller)
+	controller.$inject = [
 		'$scope',
 		'model',
 	];
 
-    function controller($scope, model){
-        init() 
-        function init(){
+	function controller($scope, model) {
+		init()
+		function init() {
 			$scope.search = {
 				pageNo: 0,
-				type : '',
+				type: '',
 			}
 			$scope.labelCount = 0;
-            getList();
+			getList();
 		}
-		function getList(){
-			model.getArticleList($scope.search).then(function(res){
-				if(res.ok){
+		$scope.$on('searchInputChange', function () {
+			$scope.search.pageNo = 0
+			$scope.search.like = $scope.searchInput;
+			$scope.search.type = ""
+			getList();
+		})
+		$scope.selectType = function (id) {
+			$scope.search.pageNo = 0
+			if (id) {
+				$scope.search.type = id
+			} else {
+				$scope.search.type = ""
+			}
+			getList();
+		}
+		function getList() {
+			var postData = {
+				pageNo: $scope.search.pageNo,
+				type: $scope.search.type,
+				like: $scope.search.like,
+				action: 'home'
+			};
+			model.getArticleList(postData).then(function (res) {
+				if (res.ok) {
 					$scope.list = res.ok.list;
 					$scope.categoryList = res.ok.category;
 					var count = 0;
-					res.ok.category.map(function(item, index){
-						count+=parseInt(item.sum);
+					res.ok.category.map(function (item, index) {
+						count += parseInt(item.sum);
 					})
 					$scope.labelCount = count;
-				}else{
-
+					if(res.ok.list.length>0){
+						$scope.search.pageNo = res.ok.list[res.ok.list.length-1]['id']
+					}
+				} else {
+					$scope.list = []
 				}
 			})
 		}
+	}
+}())
+;(function(){
+    angular.module('app')
+    .controller('homeLoginCtrl', controller)
+    controller.$inject =[
+        '$scope',
+        '$state',
+		'model',
+		'cache',
+		'dict'
+	];
+
+    function controller($scope, $state, model, cache, dict){
+        init() 
+        function init(){
+            $scope.phone = "";
+            $scope.passwd = "";
+        }
+        $scope.login = function(){
+            if($scope.phone.trim().length==0){
+                dict.alert($scope,'手机号码不能为空')
+                return false;
+            }
+            if($scope.passwd.trim().length==0){
+                dict.alert($scope,'密码不能为空')
+                return false;
+            }
+            var postData = {
+                phone : $scope.phone,
+                passwd : md5($scope.passwd)
+            };
+            model.login(postData).then(function(res){
+                if(res.ok){
+                    cache.put('phone', res.ok.phone)
+					cache.put('usid', res.ok.usid)
+					cache.put('token', res.ok.token)
+					cache.put('u_name', res.ok.u_name)
+					cache.put('group', res.ok.group)
+                    if($state.params.id){
+                        dict.alert($scope, '欢迎回来').then(function(){
+                            dict.go($state.params.id)
+                        })
+                        
+                    }else{
+                        dict.go('home.list');
+                    }
+                }else{
+                    dict.alert($scope, res.err.msg);
+                }
+            })
+        }
     }
 }())
 ;(function(){
@@ -424,7 +544,9 @@ window.onload = function () {
             };
             model.register(postData).then(function(res){
                 if(res.ok){
-                    dict.go('home.login')
+                    dict.alert($scope, '注册成功').then(function(){
+                        dict.go('home.login')
+                    })
                 }else{
                     dict.alert($scope, res.err.msg);
                 }
@@ -441,13 +563,37 @@ window.onload = function () {
 	function directive($timeout){
 		var directive = {
             link: link,
-            restrict: 'EA',
+			restrict: 'EA',
+			replace: true,
             templateUrl: './static/view/app_alert.html',
         };
         return directive;
 
         function link($scope, element, attrs) {
             
+        }
+	}
+}())
+;(function(){
+	angular.module('app')
+		.directive('appConfirm', directive)
+	directive.$inject = [
+		'$timeout'
+	];
+	function directive($timeout){
+		var directive = {
+            link: link,
+			restrict: 'EA',
+			replace: true,
+            templateUrl: './static/view/app_confirm.html',
+        };
+        return directive;
+
+        function link($scope, element, attrs) {
+			init()
+			function init(){
+				$scope.confirmInput = "";
+			}
         }
 	}
 }())
@@ -481,108 +627,6 @@ window.onload = function () {
     }
 }())
 
-;(function(){
-
-	angular
-		.module('app')
-		.config(configConfig)
-
-	configConfig.$inject = ['$stateProvider', '$urlRouterProvider'];
-
-	function configConfig($stateProvider, $urlRouterProvider) {
-		$stateProvider
-			.state('home',{	
-				url: '/home',
-				templateUrl: './static/view/home.html',
-				controller: 'homeCtrl',
-			})
-			.state('home.login',{
-				url: '/login',
-				templateUrl: './static/view/home_login.html',
-				controller: 'homeLoginCtrl'
-			})
-			.state('home.register',{
-				url: '/register',
-				templateUrl: './static/view/home_register.html',
-				controller: 'homeRegisterCtrl'
-			})
-			.state('home.list',{
-				url: '/list',
-				templateUrl: './static/view/home_list.html',
-				controller: 'homeListCtrl'
-			})
-			.state('home.article',{
-				url: '/article/:id',
-				templateUrl: './static/view/home_article.html',
-				controller: 'homeArticleCtrl'
-			})
-			.state('login',{				
-				url: '/login',
-				templateUrl: './static/view/login.html',
-				controller: 'loginCtrl'
-			})
-			.state('admin',{	
-				url: '/admin',
-				templateUrl: './static/view/admin.html',
-			})
-			.state('admin.new',{	
-				url: '/new',
-				templateUrl: './static/view/admin_article.html',
-				controller: 'adminArticleCtrl'
-			})
-			.state('admin.article',{	
-				url: '/article/:id',
-				templateUrl: './static/view/admin_article.html',
-				controller: 'adminArticleCtrl'
-			})
-			.state('admin.list',{	
-				url: '/list',
-				templateUrl: './static/view/admin_list.html',
-				controller: 'adminListCtrl'
-			})
-			.state('admin.label',{	
-				url: '/label',
-				templateUrl: './static/view/admin_label.html',
-				controller: 'adminLabelCtrl'
-			})
-		$urlRouterProvider.otherwise('/home/list')
-	}
-
-}());
-
-
-;(function () {
-
-    angular
-        .module('app')
-        .run(runRun)
-
-	runRun.$inject = ['dict','$rootScope', '$state'];
-
-	function runRun(dict, $rootScope, $state){
-		// 检测路由更新成功事件
-		$rootScope.$on('$stateChangeSuccess', function(e){
-			// 重置页面滚动条高度为
-			// 取消弹出层
-		})
-	}
-
-}());
-;(function(){
-    angular.module('app')
-        .filter('html', filter);
-    
-        filter.$inject = [
-            '$sce'
-        ]
-        function filter($sce){
-            return function(data){
-                converter = new showdown.Converter(),
-                html = converter.makeHtml(data);
-                return $sce.trustAsHtml(html)
-            }
-        }
-}())
 ;
 (function () {
 
@@ -594,12 +638,21 @@ window.onload = function () {
         'http',
         '$state',
         '$timeout',
+        'cache',
         'dict'
     ];
 
-    function runRun(cache, $q, http, $state, $timeout, dict) {
+    function runRun(cache, $q, http, $state, $timeout, cache, dict) {
         dict.httpQueue = [];
+        dict.url = [];
         dict.cache = {}
+        dict.clearToken = function(){
+            cache.remove('phone')
+            cache.remove('usid')
+            cache.remove('token')
+            cache.remove('u_name')
+            cache.remove('group')
+        }
         dict.pageSize = ["10", "20", "30"]
         dict.checkToken = function () {
             var def = $q.defer();
@@ -613,11 +666,15 @@ window.onload = function () {
             return def.promise;
         }
         dict.go = function (route, params) {
+            console.log(params);
             if (params) {
                 $state.go(route, params)
             } else {
                 $state.go(route)
             }
+        }
+        dict.reload = function(){
+            $state.reload();
         }
         dict.alert = function(scope, text, showBtn, okText, cancelText){
             scope.alertVisiable = true;
@@ -630,18 +687,37 @@ window.onload = function () {
             scope.alertOk = function () {
                 scope.alertVisiable = false;
                 scope.alertShowBtn =  false;
-                def.resolve()
+                def.resolve({ok: true})
             };
             scope.alertCancel = function () {
                 scope.alertVisiable = false;
                 scope.alertShowBtn =  false;
-                def.reject();
+                def.resolve({cancel: true});
             };
             if(!scope.alertShowBtn){
                 $timeout(function(){
                     scope.alertOk();
                 }, 1000)
             }
+            return def.promise;
+        }
+
+        dict.confirm = function(scope, header, placeholder, okText, cancelText){
+            scope.confirmVisiable = true;
+            var def = $q.defer();
+            scope.confirmVisiable = true;
+            scope.confirmHeader= header || '请输入： ';
+            scope.confirmPlaceholder = placeholder || '';
+            scope.confirmOkText = okText || '确定';
+            scope.confirmCancelText = cancelText || '取消';
+            scope.confirmOk = function () {
+                scope.confirmVisiable = false;
+                def.resolve({ok: scope.confirmInput})
+            };
+            scope.confirmCancel = function () {
+                scope.confirmVisiable = false;
+                def.resolve({cancel: true});
+            };
             return def.promise;
         }
         dict.loading = function (context) {
@@ -670,6 +746,21 @@ window.onload = function () {
         }
     }
 })()
+;(function(){
+    angular.module('app')
+        .filter('html', filter);
+    
+        filter.$inject = [
+            '$sce'
+        ]
+        function filter($sce){
+            return function(data){
+                converter = new showdown.Converter(),
+                html = converter.makeHtml(data);
+                return $sce.trustAsHtml(html)
+            }
+        }
+}())
 ; (function () {
     'use strict';
 
@@ -728,7 +819,7 @@ window.onload = function () {
             }
             var def = $q.defer();
             $http({
-                url: "http://127.0.0.1:8888"+ url,
+                url: "http://api.codequan.com"+ url,
                 // url: 'http://localhost:8888/index.php',
                 method: "POST",
                 headers: {
@@ -746,8 +837,7 @@ window.onload = function () {
                         }
                     })
                     formData.append('token', cache.get('token'));
-                    formData.append('appid', cache.get('appid'));
-                    formData.append('userId', cache.get('userId'));
+                    formData.append('usid', cache.get('usid'));
                     return formData;
                 }
             }).then(function (res) {
@@ -792,12 +882,11 @@ window.onload = function () {
             var def = $q.defer();
             var baseData = {
                 token: cache.get('token'),
-                uid: cache.get('userId'),
-                appid: cache.get('appid'),
+                usid: cache.get('usid')
             };
             var baseConfig = {
                 headers: {
-                    "Content-Type":"text/plain",
+                    "Content-Type":"text/plain, charset=utf-8",
                 },
                 // timeout: 3000,
             };
@@ -812,7 +901,7 @@ window.onload = function () {
                 console.log(str.slice(0, -1))
                 return str.slice(0, -1);
             }
-            var realUrl = "http://127.0.0.1:8888"+ url;
+            var realUrl = "http://api.codequan.com"+ url;
             // var realData = data ? serilaze(Object.assign({}, baseData, data)) : serilaze(baseData);
             var realData = data ? Object.assign({}, baseData, data) : baseData;
             var realConfig = config ? Object.assign({}, baseConfig, config) : baseConfig;
@@ -822,10 +911,11 @@ window.onload = function () {
                     if (loading) {
                         dict.loading()
                     }
-                    // if (res.data.code === 101) {
-                    //     dict.go('login')
-                    //     dict.clearCache();
-                    //     def.resolve({ err: { code: res.data.code, msg: res.data.msg } })
+                    // if (res.data.code === 1) {
+                    //     dict.go('home.login', {
+                    //         id: dict.url[0]
+                    //     })
+                    //     dict.clearToken();
                     //     return false;
                     // }
                     if (res.data.code != 0 || res.data.data===undefined) {
@@ -850,6 +940,104 @@ window.onload = function () {
     }
 }())
 
+;(function(){
+
+	angular
+		.module('app')
+		.config(configConfig)
+
+	configConfig.$inject = ['$stateProvider', '$urlRouterProvider'];
+
+	function configConfig($stateProvider, $urlRouterProvider) {
+		$stateProvider
+			.state('home',{	
+				url: '/home',
+				templateUrl: './static/view/home.html',
+				controller: 'homeCtrl',
+			})
+			.state('home.login',{
+				url: '/login/:id',
+				templateUrl: './static/view/home_login.html',
+				controller: 'homeLoginCtrl'
+			})
+			.state('home.register',{
+				url: '/register',
+				templateUrl: './static/view/home_register.html',
+				controller: 'homeRegisterCtrl'
+			})
+			.state('home.list',{
+				url: '/list',
+				templateUrl: './static/view/home_list.html',
+				controller: 'homeListCtrl'
+			})
+			.state('home.article',{
+				url: '/article/:id',
+				templateUrl: './static/view/home_article.html',
+				controller: 'homeArticleCtrl'
+			})
+			.state('admin',{	
+				url: '/admin',
+				templateUrl: './static/view/admin.html',
+				controller: 'adminCtrl'
+			})
+			.state('admin.new',{	
+				url: '/new',
+				templateUrl: './static/view/admin_article.html',
+				controller: 'adminArticleCtrl'
+			})
+			.state('admin.article',{	
+				url: '/article/:id',
+				templateUrl: './static/view/admin_article.html',
+				controller: 'adminArticleCtrl'
+			})
+			.state('admin.list',{	
+				url: '/list',
+				templateUrl: './static/view/admin_list.html',
+				controller: 'adminListCtrl'
+			})
+			.state('admin.label',{	
+				url: '/label',
+				templateUrl: './static/view/admin_label.html',
+				controller: 'adminLabelCtrl'
+			})
+		$urlRouterProvider.otherwise('/home/list')
+	}
+
+}());
+
+
+;(function () {
+
+    angular
+        .module('app')
+        .run(runRun)
+
+	runRun.$inject = [
+		'dict',
+		'$rootScope', 
+		'$state',
+		'cache'
+	];
+
+	function runRun(dict, $rootScope, $state, cache){
+		// 检测路由更新成功事件
+		$rootScope.$on('$stateChangeSuccess', function(e){
+			dict.url.unshift($state.current.name)
+			if(dict.url.length>3){
+				dict.url.splice(-1, 1);
+			}
+			// 重置页面滚动条高度为
+			// 取消弹出层
+			if(cache.get('phone')){
+				dict.isLogin = true;
+				dict.cache.user_phone = cache.get('phone');
+			}else{
+				dict.isLogin = false;
+			}
+		})
+	}
+
+}());
 ;(function(){
 	angular.module('app')
 		.service('model', service)
@@ -878,6 +1066,9 @@ window.onload = function () {
 		}
 		this.login = function(data){
 			return http.post('用户登录', '/user/login', data)
+		}
+		this.uploadImg = function(data){
+			return http.file('上传图片', '/upload', data);
 		}
 	}
 }())

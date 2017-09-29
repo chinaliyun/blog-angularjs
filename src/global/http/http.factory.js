@@ -74,8 +74,7 @@
                         }
                     })
                     formData.append('token', cache.get('token'));
-                    formData.append('appid', cache.get('appid'));
-                    formData.append('userId', cache.get('userId'));
+                    formData.append('usid', cache.get('usid'));
                     return formData;
                 }
             }).then(function (res) {
@@ -120,12 +119,11 @@
             var def = $q.defer();
             var baseData = {
                 token: cache.get('token'),
-                uid: cache.get('userId'),
-                appid: cache.get('appid'),
+                usid: cache.get('usid')
             };
             var baseConfig = {
                 headers: {
-                    "Content-Type":"text/plain",
+                    "Content-Type":"text/plain, charset=utf-8",
                 },
                 // timeout: 3000,
             };
@@ -150,10 +148,11 @@
                     if (loading) {
                         dict.loading()
                     }
-                    // if (res.data.code === 101) {
-                    //     dict.go('login')
-                    //     dict.clearCache();
-                    //     def.resolve({ err: { code: res.data.code, msg: res.data.msg } })
+                    // if (res.data.code === 1) {
+                    //     dict.go('home.login', {
+                    //         id: dict.url[0]
+                    //     })
+                    //     dict.clearToken();
                     //     return false;
                     // }
                     if (res.data.code != 0 || res.data.data===undefined) {

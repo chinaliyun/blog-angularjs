@@ -1,6 +1,6 @@
 ;(function(){
 	angular.module('app')
-		.directive('appAlert', directive)
+		.directive('appConfirm', directive)
 	directive.$inject = [
 		'$timeout'
 	];
@@ -9,12 +9,15 @@
             link: link,
 			restrict: 'EA',
 			replace: true,
-            templateUrl: './static/view/app_alert.html',
+            templateUrl: './static/view/app_confirm.html',
         };
         return directive;
 
         function link($scope, element, attrs) {
-            
+			init()
+			function init(){
+				$scope.confirmInput = "";
+			}
         }
 	}
 }())

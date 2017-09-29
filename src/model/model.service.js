@@ -27,5 +27,8 @@
 		this.login = function(data){
 			return http.post('用户登录', '/user/login', data)
 		}
+		this.uploadImg = function(data){
+			return http.file('上传图片', '/upload', data);
+		}
 	}
 }())

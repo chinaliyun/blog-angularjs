@@ -1,4 +1,4 @@
-.app_alert {
+.app_confirm {
     .ptf;
     .t(0);
     .r(0);
@@ -16,18 +16,19 @@
 		border-radius: 5px;
 		overflow: hidden;
         transform: translate(0, -30%);
-        .context {
-            .tac;
-            .fs(16);
-            padding: 30px 0;
-            .pl(10);
-            .pr(10);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            span {
-                .tac;
-            }
+        .header{
+            .h(50);
+            .lh(50);
+            padding: 0 10px;
+            border-bottom: 1px solid @dlc;
+        }
+        textarea{
+            resize: none;
+            .db;
+            border: none;
+            width: 100%;
+            padding: 10px;
+            min-height: 100px;
         }
         .btnGroup {
             border-top: 1px solid @dlc;
@@ -54,7 +55,6 @@
         }
         button:nth-child(2) {
             border-left: 1px solid rgba(255, 255, 255, .4);
-            
         }
     }
 }

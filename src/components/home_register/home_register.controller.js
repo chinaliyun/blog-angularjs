@@ -36,7 +36,9 @@
             };
             model.register(postData).then(function(res){
                 if(res.ok){
-                    dict.go('home.login')
+                    dict.alert($scope, '注册成功').then(function(){
+                        dict.go('home.login')
+                    })
                 }else{
                     dict.alert($scope, res.err.msg);
                 }

@@ -1,15 +1,20 @@
 .homePage{
-    .pt(90);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
     .menu_wrapper{
+        flex-shrink: 0;
         background-color: white;
         .ptf;
         .t(0);
         .l(0);
         .r(0);
-        // .dpw;
+        z-index: 10;
+        .mb(10);
         align-items: center;
         .dbs;
         .control{
+            .dn;
             padding: 0 10px;
             .fs(12);
             .lh(20);
@@ -110,10 +115,20 @@
                     cursor: pointer;
                 }
             }
-            .user{
-                .w(44);
+            .userInfo{
                 .h(44);
+                .lh(44);
                 .mr(10);
+                display: flex;
+                span{
+                    .mr(10);
+                }
+                .logout_btn{
+                    cursor: pointer;
+                    &:hover{
+                        color: @dfhc;
+                    }
+                }
             }
             .user_name{
                 .mr(30);
@@ -135,7 +150,10 @@
         }
     }
     .home_container{
-        // .mt(90);
+        flex-grow: 1;
+        .pt(70);
+        .pl(10);
+        .pr(10);
     }
     
 

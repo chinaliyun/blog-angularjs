@@ -14,7 +14,7 @@
 				controller: 'homeCtrl',
 			})
 			.state('home.login',{
-				url: '/login',
+				url: '/login/:id',
 				templateUrl: './static/view/home_login.html',
 				controller: 'homeLoginCtrl'
 			})
@@ -33,14 +33,10 @@
 				templateUrl: './static/view/home_article.html',
 				controller: 'homeArticleCtrl'
 			})
-			.state('login',{				
-				url: '/login',
-				templateUrl: './static/view/login.html',
-				controller: 'loginCtrl'
-			})
 			.state('admin',{	
 				url: '/admin',
 				templateUrl: './static/view/admin.html',
+				controller: 'adminCtrl'
 			})
 			.state('admin.new',{	
 				url: '/new',

@@ -8,7 +8,7 @@ button{
     padding: 0;
 }
 .dbs {
-    box-shadow: 0 2px 4px fadeout(black, 96%);
+    box-shadow: 2px 2px 4px fadeout(black, 60%);
 }
 
 .space {
@@ -160,7 +160,7 @@ textarea {
 }
 .form {
     .form_group {
-        border: 1px solid @dlc;
+        // border: 1px solid @dlc;
         display: flex;
         .br(30);
         overflow: hidden;
@@ -172,13 +172,16 @@ textarea {
             .lh(30);
             .w(100);
             .tac;
+            .fs(14);
             color: white;
         }
-        input[type=text] {
+        input[type=text],input[type=password] {
+            flex-grow: 1;
             .db;
             .w(200);
             .h(30);
             .lh(30);
+            .fs(14);
             padding: 0 10px;
             box-sizing: border-box;
         }
@@ -193,7 +196,7 @@ textarea {
     padding: 10px;
     .br(2);
     &:hover {
-        box-shadow: 0 2px 4px fadeout(black, 80%);
+        box-shadow: 2px 2px 4px fadeout(black, 60%);
     }
     .title {
         font-weight: bold;
@@ -201,7 +204,8 @@ textarea {
         cursor: pointer;
         .h(30);
         .lh(30);
-        .fs(16);
+        .fs(20);
+        .mb(10);
     }
     .label_wrapper {
         display: flex;
@@ -223,9 +227,7 @@ textarea {
         }
     }
     .detail {
-        .tac;
-        border-top: 1px solid @dlc;
-        color: @dfhc;
-        padding: 10px 0;
+        color: @dfc;
+        padding: 10px;
     }
 }

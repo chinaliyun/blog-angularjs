@@ -3,11 +3,11 @@
 		<h1 class="title">账号注册</h1>
 		<div class="form_group">
 			<span class="label">账号</span>
-			<input type="text" ng-model="phone">
+			<input type="text" ng-model="phone" placeholder="目前仅支持手机号码注册">
 		</div>
 		<div class="form_group">
 			<span class="label">密码</span>
-			<input type="text" ng-model="passwd">
+			<input type="password" ng-model="passwd">
 		</div>
 		<button class="btn_default" ng-click="register()">注册</button>
 		<button class="btn_default" ui-sref="home.login">登录</button>

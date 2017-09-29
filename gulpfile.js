@@ -24,8 +24,8 @@ var jsonPath = 'src/model/**/*.json';
 // gulp.plumber 编译出错时，不中断编译
 
 // var httpDevUrl = 'http://blogapi.com';
-var httpDevUrl = 'http://127.0.0.1:8888';
-// var httpDevUrl = 'http://api.codequan.com';
+// var httpDevUrl = 'http://127.0.0.1:8888';
+var httpDevUrl = 'http://api.codequan.com';
 var httpTestUrl = 'http://101.37.21.176:70';
 var httpDistUrl = 'http://api.codequan.com';
 
@@ -61,6 +61,17 @@ gulp.task('lib', function (cb) {
     gulp.src('static/lib/**/*.*')
         .pipe($.plumber())
         .pipe(gulp.dest('dist/static/libs/'))
+        .on('end', function () {
+            sync.callback = cb;
+        })
+})
+
+gulp.task('image', function (cb) {
+    console.log('当前使用的postUrl是： ' + postPath)
+    console.log('当前static路径是： ' + staticPath)
+    gulp.src('static/images/**/*.*')
+        .pipe($.plumber())
+        .pipe(gulp.dest('dist/static/images/'))
         .on('end', function () {
             sync.callback = cb;
         })
@@ -241,13 +252,13 @@ gulp.task('watch', function () {
     })
 })
 
-gulp.task('dist', sync('distInit', 'clean', 'index', 'lib', 'html', 'js', 'lib-js', 'concatless', 'less', 'replaceUrl'))
+gulp.task('dist', sync('distInit', 'clean', 'index', 'lib', 'image', 'html', 'js', 'lib-js', 'concatless', 'less', 'replaceUrl'))
 
 
-gulp.task('test', sync('testInit', 'clean', 'index', 'lib', 'html', 'js', 'lib-js', 'concatless', 'less', 'replaceUrl'))
+gulp.task('test', sync('testInit', 'clean', 'index', 'lib', 'image', 'html', 'js', 'lib-js', 'concatless', 'less', 'replaceUrl'))
 
 
-gulp.task('dev', sync('devInit', 'clean', 'index', 'lib', 'html', 'js', 'lib-js', 'concatless', 'less', 'json', 'server', 'watch'))
+gulp.task('dev', sync('devInit', 'clean', 'index', 'lib', 'image', 'html', 'js', 'lib-js', 'concatless', 'less', 'json', 'server', 'watch'))
 
 /*
 
