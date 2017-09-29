@@ -15,6 +15,11 @@
             $scope.phone = "";
             $scope.passwd = "";
         }
+        $scope.keyUp = function(event){
+            if(event.keyCode==13){
+                $scope.login();
+            }
+        }
         $scope.login = function(){
             if($scope.phone.trim().length==0){
                 dict.alert($scope,'手机号码不能为空')

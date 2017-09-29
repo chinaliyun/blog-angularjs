@@ -3,11 +3,11 @@
 		<h1 class="title">账号登陆</h1>
 		<div class="form_group">
 			<span class="label">账号</span>
-			<input type="text" ng-model="phone">
+			<input type="text" ng-model="phone" ng-keyup="keyUp($event)">
 		</div>
 		<div class="form_group">
 			<span class="label">密码</span>
-			<input type="password" ng-model="passwd">
+			<input type="password" ng-model="passwd" ng-keyup="keyUp($event)">
 		</div>
 		<button class="btn_default" ng-click="login()">登陆</button>
 		<button class="btn_default" ui-sref="home.register">注册账号</button>

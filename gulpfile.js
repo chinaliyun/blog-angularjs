@@ -67,8 +67,6 @@ gulp.task('lib', function (cb) {
 })
 
 gulp.task('image', function (cb) {
-    console.log('当前使用的postUrl是： ' + postPath)
-    console.log('当前static路径是： ' + staticPath)
     gulp.src('static/images/**/*.*')
         .pipe($.plumber())
         .pipe(gulp.dest('dist/static/images/'))
