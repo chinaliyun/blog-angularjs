@@ -1,11 +1,11 @@
 <div class="home_list">
 	<div class="label_menu">
 		<ul>
-			<li class="{{!search.type? 'active': ''}}" ng-click="selectType()"> 
+			<li class="{{!search.type? 'active': ''}}" ng-click="selectType()">
 				<span class="name">全部</span>
 				<span class="count" ng-bind="labelCount">(24)</span>
 			</li>
-			<li ng-repeat="item in categoryList" ng-show="item.sum!=0"  class="{{search.type==item.id ? 'active': ''}}"  ng-click="selectType(item.id)">
+			<li ng-repeat="item in categoryList" ng-show="item.sum!=0" class="{{search.type==item.id ? 'active': ''}}" ng-click="selectType(item.id)">
 				<span class="name" ng-bind="item.name">javascript</span>
 				<span class="count" ng-bind="item.sum">(12)</span>
 			</li>
@@ -14,7 +14,7 @@
 	<div class="article_wrapper">
 		<div ng-show="list.length==0" class="no_data">没有查到您要找的相关文章</div>
 		<div class="article_list">
-			<div class="article_item" ng-repeat="item in list">
+			<div class="article_item {{$last?'last_item':''}}" ng-repeat="item in list">
 				<h3 class="title" ui-sref="home.article({id: item.id})" ng-bind="item.title"></h3>
 				<div class="label_wrapper">
 					<ul class="label_list">
@@ -29,8 +29,20 @@
 				</div>
 				<div class="detail">.....</div>
 			</div>
+			<div class="loading" ng-show="showLoading">
+				<div class="content">
+					<span></span>
+					<span></span>
+					<span></span>
+					<span></span>
+					<span></span>
+					<span></span>
+					<span></span>
+					<span></span>
+				</div>
+			</div>
 		</div>
 	</div>
-	<div app-alert=""  ng-show="alertVisiable"></div>
-	
+	<div app-alert="" ng-show="alertVisiable"></div>
+
 </div>

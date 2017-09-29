@@ -10,7 +10,7 @@
 		init()
 		function init() {
 			$scope.search = {
-				pageNo: 0,
+				pageNo: "",
 				type: '',
 			}
 			$scope.labelCount = 0;
@@ -31,7 +31,8 @@
 			}
 			getList();
 		}
-		function getList() {
+		function getList(push) {
+			$scope.showLoading = true;
 			var postData = {
 				pageNo: $scope.search.pageNo,
 				type: $scope.search.type,
@@ -39,8 +40,13 @@
 				action: 'home'
 			};
 			model.getArticleList(postData).then(function (res) {
+				$scope.showLoading = false;
 				if (res.ok) {
-					$scope.list = res.ok.list;
+					if(push){
+						$scope.list = $scope.list.concat(res.ok.list);
+					}else{
+						$scope.list = res.ok.list;
+					}
 					$scope.categoryList = res.ok.category;
 					var count = 0;
 					res.ok.category.map(function (item, index) {
@@ -54,6 +60,18 @@
 					$scope.list = []
 				}
 			})
+			var scrollT = [];
+			window.onscroll = function(event){
+				var ele = document.querySelector('.last_item');
+				scrollT.unshift(document.querySelector('html').scrollTop);
+				scrollT.splice(3,1);
+				if(scrollT.length>2 && scrollT[0]>scrollT[1] && !$scope.showLoading){
+					if(ele.getBoundingClientRect().top < window.innerHeight){
+						// console.log(1)
+						getList(true);
+					}
+				}
+			}
 		}
 	}
 }())

@@ -1,10 +1,6 @@
 node_modules/
 bower_components/
 npm-debug.log
-app/output/*
-!app/output/image/
-
-
 .DS_Store/
 */**/bundle.less
 dist/

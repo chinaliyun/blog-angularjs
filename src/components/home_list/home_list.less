@@ -71,5 +71,87 @@
                 }
             }
         }
+        .loading{
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+            >.content {
+                .w(80);
+                .h(80);
+                .ptr;
+                margin: 0 auto;
+                span {
+                    display: inline-block;
+                    .w(10);
+                    .h(10);
+                    border-radius: 100%;
+                    background: lightgreen;
+                    position: absolute;
+                    -webkit-animation: load 1.04s ease infinite;
+                }
+                span:nth-child(1) {
+                    .l(0);
+                    .t(40);
+                    .mt(-4);
+                    -webkit-animation-delay: 0.13s;
+                }
+                span:nth-child(2) {
+                    .l(10);
+                    .t(10);
+                    -webkit-animation-delay: 0.26s;
+                }
+                span:nth-child(3) {
+                    .l(40);
+                    .t(0);
+                    .ml(-4);
+                    -webkit-animation-delay: 0.39s;
+                }
+                span:nth-child(4) {
+                    .t(10);
+                    .r(10);
+                    -webkit-animation-delay: 0.52s;
+                }
+                span:nth-child(5) {
+                    .r(0);
+                    .t(40);
+                    .mt(-4);
+                    -webkit-animation-delay: 0.65s;
+                }
+                span:nth-child(6) {
+                    .r(10);
+                    .b(10);
+                    -webkit-animation-delay: 0.78s;
+                }
+                span:nth-child(7) {
+                    .b(0);
+                    .l(40);
+                    .ml(-4);
+                    -webkit-animation-delay: 0.91s;
+                }
+                span:nth-child(8) {
+                    .b(10);
+                    .l(10);
+                    -webkit-animation-delay: 1.04s;
+                }
+            }
+            @keyframes load {
+                0% {
+                    opacity: 1;
+                }
+                100% {
+                    opacity: 0.2;
+                }
+            }
+            @-webkit-keyframes load {
+                0% {
+                    opacity: 1;
+                }
+                100% {
+                    opacity: 0.2;
+                }
+            }
+        }
     }
 }
