@@ -7,3 +7,4 @@ app/output/*
 
 .DS_Store/
 */**/bundle.less
+dist/
