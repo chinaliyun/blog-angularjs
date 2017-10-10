@@ -20,12 +20,13 @@
 			}
 			// 重置页面滚动条高度为
 			// 取消弹出层
-			if(cache.get('phone')){
+			if(cache.get('uname')){
 				dict.isLogin = true;
-				dict.cache.user_phone = cache.get('phone');
+				dict.cache.uname = cache.get('uname');
 			}else{
 				dict.isLogin = false;
 			}
+			window.onscroll = null;
 		})
 	}
 

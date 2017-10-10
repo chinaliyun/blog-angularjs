@@ -1,13 +1,13 @@
 <div class="admin_list">
 	<div class="label_menu">
 		<ul>
-			<li class="{{!search.type? 'active': ''}}" ng-click="selectType()">
+			<li class="{{!search.type? 'active': ''}}">
 				<span class="name">全部</span>
 				<span class="count" ng-bind="articleCount">(24)</span>
 			</li>
-			<li ng-repeat="item in categoryList"  class="{{search.type==item.id? 'active': ''}}" ng-click="selectType(item.id)">
+			<li ng-repeat="item in categoryList"  class="{{search.type==item.code? 'active': ''}}" ng-click="selectType(item.code)" ng-if="item.count!=0">
 				<span class="name" ng-bind="item.name">javascript</span>
-				<span class="count" ng-bind="item.sum">(12)</span>
+				<span class="count" ng-bind="item.count">(12)</span>
 			</li>
 		</ul>
 	</div>
@@ -15,6 +15,7 @@
 		<li ng-repeat="item in list" ng-click="showDetail(item)">
 			<span ng-bind="item.title" class="title" ui-sref="admin.article({id: item.id})"></span>
 			<span ng-bind="item.add_date" class="date"></span>
+			<button class="delete" ng-click="delete(item, $index)">删除</button>
 		</li>
 	</ul>
 </div>

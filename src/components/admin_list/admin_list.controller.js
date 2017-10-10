@@ -3,12 +3,14 @@
     .controller('adminListCtrl', controller)
     controller.$inject =[
 		'$scope',
-		'model',
+        'model',
+        'dict'
 	];
 
-    function controller($scope, model){
+    function controller($scope, model, dict){
         init() 
         function init(){
+            dict.alert($scope, '确定要删除该文章吗')
             $scope.list = [];
             $scope.categoryList = [];
             $scope.articleCount = 0;
@@ -16,7 +18,7 @@
                 pageNo: 0,
                 type: '',
             }
-            getList();
+            countArticle();
 		}
         $scope.selectType = function(id){
             if(id){
@@ -27,24 +29,53 @@
             getList();
             
         }
+        function countArticle(){
+            // 先获取文章数目
+            model.countArticle().then(function(res){
+                if(res.ok){
+                    $scope.categoryList = res.ok;
+                    var count = 0;
+                    res.ok.map(function(item, index){
+                        count+=parseInt(item.count)
+                    })
+                    $scope.articleCount = count;
+                    $scope.search.type = res.ok[0].code;
+                    getList();
+                }else{
+                    dict.alert($scope, '获取列表失败，请稍后重试');
+                }
+            })
+        }
+        $scope.delete = function(item, index){
+            dict.alert($scope, '确定要删除该文章吗？', true, '确定', '取消').then(function(res){
+                if(res.ok){
+                    var postData = {
+                        id: item.id
+                    }; 
+                    model.deleteArticle(postData).then(function(res){
+                        if(res.ok){
+                            $scope.list.splice(index, 1);
+                        }else{
+                            dict.alert($scope, '删除失败，请稍后重试')
+                        }
+                    })
+                }
+            })
+            
+        }
         function getList(){
             var postData = {
                 action: 'admin',
                 pageNo: $scope.search.pageNo,
                 type: $scope.search.type
             };
-            model.getArticleList($scope.search).then(function(res){
+            model.getArticleList(postData).then(function(res){
 				if(res.ok){
 					$scope.list = res.ok.list;
 					$scope.categoryList = res.ok.category;
-					var count = 0;
-					res.ok.category.map(function(item, index){
-						count+=parseInt(item.sum);
-					})
-                    $scope.labelCount = count;
                     var count = 0;
                     res.ok.category.map(function(item, index){
-                        count+=parseInt(item.sum)
+                        count+=parseInt(item.count)
                     })
                     $scope.articleCount = count;
 				}else{

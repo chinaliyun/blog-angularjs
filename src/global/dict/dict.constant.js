@@ -18,10 +18,9 @@
         dict.url = [];
         dict.cache = {}
         dict.clearToken = function(){
-            cache.remove('phone')
+            cache.remove('uname')
             cache.remove('usid')
             cache.remove('token')
-            cache.remove('u_name')
             cache.remove('group')
         }
         dict.pageSize = ["10", "20", "30"]

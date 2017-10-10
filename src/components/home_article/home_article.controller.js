@@ -19,7 +19,8 @@
         }
         function getArticleDetail(){
             var postData = {
-                id: $state.params.id
+                id: $state.params.id,
+                action: 'home'
             };
             model.getArticleDetail(postData).then(function(res){
                 if(res.ok){

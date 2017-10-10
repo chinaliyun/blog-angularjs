@@ -13,7 +13,9 @@
 				pageNo: "",
 				type: '',
 			}
+			$scope.countCurrentType = 0;
 			$scope.labelCount = 0;
+			$scope.firstGet = true;
 			getList();
 		}
 		$scope.$on('searchInputChange', function () {
@@ -22,12 +24,15 @@
 			$scope.search.type = ""
 			getList();
 		})
-		$scope.selectType = function (id) {
+		$scope.selectType = function (item) {
+			console.log(item)
 			$scope.search.pageNo = 0
-			if (id) {
-				$scope.search.type = id
+			if (item) {
+				$scope.search.type = item.code;
+				$scope.countCurrentType = item.count;
 			} else {
 				$scope.search.type = ""
+				$scope.countCurrentType = $scope.labelCount;
 			}
 			getList();
 		}
@@ -50,9 +55,13 @@
 					$scope.categoryList = res.ok.category;
 					var count = 0;
 					res.ok.category.map(function (item, index) {
-						count += parseInt(item.sum);
+						count += parseInt(item.count);
 					})
 					$scope.labelCount = count;
+					if($scope.firstGet){
+						$scope.countCurrentType = count;
+						$scope.firstGet = false;
+					}
 					if(res.ok.list.length>0){
 						$scope.search.pageNo = res.ok.list[res.ok.list.length-1]['id']
 					}
@@ -62,6 +71,9 @@
 			})
 			var scrollT = [];
 			window.onscroll = function(event){
+				if($scope.list.length >= parseInt($scope.countCurrentType)){
+					return false;
+				}
 				var ele = document.querySelector('.last_item');
 				scrollT.unshift(document.querySelector('html').scrollTop);
 				scrollT.splice(3,1);

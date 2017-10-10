@@ -534,13 +534,19 @@
     margin-top: 0;
     margin-bottom: 0;
   }
-  
+  .markdown-body ul li{
+    list-style: disc;
+  }
+  .markdown-body ol li{
+    list-style: unset;
+  }
   .markdown-body li>p {
     margin-top: 16px;
   }
   
   .markdown-body li+li {
     margin-top: 0.25em;
+    // list-style: disc;
   }
   
   .markdown-body dl {
@@ -589,6 +595,9 @@
     max-width: 100%;
     box-sizing: content-box;
     background-color: #fff;
+    display: block;
+    margin: 0 auto;
+    border: none;
   }
   
   .markdown-body code {

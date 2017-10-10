@@ -36,16 +36,18 @@
         flex-grow: 1;
         overflow-y: auto;
         li {
-            cursor: pointer;
             .th;
             .h(40);
             .lh(40);
             padding: 0 10px;
             border-bottom: 1px solid @dlc;
             display: flex;
+            align-items: center;
             .title{
+                cursor: pointer;
                 flex-grow: 1;
                 .th;
+                .w(10);
                 &:hover {
                     color: @dfhc;
                 }
@@ -53,9 +55,37 @@
             .date{
                 font-weight: lighter;
                 flex-shrink: 0;
-                .fs(14);
+                .fs(12);
+                color: lighten(@dfc, 10%);
             }
             
+            .delete{
+                cursor: pointer;
+                flex-shrink: 0;
+                .ml(20);
+                .mr(10);
+                .fs(12);
+                color: @dfhc;
+                transition: all 0.2s linear;
+                -webkit-transition: all 0.2s linear;
+                .h(26);
+                .lh(26);
+                .w(0);
+                .br(2);
+                overflow: hidden;
+                background-color: @dfhc;
+                color: white;
+                // &:hover{
+                //     background-color: @dfhc;
+                //     color: white;
+                // }
+            }
+            &:hover{
+                .delete{
+                    // display: block;
+                    .w(40);
+                }
+            }
         }
     }
 }

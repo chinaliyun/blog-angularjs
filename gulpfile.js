@@ -48,11 +48,19 @@ gulp.task('distInit', function (cb) {
     sync.callback = cb;
 })
 
+gulp.task('facicon', function(cb){
+    gulp.src('./favicon.ico')
+        .pipe(gulp.dest('dist/'))
+        .on('end', function(){
+        sync.callback = cb;
+    })
+})
+
 gulp.task('clean', function (cb) {
     gulp.src('dist')
         .pipe($.clean())
-    setTimeout(function () {
-        sync.callback = cb;
+        setTimeout(function () {
+            sync.callback = cb;
     }, 500)
 })
 gulp.task('lib', function (cb) {
@@ -250,13 +258,13 @@ gulp.task('watch', function () {
     })
 })
 
-gulp.task('dist', sync('distInit', 'clean', 'index', 'lib', 'image', 'html', 'js', 'lib-js', 'concatless', 'less', 'replaceUrl'))
+gulp.task('dist', sync('distInit', 'clean', 'index', 'facicon', 'lib', 'image', 'html', 'js', 'lib-js', 'concatless', 'less', 'replaceUrl'))
 
 
-gulp.task('test', sync('testInit', 'clean', 'index', 'lib', 'image', 'html', 'js', 'lib-js', 'concatless', 'less', 'replaceUrl'))
+gulp.task('test', sync('testInit', 'clean', 'index', 'facicon', 'lib', 'image', 'html', 'js', 'lib-js', 'concatless', 'less', 'replaceUrl'))
 
 
-gulp.task('dev', sync('devInit', 'clean', 'index', 'lib', 'image', 'html', 'js', 'lib-js', 'concatless', 'less', 'json', 'server', 'watch'))
+gulp.task('dev', sync('devInit', 'clean', 'index', 'facicon', 'lib', 'image', 'html', 'js', 'lib-js', 'concatless', 'less', 'json', 'server', 'watch'))
 
 /*
 

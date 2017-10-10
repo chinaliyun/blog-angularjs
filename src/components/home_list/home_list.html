@@ -5,9 +5,9 @@
 				<span class="name">全部</span>
 				<span class="count" ng-bind="labelCount">(24)</span>
 			</li>
-			<li ng-repeat="item in categoryList" ng-show="item.sum!=0" class="{{search.type==item.id ? 'active': ''}}" ng-click="selectType(item.id)">
+			<li ng-repeat="item in categoryList" ng-show="item.sum!=0" class="{{search.type==item.id ? 'active': ''}}" ng-click="selectType(item)">
 				<span class="name" ng-bind="item.name">javascript</span>
-				<span class="count" ng-bind="item.sum">(12)</span>
+				<span class="count" ng-bind="item.count">(12)</span>
 			</li>
 		</ul>
 	</div>
@@ -18,9 +18,10 @@
 				<h3 class="title" ui-sref="home.article({id: item.id})" ng-bind="item.title"></h3>
 				<div class="label_wrapper">
 					<ul class="label_list">
-						<li ng-repeat="label in item.labels" ng-bind="label.name"></li>
+						<li ng-repeat="label in item.labels" ng-bind="label"></li>
 					</ul>
 					<div class="space"></div>
+					<div class="author">发布人: <span ng-bind="item.author"></span></div>
 					<div class="add_date">发布时间: <span ng-bind="item.add_date"></span></div>
 					<div class="read_count">阅读: <span ng-bind="item.read">1468</span></div>
 				</div>

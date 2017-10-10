@@ -56,14 +56,16 @@
             }
             var def = $q.defer();
             $http({
-                url: "{POST_PATH}"+ url,
+                url: "{POST_PATH}" + url,
                 // url: 'http://localhost:8888/index.php',
                 method: "POST",
                 headers: {
                     "Content-Type": undefined,
                 },
                 transformRequest: function () {
+                    console.log(desc + ' Req: ', Object.assign({}, { realUrl: url }, data))
                     var formData = new FormData();
+
                     angular.forEach(data, function (item, index) {
                         if (angular.isArray(item)) {
                             angular.forEach(item, function (value, key) {
@@ -83,24 +85,20 @@
                         dict.loading()
                     }, 300)
                 }
-
-                if (res.data.code === 101) {
-                    dict.go('login')
-                    dict.clearCache();
-                    def.reject();
-                } else {
-                    console.log(desc + ',' + url + ' Res ', res.data)
-                    def.resolve(res.data);
+                if (res.data.code != 0 || res.data.data === undefined) {
+                    def.resolve({ err: { code: res.data.code, msg: res.data.msg } })
+                    console.log({ err: { code: res.data.code, msg: res.data.msg } })
+                    return false;
                 }
+                console.log(desc + ',' + url + ' Res ', res.data)
+                def.resolve({ ok: res.data });
 
             }, function (err) {
                 if (loading) {
-                    $timeout(function () {
-                        dict.loading()
-                    }, 300)
+                    dict.loading()
                 }
-                console.log(desc + ',' + url + ', 请求失败, err: ', err)
-                def.reject(err);
+                console.log(desc + ' Err: ', err);
+                def.resolve({ err: err });
             })
             return def.promise;
         }
@@ -123,7 +121,7 @@
             };
             var baseConfig = {
                 headers: {
-                    "Content-Type":"text/plain, charset=utf-8",
+                    "Content-Type": "text/plain, charset=utf-8",
                 },
                 // timeout: 3000,
             };
@@ -138,7 +136,7 @@
                 console.log(str.slice(0, -1))
                 return str.slice(0, -1);
             }
-            var realUrl = "{POST_PATH}"+ url;
+            var realUrl = "{POST_PATH}" + url;
             // var realData = data ? serilaze(Object.assign({}, baseData, data)) : serilaze(baseData);
             var realData = data ? Object.assign({}, baseData, data) : baseData;
             var realConfig = config ? Object.assign({}, baseConfig, config) : baseConfig;
@@ -148,21 +146,21 @@
                     if (loading) {
                         dict.loading()
                     }
-                    // if (res.data.code === 1) {
-                    //     dict.go('home.login', {
-                    //         id: dict.url[0]
-                    //     })
-                    //     dict.clearToken();
-                    //     return false;
-                    // }
-                    if (res.data.code != 0 || res.data.data===undefined) {
-                        def.resolve({ err: { code: res.data.code, msg: res.data.msg } })
-                       console.log({ err: { code: res.data.code, msg: res.data.msg } })
+                    if (res.data.code === 1) {
+                        dict.go('home.login', {
+                            id: dict.url[0]
+                        })
+                        dict.clearToken();
                         return false;
                     }
                     console.log(desc + ' Res: ', res.data)
-                    console.log({ ok: res.data.data!='' ? res.data.data : true })
-                    def.resolve({ ok: res.data.data!='' ? res.data.data : true });
+                    if (res.data.code != 0 || res.data.data === undefined) {
+                        def.resolve({ err: { code: res.data.code, msg: res.data.msg } })
+                        console.log({ err: { code: res.data.code, msg: res.data.msg } })
+                        return false;
+                    }
+                    console.log({ ok: res.data.data != '' ? res.data.data : true })
+                    def.resolve({ ok: res.data.data != '' ? res.data.data : true });
 
                 }, function (err) {
                     if (loading) {

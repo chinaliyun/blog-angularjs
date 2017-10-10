@@ -12,15 +12,16 @@
         init()
         function init() {
             $scope.id = "";
-            $scope.showPreview = true;
+            $scope.showPreview = false;
             $scope.title = "";
             $scope.content = "";
+            $scope.contentAnthor = 0;
             $scope.labels = []
-            if ($state.params.id) {
-                getArticleDetail();
-            } else {
-                getAllLabel()
+            $scope.all_labels = [];
+            if (!dict.cache.uname) {
+                return false;
             }
+            getArticleDetail();
         }
         function getArticleDetail() {
             var postData = {
@@ -32,19 +33,25 @@
                     $scope.title = res.ok.title;
                     $scope.content = res.ok.content;
                     $scope.labels = res.ok.labels;
+                    $scope.all_labels = res.ok.all_labels;
+                    angular.forEach(res.ok.labels, function(item, index){
+                        angular.forEach(res.ok.all_labels, function(value, key){
+                            if(item==value.name){
+                                $scope.all_labels[key]['select'] = true;
+                            }
+                        })
+                    })
                 } else {
 
                 }
             })
         }
-        function getAllLabel() {
-            model.getLabelList().then(function (res) {
-                if (res.ok) {
-                    $scope.labels = res.ok
-                } else {
 
-                }
-            })
+        $scope.contentClick = function(event){
+            $scope.contentAnthor = event.target.selectionStart;
+        }
+        $scope.contentChange = function(event){
+            $scope.contentAnthor = $scope.content.length;
         }
         $scope.togglePreview = function () {
             $scope.showPreview = !$scope.showPreview;
@@ -59,6 +66,9 @@
         $scope.addLabel = function () {
             addLabel();
         }
+        $scope.addImage = function(){
+            document.querySelector('input[type=file]').click()
+        }
         $scope.fileChange = function(ele){
             if(ele.value){
                 var postData = {
@@ -66,7 +76,18 @@
                     file: ele.files[0]
                 };
                 model.uploadImg(postData).then(function(res){
-
+                    if(res.ok){
+                        if($scope.contentAnthor==0){
+                            $scope.content = $scope.content+'![图片]('+res.ok.data.url+')\n\n';
+                        }else{
+                            var tmp1 = $scope.content.substr(0, $scope.contentAnthor);
+                            var tmp2 = $scope.content.substr($scope.contentAnthor);
+                            $scope.content = tmp1 + '\n\n![图片]('+res.ok.data.url+')\n\n' + tmp2;
+                        }
+                    }else{
+                        dict.alert($scope, '图片上传失败')
+                    }
+                    ele.value = null;
                 })
             }
         }
@@ -107,12 +128,9 @@
                 "labels": [],
                 "action": 'admin'
             };
-            $scope.labels.map(function (item, index) {
+            $scope.all_labels.map(function (item, index) {
                 if (item.select) {
-                    postData.labels.push({
-                        id: item.id,
-                        name: item.name
-                    })
+                    postData.labels.push(item.id)
                 }
             })
             model.saveArticle(postData).then(function (res) {
