@@ -1,6 +1,6 @@
 ; (function () {
     angular.module('app')
-        .controller('adminArticleCtrl', controller)
+        .controller('adminLogCtrl', controller)
     controller.$inject = [
         '$scope',
         '$state',

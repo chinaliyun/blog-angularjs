@@ -42,7 +42,7 @@
             };
             model.login(postData).then(function(res){
                 if(res.ok){
-                    cache.put('uname', res.ok.uname)
+                    cache.put('ni_name', res.ok.ni_name)
 					cache.put('usid', res.ok.usid)
 					cache.put('token', res.ok.token)
 					cache.put('group', res.ok.group)

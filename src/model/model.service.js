@@ -13,10 +13,13 @@
 			return http.post('获取文章详情', '/article/get_detail', data)
 		}
 		this.countArticle= function(data){
-			return http.post('获取文章详情', '/article/count_article', data)
+			return http.post('获取文章类别', '/article/count_article', data)
 		}
 		this.deleteArticle = function(data){
 			return http.post('删除文章', '/article/delete', data)
+		}
+		this.getLabelList = function(data){
+			return http.post('获取标签列表', '/constant/all_label', data)
 		}
 		this.saveLabel = function(data){
 			return http.post('保存标签', '/constant/add_label', data)

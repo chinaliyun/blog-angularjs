@@ -58,6 +58,11 @@
 				templateUrl: './static/view/admin_label.html',
 				controller: 'adminLabelCtrl'
 			})
+			.state('admin.log',{	
+				url: '/log',
+				templateUrl: './static/view/admin_log.html',
+				controller: 'adminLogCtrl'
+			})
 		$urlRouterProvider.otherwise('/home/list')
 	}
 

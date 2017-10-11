@@ -12,7 +12,7 @@
         init()
         function init() {
             $scope.dict = dict;
-            if (!dict.cache.uname) {
+            if (!dict.cache.ni_name) {
                 dict.go('home.login', {
                     id: 'admin.new'
                 })

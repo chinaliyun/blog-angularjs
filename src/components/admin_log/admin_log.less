@@ -1,0 +1,92 @@
+.admin_log {
+    height: 100%;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    // .pt(10);
+    .title_group,
+    .label_group {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid @dlc;
+        background-color: white; // box-sizing: border-box;
+        min-height: 40px;
+        .label {
+            flex-shrink: 0;
+            padding: 0 10px;
+        }
+        li{
+            cursor: pointer;
+            &:hover{
+                background-color: @dfhc;
+                color: white;
+            }
+        }
+        input {
+            flex-grow: 1;
+            .h(40);
+            .lh(40);
+            padding: 0 10px;
+        }
+        .active {
+            background-color: @dfhc;
+            color: white;
+        }
+    }
+    .label_group{
+        padding: 10px 0;
+    }
+    .tools {
+        flex-shrink: 0;
+        border-bottom: 1px solid @dlc;
+        .h(40);
+        .lh(40);
+        display: flex;
+        align-items: center;
+        padding: 0 10px;
+        background-color: @dlc;
+        button {
+            .w(100);
+            .ml(10);
+        }
+    }
+    .workplace {
+        flex-grow: 1;
+        display: flex;
+        align-items: stretch;
+        border-bottom: 1px solid @dlc;
+        .editor,
+        .preview {
+            .w(10);
+            align-self: stretch;
+            flex-grow: 1;
+        }
+        .editor {
+            display: flex;
+            padding: 0 10px;
+            background-color: white;
+            border-right: 1px solid @dlc;
+            textarea {
+                flex-grow: 1;
+                resize: none;
+                border: none;
+                .fs(14);
+                .lh(20);
+                padding: 10px 0;
+            }
+        }
+        .preview {
+            padding: 10px; 
+            background-color: lighten(@dbc, 10%);
+            // background-color: white;
+            overflow-y: auto; // background-color: red;
+            transition: all 0.2s linear;
+            &.hide{
+                flex-grow: 0;
+                .w(0);
+                padding: 0;
+            }
+        }
+    }
+}

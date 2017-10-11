@@ -36,7 +36,6 @@
             return def.promise;
         }
         dict.go = function (route, params) {
-            console.log(params);
             if (params) {
                 $state.go(route, params)
             } else {

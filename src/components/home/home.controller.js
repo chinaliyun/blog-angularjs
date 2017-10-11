@@ -16,7 +16,7 @@
         }
         $scope.logout = function(){
             dict.clearToken();
-            dict.cache.uname = '';
+            dict.cache.ni_name = '';
         }
         $scope.search = function(event){
             if(event.keyCode==13 && $scope.searchInput.trim()!=''){

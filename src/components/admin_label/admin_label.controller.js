@@ -22,9 +22,14 @@
                 }
             })
         }
+        $scope.keyUp = function(e){
+            if(event.keyCode==13){
+                $scope.addLabel();
+            }
+        }
         $scope.addLabel = function () {
-            if ($scope.name.trim == '') {
-                console.log('标签名不能为空')
+            if ($scope.name.trim() == '') {
+                dict.alert($scope, '标签名称不能为空')
                 return false;
             }
             var postData = {
@@ -35,22 +40,32 @@
                     $scope.list.push(res.ok[0]);
                     $scope.name = "";
                     document.querySelector('.addLabel').focus();
+                    dict.alert($scope, '标签添加成功')
                 } else {
-
+                    dict.alert($scope, res.err.msg)
                 }
             })
         }
         $scope.deleteLabel = function (item, index) {
-            var postData = {
-                id: item.id
-            };
-            model.deleteLabel(postData).then(function (res) {
-                if (res.ok) {
-                    $scope.list.splice(index, 1);
-                } else {
+            dict.alert($scope,'确定要删除这个标签吗?', true, '确定', '取消').then(function(res){
+                if(res.ok){
+                    var postData = {
+                        id: item.id,
+                        name: item.name
+                    };
+                    model.deleteLabel(postData).then(function (res) {
+                        if (res.ok) {
+                            $scope.list.splice(index, 1);
+                            dict.alert($scope, '标签删除成功');
+                        } else {
+                            dict.alert($scope, res.err.msg);
+                        }
+                    })
+                }else{
 
                 }
             })
+            
         }
     }
 }())

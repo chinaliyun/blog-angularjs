@@ -20,9 +20,9 @@
 			}
 			// 重置页面滚动条高度为
 			// 取消弹出层
-			if(cache.get('uname')){
+			if(cache.get('ni_name')){
 				dict.isLogin = true;
-				dict.cache.uname = cache.get('uname');
+				dict.cache.ni_name = cache.get('ni_name');
 			}else{
 				dict.isLogin = false;
 			}
