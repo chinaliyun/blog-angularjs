@@ -10,7 +10,6 @@
     function controller($scope, model, dict){
         init() 
         function init(){
-            dict.alert($scope, '确定要删除该文章吗')
             $scope.list = [];
             $scope.categoryList = [];
             $scope.articleCount = 0;
@@ -42,12 +41,12 @@
                     $scope.search.type = res.ok[0].code;
                     getList();
                 }else{
-                    dict.alert($scope, '获取列表失败，请稍后重试');
+                    dict.alert( '获取列表失败，请稍后重试');
                 }
             })
         }
         $scope.delete = function(item, index){
-            dict.alert($scope, '确定要删除该文章吗？', true, '确定', '取消').then(function(res){
+            dict.alert( '确定要删除该文章吗？', true, '确定', '取消').then(function(res){
                 if(res.ok){
                     var postData = {
                         id: item.id
@@ -56,7 +55,7 @@
                         if(res.ok){
                             $scope.list.splice(index, 1);
                         }else{
-                            dict.alert($scope, '删除失败，请稍后重试')
+                            dict.alert( '删除失败，请稍后重试')
                         }
                     })
                 }

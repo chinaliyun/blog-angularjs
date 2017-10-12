@@ -8,17 +8,18 @@
         '$q',
         'http',
         '$state',
+        '$rootScope',
         '$timeout',
         'cache',
         'dict'
     ];
 
-    function runRun(cache, $q, http, $state, $timeout, cache, dict) {
+    function runRun(cache, $q, http, $state, $rootScope, $timeout, cache, dict) {
         dict.httpQueue = [];
         dict.url = [];
         dict.cache = {}
         dict.clearToken = function(){
-            cache.remove('uname')
+            cache.remove('ni_name')
             cache.remove('usid')
             cache.remove('token')
             cache.remove('group')
@@ -45,46 +46,46 @@
         dict.reload = function(){
             $state.reload();
         }
-        dict.alert = function(scope, text, showBtn, okText, cancelText){
-            scope.alertVisiable = true;
+        dict.alert = function(text, showBtn, okText, cancelText){
+            $rootScope.alertVisiable = true;
             var def = $q.defer();
-            scope.alertVisiable = true;
-            scope.alertShowBtn = showBtn || false;
-            scope.alertOkText = okText || '确定';
-            scope.alertCancelText = cancelText || '';
-            scope.alertContext = text || '没有可以显示的内容';
-            scope.alertOk = function () {
-                scope.alertVisiable = false;
-                scope.alertShowBtn =  false;
+            $rootScope.alertVisiable = true;
+            $rootScope.alertShowBtn = showBtn || false;
+            $rootScope.alertOkText = okText || '确定';
+            $rootScope.alertCancelText = cancelText || '';
+            $rootScope.alertContext = text || '没有可以显示的内容';
+            $rootScope.alertOk = function () {
+                $rootScope.alertVisiable = false;
+                $rootScope.alertShowBtn =  false;
                 def.resolve({ok: true})
             };
-            scope.alertCancel = function () {
-                scope.alertVisiable = false;
-                scope.alertShowBtn =  false;
+            $rootScope.alertCancel = function () {
+                $rootScope.alertVisiable = false;
+                $rootScope.alertShowBtn =  false;
                 def.resolve({cancel: true});
             };
-            if(!scope.alertShowBtn){
+            if(!$rootScope.alertShowBtn){
                 $timeout(function(){
-                    scope.alertOk();
+                    $rootScope.alertOk();
                 }, 1000)
             }
             return def.promise;
         }
 
-        dict.confirm = function(scope, header, placeholder, okText, cancelText){
-            scope.confirmVisiable = true;
+        dict.confirm = function(header, placeholder, okText, cancelText){
+            $rootScope.confirmVisiable = true;
             var def = $q.defer();
-            scope.confirmVisiable = true;
-            scope.confirmHeader= header || '请输入： ';
-            scope.confirmPlaceholder = placeholder || '';
-            scope.confirmOkText = okText || '确定';
-            scope.confirmCancelText = cancelText || '取消';
-            scope.confirmOk = function () {
-                scope.confirmVisiable = false;
-                def.resolve({ok: scope.confirmInput})
+            $rootScope.confirmVisiable = true;
+            $rootScope.confirmHeader= header || '请输入： ';
+            $rootScope.confirmPlaceholder = placeholder || '';
+            $rootScope.confirmOkText = okText || '确定';
+            $rootScope.confirmCancelText = cancelText || '取消';
+            $rootScope.confirmOk = function () {
+                $rootScope.confirmVisiable = false;
+                def.resolve({ok: $rootScope.confirmInput})
             };
-            scope.confirmCancel = function () {
-                scope.confirmVisiable = false;
+            $rootScope.confirmCancel = function () {
+                $rootScope.confirmVisiable = false;
                 def.resolve({cancel: true});
             };
             return def.promise;

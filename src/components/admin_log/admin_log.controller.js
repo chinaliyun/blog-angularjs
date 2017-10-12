@@ -85,7 +85,7 @@
                             $scope.content = tmp1 + '\n\n![图片]('+res.ok.data.url+')\n\n' + tmp2;
                         }
                     }else{
-                        dict.alert($scope, '图片上传失败')
+                        dict.alert( '图片上传失败')
                     }
                     ele.value = null;
                 })
@@ -101,7 +101,7 @@
                     return false;
                 }
                 if(res.ok==''){
-                    dict.alert($scope, '请输入标签名').then(function(){
+                    dict.alert( '请输入标签名').then(function(){
                         if(res.ok){
                             addLabel();
                         }
@@ -114,7 +114,7 @@
                         if (res.ok) {
                             $scope.list.push(res.ok[0]);
                         } else {
-                            dict.alert($scope, res.err.msg)
+                            dict.alert( res.err.msg)
                         }
                     })
                 }
@@ -137,16 +137,16 @@
                 if (res.ok) {
                     if (!$scope.id) {
                         // $scope.id = res.ok.id;
-                        dict.alert($scope, '发布新文章成功').then(function(){
+                        dict.alert( '发布新文章成功').then(function(){
                             dict.go('admin.article', {
                                 id: res.ok.id
                             })
                         })
                     }else{
-                        dict.alert($scope, '保存成功')
+                        dict.alert( '保存成功')
                     }
                 } else {
-                    dict.alert($scope, res.err.msg).then(function () {
+                    dict.alert( res.err.msg).then(function () {
                         if (res.err.code == 1) {
 
                         }

@@ -14,6 +14,9 @@
 	function runRun(dict, $rootScope, $state, cache){
 		// 检测路由更新成功事件
 		$rootScope.$on('$stateChangeSuccess', function(e){
+			$rootScope.alertVisiable = false;
+			$rootScope.confirmVisiable = false;
+
 			dict.url.unshift($state.current.name)
 			if(dict.url.length>3){
 				dict.url.splice(-1, 1);

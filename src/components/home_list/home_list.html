@@ -23,12 +23,12 @@
 					<div class="space"></div>
 					<div class="author">发布人: <span ng-bind="item.author"></span></div>
 					<div class="add_date">发布时间: <span ng-bind="item.add_date"></span></div>
-					<div class="read_count">阅读: <span ng-bind="item.read">1468</span></div>
+					<div class="read_count">阅读: <span ng-bind="item.read_count">1468</span></div>
 				</div>
 				<div class="article_content">
 					<div class="markdown-body" ng-bind-html="item.content | html"></div>
 				</div>
-				<div class="detail">.....</div>
+				<!-- <div class="detail">.....</div> -->
 			</div>
 			<div class="loading" ng-show="showLoading">
 				<div class="content">

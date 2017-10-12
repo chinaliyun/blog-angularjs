@@ -7,7 +7,7 @@
 			return http.post('获取文章列表', '/article/article_list', data)
 		}
 		this.saveArticle = function(data){
-			return http.post('保存文章', '/article/save', data)
+			return http.post('保存文章', '/article/save_article', data)
 		}
 		this.getArticleDetail = function(data){
 			return http.post('获取文章详情', '/article/get_detail', data)

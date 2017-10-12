@@ -21,6 +21,10 @@
                 $scope.labelControl = true;
             }
         }
+        $scope.newArticle = function(){
+            dict.go('admin.article');
+            $scope.$broadcast("newArticle")
+        }
 
     }
 }())

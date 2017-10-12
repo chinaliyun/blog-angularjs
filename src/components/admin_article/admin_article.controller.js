@@ -21,18 +21,40 @@
             if (!dict.cache.ni_name) {
                 return false;
             }
+            if($state.params.id){
+                $scope.id = $state.params.id
+            }
             getArticleDetail();
         }
+        $scope.$on('newArticle', function(){
+            if($scope.title!= '' || $scope.content!=''){
+                dict.alert('您的操作还未保存，确定要重新开始吗？', true, '确定', '取消').then(function(res){
+                    if(res.ok){
+                        $scope.title = "";
+                        $scope.id = "";
+                        $scope.content = "";
+                        angular.forEach($scope.all_labels, function(item, index){
+                            item.select = false;
+                        })
+                    }else{
+
+                    }
+                })
+            }
+        })
         function getArticleDetail() {
             var postData = {
-                id: $state.params.id
+                id: $state.params.id,
+                action: 'admin'
             };
             model.getArticleDetail(postData).then(function (res) {
                 if (res.ok) {
-                    $scope.id = res.ok.id;
-                    $scope.title = res.ok.title;
-                    $scope.content = res.ok.content;
-                    $scope.labels = res.ok.labels;
+                    if($scope.id){
+                        $scope.id = res.ok.id;
+                        $scope.title = res.ok.title;
+                        $scope.content = res.ok.content;
+                        $scope.labels = res.ok.labels;
+                    }
                     $scope.all_labels = res.ok.all_labels;
                     angular.forEach(res.ok.labels, function(item, index){
                         angular.forEach(res.ok.all_labels, function(value, key){
@@ -42,7 +64,7 @@
                         })
                     })
                 } else {
-
+                    dict.alert(res.err.msg)
                 }
             })
         }
@@ -78,14 +100,18 @@
                 model.uploadImg(postData).then(function(res){
                     if(res.ok){
                         if($scope.contentAnthor==0){
-                            $scope.content = $scope.content+'![图片]('+res.ok.data.url+')\n\n';
+                            $scope.content = $scope.content+'![图片]('+res.ok.url+')\n\n';
                         }else{
                             var tmp1 = $scope.content.substr(0, $scope.contentAnthor);
                             var tmp2 = $scope.content.substr($scope.contentAnthor);
-                            $scope.content = tmp1 + '\n\n![图片]('+res.ok.data.url+')\n\n' + tmp2;
+                            $scope.content = tmp1 + '\n\n![图片]('+res.ok.url+')\n\n' + tmp2;
+                        }
+                        if(!$scope.id){
+                            $scope.id = res.ok.id
+                            $scope.title = res.ok.title
                         }
                     }else{
-                        dict.alert($scope, '图片上传失败')
+                        dict.alert( '图片上传失败')
                     }
                     ele.value = null;
                 })
@@ -101,7 +127,7 @@
                     return false;
                 }
                 if(res.ok==''){
-                    dict.alert($scope, '请输入标签名').then(function(){
+                    dict.alert( '请输入标签名').then(function(){
                         if(res.ok){
                             addLabel();
                         }
@@ -114,7 +140,7 @@
                         if (res.ok) {
                             $scope.list.push(res.ok[0]);
                         } else {
-                            dict.alert($scope, res.err.msg)
+                            dict.alert( res.err.msg)
                         }
                     })
                 }
@@ -137,16 +163,16 @@
                 if (res.ok) {
                     if (!$scope.id) {
                         // $scope.id = res.ok.id;
-                        dict.alert($scope, '发布新文章成功').then(function(){
+                        dict.alert( '发布新文章成功').then(function(){
                             dict.go('admin.article', {
                                 id: res.ok.id
                             })
                         })
                     }else{
-                        dict.alert($scope, '保存成功')
+                        dict.alert( '保存成功')
                     }
                 } else {
-                    dict.alert($scope, res.err.msg).then(function () {
+                    dict.alert( res.err.msg).then(function () {
                         if (res.err.code == 1) {
 
                         }

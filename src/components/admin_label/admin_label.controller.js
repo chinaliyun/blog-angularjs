@@ -29,7 +29,7 @@
         }
         $scope.addLabel = function () {
             if ($scope.name.trim() == '') {
-                dict.alert($scope, '标签名称不能为空')
+                dict.alert( '标签名称不能为空')
                 return false;
             }
             var postData = {
@@ -40,14 +40,14 @@
                     $scope.list.push(res.ok[0]);
                     $scope.name = "";
                     document.querySelector('.addLabel').focus();
-                    dict.alert($scope, '标签添加成功')
+                    dict.alert( '标签添加成功')
                 } else {
-                    dict.alert($scope, res.err.msg)
+                    dict.alert( res.err.msg)
                 }
             })
         }
         $scope.deleteLabel = function (item, index) {
-            dict.alert($scope,'确定要删除这个标签吗?', true, '确定', '取消').then(function(res){
+            dict.alert('确定要删除这个标签吗?', true, '确定', '取消').then(function(res){
                 if(res.ok){
                     var postData = {
                         id: item.id,
@@ -56,9 +56,9 @@
                     model.deleteLabel(postData).then(function (res) {
                         if (res.ok) {
                             $scope.list.splice(index, 1);
-                            dict.alert($scope, '标签删除成功');
+                            dict.alert( '标签删除成功');
                         } else {
-                            dict.alert($scope, res.err.msg);
+                            dict.alert( res.err.msg);
                         }
                     })
                 }else{

@@ -22,27 +22,27 @@
         $scope.register = function(){
 
             if($scope.uname.trim().length==0){
-                dict.alert($scope,'用户名不能为空')
+                dict.alert('用户名不能为空')
                 return false;
             }
 			// if($scope.uname.length > 10){
-            //     dict.alert($scope,'用户名长度不能多余10位')
+            //     dict.alert('用户名长度不能多余10位')
             //     return false;
 			// }
             // if($scope.phone.trim().length==0){
-            //     dict.alert($scope,'手机号码不能为空')
+            //     dict.alert('手机号码不能为空')
             //     return false;
             // }
             if($scope.passwd.trim().length==0){
-                dict.alert($scope,'密码不能为空')
+                dict.alert('密码不能为空')
                 return false;
             }
 			// if($scope.passwd.length < 6){
-            //     dict.alert($scope,'密码长度不能少于6位')
+            //     dict.alert('密码长度不能少于6位')
             //     return false;
 			// }
 			if(/^\d{6,11}$/.test($scope.passwd) || !/[A-Z]/.test($scope.passwd)){
-                dict.alert($scope,'密码过于简单')
+                dict.alert('密码过于简单')
                 return false;
 			}
             var postData = {
@@ -52,11 +52,11 @@
             };
             model.register(postData).then(function(res){
                 if(res.ok){
-                    dict.alert($scope, '注册成功').then(function(){
+                    dict.alert( '注册成功').then(function(){
                         dict.go('home.login')
                     })
                 }else{
-                    dict.alert($scope, res.err.msg);
+                    dict.alert( res.err.msg);
                 }
             })
         }

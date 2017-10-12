@@ -11,11 +11,11 @@
 		</ul>
 	</div>
 	<div class="tools">
-		<span class="space"></span>
 		<input type="file" style="display: none;" onchange="angular.element(this).scope().fileChange(this)" name="file">
 		<button class="btn_default" ng-click="addImage()">添加图片</button>
 		<button class="btn_default" title="{{showPreview?'关闭预览窗':'打开预览窗'}}" ng-click="togglePreview()" ng-bind="showPreview?'关闭预览窗':'打开预览窗'"></button>
 		<button class="btn_default" ng-click="save()">发布</button>
+		<span class="space"></span>
 	</div>
 	<div class="workplace">
 		<div class="editor">
@@ -24,7 +24,5 @@
 		</div>
 		<div class="preview markdown-body {{showPreview?'':'hide'}}" ng-bind-html="content | html"></div>
 	</div>
-	<div app-alert=""  ng-show="alertVisiable"></div>
-	<div app-confirm=""  ng-show="confirmVisiable"></div>
 	
 </div>

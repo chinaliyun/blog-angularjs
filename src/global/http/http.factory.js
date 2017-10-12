@@ -80,18 +80,25 @@
                     return formData;
                 }
             }).then(function (res) {
+                console.log(desc + ',' + url + ' Res ', res.data)
                 if (loading) {
                     $timeout(function () {
                         dict.loading()
                     }, 300)
+                }
+                if (res.data.code === 1) {
+                    dict.go('home.login', {
+                        id: dict.url[0]
+                    })
+                    dict.clearToken();
+                    return false;
                 }
                 if (res.data.code != 0 || res.data.data === undefined) {
                     def.resolve({ err: { code: res.data.code, msg: res.data.msg } })
                     console.log({ err: { code: res.data.code, msg: res.data.msg } })
                     return false;
                 }
-                console.log(desc + ',' + url + ' Res ', res.data)
-                def.resolve({ ok: res.data });
+                def.resolve({ ok:  res.data.data != '' ? res.data.data : true});
 
             }, function (err) {
                 if (loading) {
