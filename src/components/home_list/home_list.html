@@ -13,7 +13,7 @@
 	</div>
 	<div class="article_wrapper">
 		<div ng-show="list.length==0" class="no_data">没有查到您要找的相关文章</div>
-		<div class="article_list">
+		<!-- <div class="article_list"> -->
 			<div class="article_item {{$last?'last_item':''}}" ng-repeat="item in list">
 				<h3 class="title" ui-sref="home.article({id: item.id})" ng-bind="item.title"></h3>
 				<div class="label_wrapper">
@@ -30,7 +30,7 @@
 				</div>
 				<!-- <div class="detail">.....</div> -->
 			</div>
-			<div class="loading" ng-show="showLoading">
+			<div class="app_loading" ng-show="showLoading">
 				<div class="content">
 					<span></span>
 					<span></span>
@@ -42,7 +42,7 @@
 					<span></span>
 				</div>
 			</div>
-		</div>
+		<!-- </div> -->
 	</div>
 	<div app-alert="" ng-show="alertVisiable"></div>
 

@@ -1,14 +1,32 @@
 <div class="home_article">
-    <div class="article_item">
+    <div class="app_loading" ng-show="!detail.title">
+        <div class="content">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+    <div class="article_item" ng-show="detail.title">
         <h3 class="title" ng-bind="detail.title"></h3>
         <div class="label_wrapper">
-            <ul class="label_list" >
-                <li ng-repeat="item in detail.labels" ng-bind="item" ></li>
+            <ul class="label_list">
+                <li ng-repeat="item in detail.labels" ng-bind="item"></li>
             </ul>
             <div class="space"></div>
-            <div class="author">发布人: <span ng-bind="detail.author"></span></div>
-            <div class="add_date">发布时间: <span ng-bind="detail.add_date"></span></div>
-            <div class="read_count">阅读: <span ng-bind="detail.read_count">1468</span></div>
+            <div class="author">发布人:
+                <span ng-bind="detail.author"></span>
+            </div>
+            <div class="add_date">发布时间:
+                <span ng-bind="detail.add_date"></span>
+            </div>
+            <div class="read_count">阅读:
+                <span ng-bind="detail.read_count">1468</span>
+            </div>
         </div>
         <div class="article_content">
             <div class="markdown-body" ng-bind-html="detail.content | html"></div>
@@ -17,16 +35,18 @@
             <h3 class="header">
                 <!-- <span>评论</span> -->
             </h3>
-            <div class="comments_item" ng-repeat="itme in [1,2,3]">
-                <div class="content">写的真好</div>
+            <div class="comments_item" ng-repeat="item in detail.comments">
+                <div class="content" ng-bind="item.content">写的真好</div>
                 <div class="info">
-                    <span class="author">John Alien</span>
-                    <span class="add_date">2016-07-12 11:30:12</span>
+                    <span class="author" ng-bind="item.author">John Alien</span>
+                    <span class="add_date" ng-bind="item.add_date">2016-07-12 11:30:12</span>
+                    <!-- 如果用户时管理员级别，全部显示删除按钮，否则只在用户发布的评论旁边显示删除按钮 -->
+                    <button class="delete" ng-click="deleteComment(item, $index)" ng-show="dict.cache.user_group==0 || item.usid == dict.cache.usid">删除</button>
                 </div>
             </div>
             <div class="add_comments">
-                <textarea></textarea>
-                <button class="btn_default">发表评论</button>
+                <textarea ng-model="commentContent"></textarea>
+                <button class="btn_default" ng-click="addComment()" ng-bind="addLoading ? '正在提交...' : '发表评论'"></button>
             </div>
         </div>
         <!-- <div class="detail">查看更多</div> -->

@@ -2,15 +2,16 @@
 	<div class="form">
 		<h1 class="title">账号登陆</h1>
 		<div class="form_group">
-			<span class="label">用户名</span>
-			<input type="text" ng-model="uname" ng-keyup="keyUp($event)">
+			<span class="label">邮箱</span>
+			<input type="text" ng-model="email" ng-keyup="keyUp($event)" placeholder="请输入可用的邮箱">
 		</div>
 		<div class="form_group">
 			<span class="label">密码</span>
-			<input type="password" ng-model="passwd" ng-keyup="keyUp($event)">
+			<input type="password" ng-model="passwd" ng-keyup="keyUp($event)" placeholder="请输入密码">
 		</div>
-		<button class="btn_default" ng-click="login()">登陆</button>
+		<button class="btn_default" ng-click="login()" ng-bind="loginLoading?'正在登陆...':'登陆'">登陆</button>
 		<button class="btn_default" ui-sref="home.register">注册账号</button>
+		<div class="gorget" ui-sref="home.editpass">忘记密码</div>
 	</div>
 	
 </div>

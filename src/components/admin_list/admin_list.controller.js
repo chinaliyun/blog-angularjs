@@ -29,8 +29,11 @@
             
         }
         function countArticle(){
+            $scope.showLoading1 = true;
+            $scope.showLoading2 = true;
             // 先获取文章数目
             model.countArticle().then(function(res){
+                $scope.showLoading1 = false;
                 if(res.ok){
                     $scope.categoryList = res.ok;
                     var count = 0;
@@ -68,7 +71,9 @@
                 pageNo: $scope.search.pageNo,
                 type: $scope.search.type
             };
+            $scope.showLoading2 = true;
             model.getArticleList(postData).then(function(res){
+                $scope.showLoading2 = false;
 				if(res.ok){
 					$scope.list = res.ok.list;
 					$scope.categoryList = res.ok.category;

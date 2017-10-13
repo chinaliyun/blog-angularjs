@@ -30,11 +30,26 @@
 		this.register = function(data){
 			return http.post('注册账号', '/user/register', data)
 		}
+		this.editpass = function(data){
+			return http.post('重置密码', '/user/editpass', data)
+		}
 		this.login = function(data){
 			return http.post('用户登录', '/user/login', data)
 		}
 		this.uploadImg = function(data){
 			return http.file('上传图片', '/upload/index', data);
+		}
+		this.addComment = function(data){
+			return http.post('添加评论', '/article/add_comment', data)
+		}
+		this.deleteComment = function(data){
+			return http.post('删除评论', '/article/delete_comment', data)
+		}
+		this.getAllUser = function(data){
+			return http.post('所有用户', '/user/all_user', data)
+		}
+		this.sendVcode = function(data){
+			return http.post('发送验证码', '/user/send_email_code', data)
 		}
 	}
 }())

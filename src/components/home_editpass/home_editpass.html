@@ -1,0 +1,19 @@
+<div class="home_editpass">
+	<div class="form">
+		<h1 class="title">重置密码</h1>
+		<div class="form_group">
+			<span class="label">邮箱</span>
+			<input type="text" ng-model="email" placeholder="请输入您的邮箱" ng-keyup="keyUp($event)">
+		</div>
+		<div class="form_group">
+			<span class="label">密码</span>
+			<input type="password" ng-model="passwd" placeholder="请设置新的登录密码" ng-keyup="keyUp($event)">
+		</div>
+		<div class="vcode_group">
+			<input type="text" ng-model="vcode" placeholder="验证码" ng-keyup="keyUp($event)">
+			<button class="btn_default" ng-click="sendVcode()" ng-bind="sendLoading?'发送中...':'发送验证码'"></button>
+		</div>
+		<button class="btn_default" ng-click="register()" ng-bind="registerLoading?'提交中...':'确定'">注册</button>
+	</div>
+	<div app-alert="" ng-show="alertVisiable"></div>
+</div>

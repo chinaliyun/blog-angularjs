@@ -130,6 +130,7 @@
                 headers: {
                     "Content-Type": "text/plain, charset=utf-8",
                 },
+                responseType: "json"
                 // timeout: 3000,
             };
             function serilaze(obj) {

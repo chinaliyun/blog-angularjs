@@ -1,60 +1,58 @@
-;(function(){
+; (function () {
     angular.module('app')
-    .controller('homeLoginCtrl', controller)
-    controller.$inject =[
+        .controller('homeLoginCtrl', controller)
+    controller.$inject = [
         '$scope',
         '$state',
-		'model',
-		'cache',
-		'dict'
-	];
+        'model',
+        'cache',
+        'dict'
+    ];
 
-    function controller($scope, $state, model, cache, dict){
-        init() 
-        function init(){
-            $scope.uname = "";
+    function controller($scope, $state, model, cache, dict) {
+        init()
+        function init() {
+            $scope.email = "";
             $scope.passwd = "";
         }
-        $scope.keyUp = function(event){
-            if(event.keyCode==13){
+        $scope.keyUp = function (event) {
+            if (event.keyCode == 13) {
                 $scope.login();
             }
         }
-        $scope.login = function(){
-            if($state.params.id){
-                dict.alert( '欢迎回来').then(function(){
-                    dict.go($state.params.id)
-                })
-            }else{
-                dict.go('home.list');
+        $scope.login = function () {
+            if($scope.loginLoading){
+                return false;
             }
-            if($scope.uname.trim().length==0){
+            if ($scope.email.trim().length == 0) {
                 dict.alert('用户名不能为空')
                 return false;
             }
-            if($scope.passwd.trim().length==0){
+            if ($scope.passwd.trim().length == 0) {
                 dict.alert('密码不能为空')
                 return false;
             }
             var postData = {
-                uname : $scope.uname,
-                passwd : md5($scope.passwd)
+                email: $scope.email,
+                passwd: md5($scope.passwd)
             };
-            model.login(postData).then(function(res){
-                if(res.ok){
+            $scope.loginLoading = true;
+            model.login(postData).then(function (res) {
+                $scope.loginLoading = false;
+                if (res.ok) {
                     cache.put('ni_name', res.ok.ni_name)
-					cache.put('usid', res.ok.usid)
-					cache.put('token', res.ok.token)
-					cache.put('group', res.ok.group)
-                    if($state.params.id){
-                        dict.alert( '欢迎回来').then(function(){
+                    cache.put('usid', res.ok.usid)
+                    cache.put('token', res.ok.token)
+                    cache.put('group', res.ok.group)
+                    dict.alert('欢迎回来').then(function () {
+                        if ($state.params.id) {
                             dict.go($state.params.id)
-                        })
-                    }else{
-                        dict.go('home.list');
-                    }
-                }else{
-                    dict.alert( res.err.msg);
+                        } else {
+                            dict.go('home.list');
+                        }
+                    })
+                } else {
+                    dict.alert(res.err.msg);
                 }
             })
         }

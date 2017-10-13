@@ -23,6 +23,11 @@
 				templateUrl: './static/view/home_register.html',
 				controller: 'homeRegisterCtrl'
 			})
+			.state('home.editpass',{
+				url: '/editpass',
+				templateUrl: './static/view/home_editpass.html',
+				controller: 'homeEditpassCtrl'
+			})
 			.state('home.list',{
 				url: '/list',
 				templateUrl: './static/view/home_list.html',
@@ -62,6 +67,11 @@
 				url: '/log',
 				templateUrl: './static/view/admin_log.html',
 				controller: 'adminLogCtrl'
+			})
+			.state('admin.user',{	
+				url: '/user',
+				templateUrl: './static/view/admin_user.html',
+				controller: 'adminUserCtrl'
 			})
 		$urlRouterProvider.otherwise('/home/list')
 	}

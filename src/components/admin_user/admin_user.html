@@ -1,0 +1,56 @@
+<div class="admin_user">
+	<div class="table">
+		<ul class="thead">
+			<li>id</li>
+			<li>用户名</li>
+			<li>所属组</li>
+			<li>注册时间</li>
+			<li>最后登录时间</li>
+			<li>发布文章权限</li>
+			<li>删除文章权限</li>
+			<li>添加标签权限</li>
+			<li>删除标签权限</li>
+			<li>发布评论权限</li>
+			<li>删除评论权限</li>
+			<li>编辑</li>
+		</ul>
+		<ul class="tbody list" ng-repeat="item in list">
+			<li>
+				<span ng-bind="item.id"></span>
+			</li>
+			<li>
+				<span ng-bind="item.ni_name"></span>
+			</li>
+			<li>
+				<span ng-bind="item.u_group"></span>
+			</li>
+			<li>
+				<span ng-bind="item.last_date"></span>
+			</li>
+			<li>
+				<span ng-bind="item.add_date"></span>
+			</li>
+			<li>
+				<span ng-bind="item.add_article==1?'允许':'不允许'"></span>
+			</li>
+			<li>
+				<span ng-bind="item.remove_article==1?'允许':'不允许'"></span>
+			</li>
+			<li>
+				<span ng-bind="item.add_label==1?'允许':'不允许'"></span>
+			</li>
+			<li>
+				<span ng-bind="item.remove_label==1?'允许':'不允许'"></span>
+			</li>
+			<li>
+				<span ng-bind="item.add_comment==1?'允许':'不允许'"></span>
+			</li>
+			<li>
+				<span ng-bind="item.remove_comment==1?'允许':'不允许'"></span>
+			</li>
+			<li>
+				<button class="link" ng-click="deleteLabel(item, $index)">删除</button>
+			</li>
+		</ul>
+	</div>
+</div>

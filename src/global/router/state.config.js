@@ -29,6 +29,10 @@
 			}else{
 				dict.isLogin = false;
 			}
+			dict.cache.user_group = cache.get('group') ? cache.get('group') : 1;
+			if(cache.get('usid')){
+				dict.cache.usid = cache.get('usid')
+			}
 			window.onscroll = null;
 		})
 	}

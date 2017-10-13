@@ -1,6 +1,6 @@
 ; (function () {
     angular.module('app')
-        .controller('homeRegisterCtrl', controller)
+        .controller('homeEditpassCtrl', controller)
     controller.$inject = [
         '$scope',
         'model',
@@ -20,13 +20,10 @@
             }
         }
         $scope.sendVcode = function () {
-            if (!$scope.sendLoading) {
-                $scope.sendLoading = true;
-            }else{
+            if ($scope.sendLoading) {
                 return false;
             }
             if ($scope.email.trim().length == 0) {
-                $scope.sendLoading = true;
                 dict.alert('邮箱不能为空')
                 return false;
             }
@@ -36,9 +33,10 @@
                 return false;
             }
             var postData = {
-                action: 'register',
+                action: 'editpass',
                 email: $scope.email
             };
+            $scope.sendLoading = true;
             model.sendVcode(postData).then(function (res) {
                 $scope.sendLoading = false;
                 if (res.ok) {
@@ -88,10 +86,10 @@
                 passwd: md5($scope.passwd)
             };
             $scope.registerLoading = true;
-            model.register(postData).then(function (res) {
+            model.editpass(postData).then(function (res) {
                 $scope.registerLoading = false;
                 if (res.ok) {
-                    dict.alert('注册成功').then(function () {
+                    dict.alert('密码修改成功').then(function () {
                         dict.go('home.login')
                     })
                 } else {
