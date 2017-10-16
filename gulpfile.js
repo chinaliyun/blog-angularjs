@@ -24,7 +24,7 @@ var jsonPath = 'src/model/**/*.json';
 // gulp.plumber 编译出错时，不中断编译
 
 // var httpDevUrl = 'http://blogapi.com';
-var httpDevUrl = 'http://192.168.2.109:8888';
+var httpDevUrl = 'http://192.168.47.210:8888';
 // var httpDevUrl = 'http://api.codequan.com';
 var httpTestUrl = 'http://101.37.21.176:70';
 var httpDistUrl = 'http://api.codequan.com';

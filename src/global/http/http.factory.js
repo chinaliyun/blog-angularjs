@@ -151,9 +151,7 @@
             console.log(desc + ' Req: ', Object.assign({}, { realUrl: realUrl }, realData))
             $http.post(realUrl, realData, realConfig)
                 .then(function (res) {
-                    if (loading) {
-                        dict.loading()
-                    }
+                    console.log(desc + ' Res: ', res.data)
                     if (res.data.code === 1) {
                         dict.go('home.login', {
                             id: dict.url[0]
@@ -161,7 +159,6 @@
                         dict.clearToken();
                         return false;
                     }
-                    console.log(desc + ' Res: ', res.data)
                     if (res.data.code != 0 || res.data.data === undefined) {
                         def.resolve({ err: { code: res.data.code, msg: res.data.msg } })
                         console.log({ err: { code: res.data.code, msg: res.data.msg } })
