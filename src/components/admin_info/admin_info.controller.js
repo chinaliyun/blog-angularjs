@@ -25,6 +25,7 @@
             };
             $scope.loading = true;
             model.saveUserInfo(postData).then(function(res){
+                $scope.loading = false;
 				if(res.ok){
                     cache.put('ni_name', $scope.user.niName)
                     dict.alert('个人资料修改成功')
