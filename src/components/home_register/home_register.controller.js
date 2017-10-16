@@ -77,10 +77,12 @@
             // 验证码不能为空
             if ($scope.vcode.trim() == '') {
                 dict.alert('验证码不能为空')
+                return false;
             }
             // 验证码格式不对
             if ($scope.vcode.trim().length != 6) {
                 dict.alert('验证码格式错误')
+                return false;
             }
             var postData = {
                 email: $scope.email,
