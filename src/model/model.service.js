@@ -51,5 +51,8 @@
 		this.sendVcode = function(data){
 			return http.post('发送验证码', '/user/sendMailCode', data)
 		}
+		this.saveUserInfo = function(data){
+			return http.post('修改用户信息', '/user/saveUserInfo', data)
+		}
 	}
 }())

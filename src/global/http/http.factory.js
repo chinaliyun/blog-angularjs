@@ -164,8 +164,8 @@
                         console.log({ err: { code: res.data.code, msg: res.data.msg } })
                         return false;
                     }
-                    console.log({ ok: res.data.data != '' ? res.data.data : true })
-                    def.resolve({ ok: res.data.data != '' ? res.data.data : true });
+                    console.log({ ok: res.data.data !== '' ? res.data.data : true })
+                    def.resolve({ ok: res.data.data !== '' ? res.data.data : true });
 
                 }, function (err) {
                     if (loading) {

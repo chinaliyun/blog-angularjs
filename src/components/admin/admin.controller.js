@@ -14,7 +14,7 @@
             $scope.dict = dict;
             if (!dict.cache.ni_name) {
                 dict.go('home.login', {
-                    id: 'admin.new'
+                    id: 'admin.article'
                 })
             }
             if(cache.get('group')==0){

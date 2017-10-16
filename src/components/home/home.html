@@ -26,7 +26,7 @@
                 </div>
             </div> -->
             <div class="userInfo" ng-show="dict.cache.ni_name">
-                <span ng-bind="dict.cache.ni_name"></span>
+                <span class="user_name" ui-sref="admin.info" ng-bind="dict.cache.ni_name"></span>
                 <span ng-click="logout()" class="logout_btn">退出</span>
             </div>
             <div class="write" ui-sref="admin.article">写文章</div>

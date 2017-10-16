@@ -43,10 +43,10 @@
 				templateUrl: './static/view/admin.html',
 				controller: 'adminCtrl'
 			})
-			.state('admin.new',{	
-				url: '/new',
-				templateUrl: './static/view/admin_article.html',
-				controller: 'adminArticleCtrl'
+			.state('admin.info',{	
+				url: '/info',
+				templateUrl: './static/view/admin_info.html',
+				controller: 'adminInfoCtrl'
 			})
 			.state('admin.article',{	
 				url: '/article/:id',

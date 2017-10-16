@@ -83,6 +83,19 @@
             $scope.title = item.title
         }
         $scope.toggleLabel = function (item) {
+            // 最多只能添加5个标签
+            if(!item.select){  
+                var flag = 0;
+                $scope.all_labels.map(function(item, index){
+                    if(item.select){
+                        flag++;
+                    }
+                })
+                if(flag==5){
+                    dict.alert('最多只能添加5个标签')
+                    return false;
+                }
+            }
             item.select = !item.select;
         }
         $scope.addLabel = function () {
@@ -118,7 +131,7 @@
             }
         }
         function addLabel(){
-            dict.confirm($scope, '请输入标签名').then(function(res){
+            dict.confirm('请输入标签名').then(function(res){
                 // 点了确定，但是内容为空 
                 // 点了取消
                 // 点了确定内容不为空

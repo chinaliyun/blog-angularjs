@@ -36,6 +36,12 @@
                 $scope.showLoading1 = false;
                 if(res.ok){
                     $scope.categoryList = res.ok;
+                    if(res.ok.length==0){
+                        dict.alert('您还没有文章，快去创建吧!').then(function(res){
+                            dict.go('admin.article')
+                        })
+                        return false;
+                    }
                     var count = 0;
                     res.ok.map(function(item, index){
                         count+=parseInt(item.count)
