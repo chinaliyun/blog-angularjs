@@ -12,6 +12,7 @@
     function controller($scope, $state, model, cache, dict) {
         init()
         function init() {
+            
             $scope.email = "";
             $scope.passwd = "";
         }
@@ -45,11 +46,12 @@
                     cache.put('token', res.ok.token)
                     cache.put('group', res.ok.group)
                     dict.alert('欢迎回来').then(function () {
-                        if ($state.params.id) {
-                            dict.go($state.params.id)
-                        } else {
-                            dict.go('home.list');
-                        }
+                        // if ($state.params.id) {
+                        //     dict.go($state.params.id)
+                        // } else {
+                        //     dict.go('home.list');
+                        // }
+                       window.history.back();
                     })
                 } else {
                     dict.alert(res.err.msg);

@@ -45,7 +45,7 @@
                 </div>
             </div>
             <div class="add_comments">
-                <textarea ng-model="commentContent"></textarea>
+                <textarea ng-model="commentContent" placeholder="{{dict.isLogin?'':'登陆后才能评论'}}"></textarea>
                 <button class="btn_default" ng-click="addComment()" ng-bind="addLoading ? '正在提交...' : '发表评论'"></button>
             </div>
         </div>
