@@ -37,8 +37,11 @@ function isMobile() {
 	}
 }
 window.onload = function () {
+	if(/safari/i.test(window.navigator.userAgent)){
+		document.querySelector('html').className += ' safari'
+	}
 	if(!isMobile()){
-		document.querySelector('html').className='pc'
+		document.querySelector('html').className += ' pc'
 	}
 	// document.getElementsByTagName('html')[0].style.fontSize = window.getComputedStyle(document.getElementsByTagName('body')[0]).width.slice(0,-2)/10+'px';
 	

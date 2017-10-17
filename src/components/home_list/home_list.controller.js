@@ -74,9 +74,11 @@
 				if($scope.list.length >= parseInt($scope.countCurrentType)){
 					return false;
 				}
+
 				var ele = document.querySelector('.last_item');
-				scrollT.unshift(document.querySelector('html').scrollTop);
+				scrollT.unshift(document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop);
 				scrollT.splice(3,1);
+				console.log(document.querySelector('html').scrollTop, window.pageYOffset)
 				if(scrollT.length>2 && scrollT[0]>scrollT[1] && !$scope.showLoading){
 					if(ele.getBoundingClientRect().top < window.innerHeight){
 						// console.log(1)

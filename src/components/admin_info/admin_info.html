@@ -4,7 +4,7 @@
 		<div class="header">修改个人资料</div>
 		<div class="form_group">
 			<label for="">昵称</label>
-			<input type="text" ng-model="user.niName">
+			<input type="text" ng-model="user.niName"  ng-keyup="keyUp($event)">
 		</div>
 		<button class="btn_default" ng-click="saveUserInfo()" ng-bind="loading?'正在提交':'修改资料'"></button>
 	</div>

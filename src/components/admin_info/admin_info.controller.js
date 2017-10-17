@@ -18,7 +18,12 @@
             if(cache.get('ni_name')){
                 $scope.user.niName = cache.get('ni_name')
             }
-		}
+        }
+        $scope.keyUp = function (event) {
+            if (event.keyCode == 13) {
+                $scope.saveUserInfo();
+            }
+        }
         $scope.saveUserInfo = function(){
             var postData = {
                 "ni_name" : $scope.user.niName

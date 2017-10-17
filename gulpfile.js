@@ -139,7 +139,7 @@ gulp.task('lib-js', function (cb) {
         'static/js/angular.js',
         'static/js/angular-ui-router.js',
         'static/js/angular-cookies.js',
-        'static/js/markdown.js',
+        'static/js/showdown.js',
         'static/js/md5.js',
     ])
         .pipe($.plumber())
