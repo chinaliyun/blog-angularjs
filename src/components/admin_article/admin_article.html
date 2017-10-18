@@ -1,9 +1,9 @@
 <div class="admin_article">
 	<div class="title_group">
 		<span class="label">标题：</span>
-		<input type="text" name="titile" ng-model="title" placeholder="未定义标题">
+		<input type="text" name="titile" ng-model="title" placeholder="未定义标题" ng-change="titleChange()">
 	</div>
-	<div class="label_group" ng-click="showLabel($event)">
+	<div class="label_group">
 		<span class="label">标签：</span>
 		<ul class="label_list">
 			<li ng-click="toggleLabel(item)" class="{{item.select ? 'active' : ''}}" ng-repeat="item in all_labels" ng-bind="item.name"></li>

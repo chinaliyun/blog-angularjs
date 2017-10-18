@@ -18,30 +18,43 @@
             $scope.contentAnthor = 0;
             $scope.labels = []
             $scope.all_labels = [];
+            $scope.changed = false;
+            $scope.backup = {
+                title: "",
+                all_labels: [],
+                content: ""
+            };
             if (!dict.cache.ni_name) {
                 return false;
             }
-            if($state.params.id){
+            if ($state.params.id) {
                 $scope.id = $state.params.id
             }
             getArticleDetail();
         }
-        $scope.$on('newArticle', function(){
-            if($scope.title!= '' || $scope.content!=''){
-                dict.alert('您的操作还未保存，确定要重新开始吗？', true, '确定', '取消').then(function(res){
-                    if(res.ok){
-                        $scope.title = "";
-                        $scope.id = "";
-                        $scope.content = "";
-                        angular.forEach($scope.all_labels, function(item, index){
-                            item.select = false;
-                        })
-                    }else{
+        $scope.$on('newArticle', function () {
+            if ($scope.title != '' || $scope.content != '') {
+                if ($scope.changed) {
+                    dict.alert('您的操作还未保存，确定要重新开始吗？', true, '确定', '取消').then(function (res) {
+                        if (res.ok) {
+                            resetArticle()
+                        }
+                    })
+                } else {
+                    resetArticle()
+                }
 
-                    }
-                })
             }
         })
+        function resetArticle() {
+            $scope.title = "";
+            $scope.id = "";
+            $scope.content = "";
+            angular.forEach($scope.all_labels, function (item, index) {
+                item.select = false;
+            })
+            $scope.changed = false;
+        }
         function getArticleDetail() {
             var postData = {
                 id: $state.params.id,
@@ -49,31 +62,41 @@
             };
             model.getArticleDetail(postData).then(function (res) {
                 if (res.ok) {
-                    if($scope.id){
+                    if ($scope.id) {
                         $scope.id = res.ok.id;
                         $scope.title = res.ok.title;
                         $scope.content = res.ok.content;
                         $scope.labels = res.ok.labels;
                     }
                     $scope.all_labels = res.ok.all_labels;
-                    angular.forEach(res.ok.labels, function(item, index){
-                        angular.forEach(res.ok.all_labels, function(value, key){
-                            if(item==value.name){
+                    angular.forEach(res.ok.labels, function (item, index) {
+                        angular.forEach(res.ok.all_labels, function (value, key) {
+                            if (item == value.name) {
                                 $scope.all_labels[key]['select'] = true;
                             }
                         })
                     })
                 } else {
-                    dict.alert(res.err.msg)
+                    if(res.err.code==4){
+                        dict.alert('文章不存在，请检查后再试').then(function(res){
+                            dict.go('admin.list');
+                        })
+                    }else{
+                       dict.alert(res.err.msg)
+                    }
                 }
             })
         }
 
-        $scope.contentClick = function(event){
+        $scope.contentClick = function (event) {
             $scope.contentAnthor = event.target.selectionStart;
         }
-        $scope.contentChange = function(event){
+        $scope.titleChange = function () {
+            $scope.changed = true;
+        }
+        $scope.contentChange = function (event) {
             $scope.contentAnthor = $scope.content.length;
+            $scope.changed = true;
         }
         $scope.togglePreview = function () {
             $scope.showPreview = !$scope.showPreview;
@@ -83,15 +106,16 @@
             $scope.title = item.title
         }
         $scope.toggleLabel = function (item) {
+            $scope.changed = true;
             // 最多只能添加5个标签
-            if(!item.select){  
+            if (!item.select) {
                 var flag = 0;
-                $scope.all_labels.map(function(item, index){
-                    if(item.select){
+                $scope.all_labels.map(function (item, index) {
+                    if (item.select) {
                         flag++;
                     }
                 })
-                if(flag==5){
+                if (flag == 5) {
                     dict.alert('最多只能添加5个标签')
                     return false;
                 }
@@ -101,51 +125,60 @@
         $scope.addLabel = function () {
             addLabel();
         }
-        $scope.addImage = function(){
+        $scope.addImage = function () {
             document.querySelector('input[type=file]').click()
         }
-        $scope.fileChange = function(ele){
-            if(ele.value){
+        $scope.fileChange = function (ele) {
+            if (ele.value) {
                 var postData = {
-                    action : 'article',
-                    file: ele.files[0]
+                    action: 'article',
+                    file: ele.files[0],
+                    action_id: $scope.id
                 };
-                model.uploadImg(postData).then(function(res){
-                    if(res.ok){
-                        if($scope.contentAnthor==0){
-                            $scope.content = $scope.content+'![图片]('+res.ok.url+')\n\n';
-                        }else{
+                model.uploadImg(postData).then(function (res) {
+                    if (res.ok) {
+                        if ($scope.contentAnthor == 0) {
+                            $scope.content = $scope.content + '![图片](' + res.ok.url + ')\n\n';
+                        } else {
                             var tmp1 = $scope.content.substr(0, $scope.contentAnthor);
                             var tmp2 = $scope.content.substr($scope.contentAnthor);
-                            $scope.content = tmp1 + '\n\n![图片]('+res.ok.url+')\n\n' + tmp2;
+                            $scope.content = tmp1 + '\n\n![图片](' + res.ok.url + ')\n\n' + tmp2;
                         }
-                        if(!$scope.id){
+                        if (!$scope.id) {
                             $scope.id = res.ok.id
                             $scope.title = res.ok.title
                         }
-                    }else{
-                        dict.alert( '图片上传失败')
+                        // 上传成功后自动保存一次
+                        save(function (id) {
+                            dict.alert('已自动为你保存在未分类标签下').then(function () {
+                                dict.go('admin.article', {
+                                    id: id
+                                })
+                            })
+                        });
+                    } else {
+                        dict.alert('图片上传失败')
                     }
                     ele.value = null;
                 })
             }
         }
-        function addLabel(){
-            dict.confirm('请输入标签名').then(function(res){
+        function addLabel() {
+            dict.confirm('请输入标签名').then(function (res) {
                 // 点了确定，但是内容为空 
                 // 点了取消
                 // 点了确定内容不为空
                 console.log(res)
-                if(res.cancel){
+                if (res.cancel) {
                     return false;
                 }
-                if(res.ok==''){
-                    dict.alert( '请输入标签名').then(function(){
-                        if(res.ok){
+                if (res.ok == '') {
+                    dict.alert('请输入标签名').then(function () {
+                        if (res.ok) {
                             addLabel();
                         }
                     })
-                }else{
+                } else {
                     var postData = {
                         name: res.ok.trim()
                     };
@@ -153,13 +186,16 @@
                         if (res.ok) {
                             $scope.list.push(res.ok[0]);
                         } else {
-                            dict.alert( res.err.msg)
+                            dict.alert(res.err.msg)
                         }
                     })
                 }
             })
         }
         $scope.save = function () {
+            save();
+        }
+        function save(callback) {
             var postData = {
                 "id": $scope.id,
                 "title": $scope.title,
@@ -174,18 +210,25 @@
             })
             model.saveArticle(postData).then(function (res) {
                 if (res.ok) {
-                    if (!$scope.id) {
-                        // $scope.id = res.ok.id;
-                        dict.alert( '发布新文章成功').then(function(){
+
+                    // 当id为空的时候，发布新文章  发布成功  跳转页面
+                    // 当id不为空的时候，是编辑文章 发布成功
+                    // 当id不为空，但callback存在的时候，提示已自动保存在未分类标签下 跳转页面
+                    if ($scope.id) {
+                        if (callback) {
+                            callback(res.ok.id);
+                        } else {
+                            dict.alert('发布成功')
+                        }
+                    } else {
+                        dict.alert('发布成功').then(function () {
                             dict.go('admin.article', {
                                 id: res.ok.id
                             })
                         })
-                    }else{
-                        dict.alert( '保存成功')
                     }
                 } else {
-                    dict.alert( res.err.msg).then(function () {
+                    dict.alert(res.err.msg).then(function () {
                         if (res.err.code == 1) {
 
                         }
