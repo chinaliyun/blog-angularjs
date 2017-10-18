@@ -19,9 +19,10 @@
             }
             countArticle();
 		}
-        $scope.selectType = function(id){
+        $scope.selectType = function(id, index){
             if(id){
                 $scope.search.type=id
+                $scope.searchTypeIndex = index
             }else{
                 $scope.search.type=""
             }
@@ -48,6 +49,7 @@
                     })
                     $scope.articleCount = count;
                     $scope.search.type = res.ok[0].code;
+                    $scope.searchTypeIndex = 0;
                     getList();
                 }else{
                     dict.alert( '获取列表失败，请稍后重试');
@@ -62,6 +64,9 @@
                     }; 
                     model.deleteArticle(postData).then(function(res){
                         if(res.ok){
+                            dict.alert('删除文章成功')
+                            $scope.categoryList[$scope.searchTypeIndex].count -=1;
+                            countArticleSum();
                             $scope.list.splice(index, 1);
                         }else{
                             dict.alert( '删除失败，请稍后重试')
@@ -83,15 +88,19 @@
 				if(res.ok){
 					$scope.list = res.ok.list;
 					$scope.categoryList = res.ok.category;
-                    var count = 0;
-                    res.ok.category.map(function(item, index){
-                        count+=parseInt(item.count)
-                    })
-                    $scope.articleCount = count;
+                    countArticleSum();
 				}else{
 
 				}
 			})
+        }
+        function countArticleSum(){
+            // 计算文章总数
+            var count = 0;
+            $scope.categoryList.map(function(item, index){
+                count+=parseInt(item.count)
+            })
+            $scope.articleCount = count;
         }
     }
 }())

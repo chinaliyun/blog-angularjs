@@ -5,7 +5,7 @@
 				<span class="name">全部</span>
 				<span class="count" ng-bind="articleCount">(24)</span>
 			</li>
-			<li ng-repeat="item in categoryList" class="{{search.type==item.code? 'active': ''}}" ng-click="selectType(item.code)" ng-if="item.count!=0">
+			<li ng-repeat="item in categoryList" class="{{search.type==item.code? 'active': ''}}" ng-click="selectType(item.code, $index)" ng-if="item.count!=0">
 				<span class="name" ng-bind="item.name">javascript</span>
 				<span class="count" ng-bind="item.count">(12)</span>
 			</li>
