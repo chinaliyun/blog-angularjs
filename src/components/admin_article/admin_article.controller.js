@@ -231,6 +231,7 @@
                             })
                         })
                     }
+                    $scope.changed = false;
                 } else {
                     dict.alert(res.err.msg).then(function () {
                         if (res.err.code == 1) {
