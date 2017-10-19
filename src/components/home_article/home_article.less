@@ -2,6 +2,17 @@
 	max-width: 1200px;
 	margin: 0 auto;
 	padding: 0 50px;
+	
+	.article_content {
+		color: fadeout(@dfc, 20%);
+		.mt(10);
+		.mb(20);
+		// padding: 20px 0;
+		box-sizing: border-box;
+		p {
+			margin: 10px 0;
+		}
+	}
 	.comments_wrapper{
 		.pb(10);
 		.mt(20);
@@ -41,6 +52,7 @@
 					.mr(10);
 				}
 			}
+			
 		}
 		.add_comments{
 			display: flex;

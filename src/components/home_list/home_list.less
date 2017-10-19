@@ -7,12 +7,10 @@
     .label_menu {
         align-self: flex-start;
         flex-shrink: 0;
-        .w(260);
-        // .dbs;
+        .w(260); // .dbs;
         background-color: white;
         padding: 10px;
-        box-shadow: 2px 2px 4px fadeout(black, 60%);
-        // .br(4);
+        box-shadow: 2px 2px 4px fadeout(black, 60%); // .br(4);
         ul {
             li {
                 display: flex;
@@ -21,7 +19,7 @@
                 &:hover {
                     color: @dfhc;
                 }
-                &.active{
+                &.active {
                     color: @dfhc;
                 }
                 .name {
@@ -39,13 +37,13 @@
         overflow: hidden;
         .w(10);
         .mr(20);
-        .no_data{
+        .no_data {
             background-color: white;
             .tac;
             .pt(100);
             .pb(100);
         }
-        .article_list{
+        .article_list {
             height: 100%;
             .mr(-10);
             overflow-y: scroll;
@@ -55,25 +53,30 @@
             .ptr;
             .t(0);
             .l(0);
-            transition: all 0.2s linear;
-            // .br(4);
+            transition: all 0.2s linear; // .br(4);
             .mr(10);
             overflow: hidden;
-            .author span{
+            .author span {
                 color: @dfhc;
             }
-            .article_content{
-                max-height: 320px;
-                // background-color: @dlc;
+            .article_content {
+                max-height: 320px; // background-color: @dlc;
                 color: fadeout(@dfc, 20%);
                 overflow-y: hidden;
+                .mt(10);
+                .mb(20);
+                // padding: 20px 0;
+                box-sizing: border-box;
+                p {
+                    margin: 10px 0;
+                }
             }
-            .markdown-body{
-                h1,h2{
+            .markdown-body {
+                h1,
+                h2 {
                     .fs(14);
                 }
             }
         }
-        
     }
 }
