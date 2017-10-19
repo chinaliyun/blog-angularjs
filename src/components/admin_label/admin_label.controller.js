@@ -37,7 +37,7 @@
             };
             model.saveLabel(postData).then(function (res) {
                 if (res.ok) {
-                    $scope.list.push(res.ok[0]);
+                    $scope.list.push(res.ok);
                     $scope.name = "";
                     document.querySelector('.addLabel').focus();
                     dict.alert( '标签添加成功')
