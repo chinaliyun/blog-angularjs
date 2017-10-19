@@ -184,7 +184,11 @@
                     };
                     model.saveLabel(postData).then(function (res) {
                         if (res.ok) {
-                            $scope.list.push(res.ok[0]);
+                            $scope.all_labels.push({
+                                id: res.ok.id,
+                                name: res.ok.name,
+                                add_date: res.ok.add_date
+                            });
                         } else {
                             dict.alert(res.err.msg)
                         }
