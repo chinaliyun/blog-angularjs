@@ -43,7 +43,7 @@
 			return http.post('添加评论', '/article/AddComment', data)
 		}
 		this.deleteComment = function(data){
-			return http.post('删除评论', '/article/DeletComment', data)
+			return http.post('删除评论', '/article/DeleteComment', data)
 		}
 		this.getAllUser = function(data){
 			return http.post('所有用户', '/user/getAllUser', data)
