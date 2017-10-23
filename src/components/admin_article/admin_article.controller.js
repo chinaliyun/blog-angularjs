@@ -14,7 +14,7 @@
             $scope.id = "";
             $scope.showPreview = false;
             $scope.title = "";
-            $scope.content = "";
+            $scope.content = dict.cache.articleContent || "";
             $scope.contentAnthor = 0;
             $scope.labels = []
             $scope.all_labels = [];
@@ -200,6 +200,8 @@
             save();
         }
         function save(callback) {
+            // 暂存文章内容
+            dict.cache.articleContent = $scope.content;
             var postData = {
                 "id": $scope.id,
                 "title": $scope.title,
@@ -214,7 +216,8 @@
             })
             model.saveArticle(postData).then(function (res) {
                 if (res.ok) {
-
+                    // 释放暂存文章内容
+                    dict.cache.articleContent = "";
                     // 当id为空的时候，发布新文章  发布成功  跳转页面
                     // 当id不为空的时候，是编辑文章 发布成功
                     // 当id不为空，但callback存在的时候，提示已自动保存在未分类标签下 跳转页面

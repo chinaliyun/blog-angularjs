@@ -11,7 +11,7 @@
     function controller($scope, $state, model, dict) {
         init()
         function init() {
-            $scope.commentContent = "";
+            $scope.commentContent = dict.cache.comment || "";
             $scope.detail = {};
             $scope.dict = dict;
             if ($state.params.id) {
@@ -39,12 +39,16 @@
                 dict.alert('评论内容不能为空');
                 document.querySelector('textarea').focus();
             }
+            // 暂存评论
+            dict.cache.comment = $scope.commentContent;
             var postData = {
                 content: $scope.commentContent,
                 article_id: $state.params.id
             };
             model.addComment(postData).then(function (res) {
                 $scope.addLoading = false;
+                // 清空暂存评论
+                dict.cache.comment = "";
                 if (res.ok) {
                     dict.alert('评论提交成功');
                     $scope.commentContent = "";
